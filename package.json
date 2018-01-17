@@ -1,0 +1,36 @@
+{
+  "name": "guitarded",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.html",
+  "scripts": {
+    "build:sass": "node-sass --output-style compressed -o dist/css src/sass/main.scss",
+    "watch:sass": "node-sass --output-style compressed -o dist/css src/sass/main.scss --watch",
+    "build:wp": "webpack --progress --display-error-details",
+    "build": "npm run build:wp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neilsimp1/guitarded.git"
+  },
+  "author": "Neil Simpson",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/neilsimp1/guitarded/issues"
+  },
+  "homepage": "https://github.com/neilsimp1/guitarded#readme",
+  "dependencies": {
+    "vue": "^2.5.13",
+    "vue-class-component": "^6.1.2",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "node-sass": "^4.7.2",
+    "ts-loader": "^3.2.0",
+    "typescript": "^2.6.2",
+    "vue-loader": "^13.7.0",
+    "vue-template-compiler": "^2.5.13",
+    "webpack": "^3.10.0"
+  }
+}

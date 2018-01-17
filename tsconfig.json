@@ -1,0 +1,26 @@
+{
+	"compilerOptions": {
+		"strict": true,
+		"target": "es5",
+		"rootDir": "src/",
+		"outDir": "dist/",
+		"module": "es2015",
+		"moduleResolution": "node",
+		"allowJs": true,
+		"removeComments": true,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"lib": [
+			"dom",
+			"es2015.promise",
+			"es6"
+		]
+	},
+	"include": [
+		"src/**/*.ts"
+	],
+	"exclude": [
+        "webpack.config.ts",
+		"src/app.ts"
+    ]
+}
