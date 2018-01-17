@@ -4,9 +4,9 @@
 		"target": "es5",
 		"rootDir": "src/",
 		"outDir": "dist/",
+		"allowJs": true,
 		"module": "es2015",
 		"moduleResolution": "node",
-		"allowJs": true,
 		"removeComments": true,
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
@@ -20,7 +20,8 @@
 		"src/**/*.ts"
 	],
 	"exclude": [
-        "webpack.config.ts",
+        "webpack.config.js",
+		"src/typings",
 		"src/app.ts"
     ]
 }
