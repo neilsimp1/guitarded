@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
 	entry: './src/app.ts',
@@ -25,15 +26,14 @@ module.exports = {
 					logLevel: 'warn',
 					appendTsSuffixTo: [/\.vue$/]
 				}
+			},
+			{
+				test: /\.(html)$/,
+				loader: 'file-loader',
+				options: {
+					name: '[name].[ext]?[hash]'
+				}
 			}
-			// ,
-			// {
-			// 	test: /\.(png|jpg|gif|svg)$/,
-			// 	loader: 'file-loader',
-			// 	options: {
-			// 		name: '[name].[ext]?[hash]'
-			// 	}
-			// }
 		]
 	},
 	resolve: {
@@ -46,6 +46,13 @@ module.exports = {
 		historyApiFallback: true,
 		noInfo: true
 	},
+	plugins: [
+		new CopyWebpackPlugin([
+            'src/index.html',
+        ], {
+            ignore: []
+        })
+	],
 	target: 'web',
 	devtool: '#eval-source-map'
 }
