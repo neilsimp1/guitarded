@@ -26,14 +26,14 @@ module.exports = {
 					logLevel: 'warn',
 					appendTsSuffixTo: [/\.vue$/]
 				}
-			},
-			{
-				test: /\.(html)$/,
-				loader: 'file-loader',
-				options: {
-					name: '[name].[ext]?[hash]'
-				}
-			}
+			}//,
+			// {
+			// 	test: /\.(html)$/,
+			// 	loader: 'file-loader',
+			// 	options: {
+			// 		name: '[name].[ext]?[hash]'
+			// 	}
+			// }
 		]
 	},
 	resolve: {
