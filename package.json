@@ -4,10 +4,10 @@
   "description": "",
   "main": "dist/index.html",
   "scripts": {
-    "build:sass": "node-sass --output-style compressed -o dist/css src/sass/main.scss",
-    "watch:sass": "node-sass --output-style compressed -o dist/css src/sass/main.scss --watch",
+    "build:sass": "node-sass --output-style compressed -o dist/assets src/sass/app.scss",
+    "watch:sass": "node-sass --output-style compressed -o dist/assets src/sass/app.scss --watch",
     "build:wp": "webpack --progress --display-error-details",
-    "build": "npm run build:wp"
+    "build": "npm run build:wp && npm run build:sass"
   },
   "repository": {
     "type": "git",

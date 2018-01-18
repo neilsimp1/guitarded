@@ -1,13 +1,20 @@
 <template>
-	<p>TEST</p>
+	<div id="app" class="app">
+		<Navbar />
+		<main>
+            <router-view></router-view>
+        </main>
+	</div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import Navbar from './Navbar.vue';
 
 @Component({
-	name: 'app'
+	name: 'app',
+	components: { Navbar }
 })
 export default class App extends Vue {
 
@@ -15,7 +22,7 @@ export default class App extends Vue {
 		window.close();
 	}
 
-	mounted(): void {
+	public mounted(): void {
 		console.log(123);
 	}
 }
