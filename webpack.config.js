@@ -6,8 +6,8 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 module.exports = {
 	entry: './src/app.ts',
 	output: {
-		path: path.resolve(__dirname, './dist'),
-		publicPath: '/dist/',
+		path: path.resolve(__dirname, 'dist'),
+		publicPath: 'dist',
 		filename: 'app.js'
 	},
 	module: {
@@ -31,7 +31,7 @@ module.exports = {
 				test: /\.scss$/,
 				exclude: /node_modules/,
 				loader: ExtractTextPlugin.extract('css-loader!sass-loader?outputStyle=compressed')
-			}//outputStyle: 'compressed'
+			}
 
 			//,
 			// {
