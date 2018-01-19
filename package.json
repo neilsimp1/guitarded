@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack --progress --display-error-details",
     "watch": "webpack --progress --display-error-details --watch",
-    "serve": "webpack-dev-server"
+    "serve": "webpack-dev-server --content-base dist"
   },
   "repository": {
     "type": "git",
