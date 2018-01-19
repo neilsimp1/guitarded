@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
 	entry: './src/app.ts',
@@ -26,7 +27,13 @@ module.exports = {
 					logLevel: 'warn',
 					appendTsSuffixTo: [/\.vue$/]
 				}
-			}//,
+			}, {
+				test: /\.scss$/,
+				exclude: /node_modules/,
+				loader: ExtractTextPlugin.extract('css-loader!sass-loader?outputStyle=compressed')
+			}//outputStyle: 'compressed'
+
+			//,
 			// {
 			// 	test: /\.(html)$/,
 			// 	loader: 'file-loader',
@@ -47,11 +54,8 @@ module.exports = {
 		noInfo: true
 	},
 	plugins: [
-		new CopyWebpackPlugin([
-            'src/index.html',
-        ], {
-            ignore: []
-        })
+		new CopyWebpackPlugin(['src/index.html'], { ignore: [] }),
+		new ExtractTextPlugin('assets/app.css')
 	],
 	target: 'web',
 	devtool: '#eval-source-map'
