@@ -1,9 +1,9 @@
 <template>
 	<nav>
 		<ul>
-			<li><a href="/scales">Scales</a></li>
-			<li><a href="/tuner">Tuner</a></li>
-			<li><a href="/metronome">Metronome</a></li>
+			<li><router-link to="scalez">Scales</router-link></li>
+			<li><router-link to="tunerz">Tuner</router-link></li>
+			<li><router-link to="clickz">Metronome</router-link></li>
 		</ul>
 	</nav>
 </template>
