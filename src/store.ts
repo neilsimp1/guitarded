@@ -1,22 +1,37 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import Note from './classes/Note';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
 	state: {
-		counter: 0
-	},
-
-	getters: {
-		tripleCounter: state => {
-			return state.counter * 3;
+		scaleMode: {
+			numStrings: <number> 6,
+			numFrets: <number> 19,
+			tuning: <[Note]> [
+				new Note('E', 'E'),
+				new Note('A', 'A'),
+				new Note('D', 'D'),
+				new Note('G', 'G'),
+				new Note('B', 'B'),
+				new Note('E', 'E')
+			]
 		}
 	},
 
+	getters: {
+		numStrings: state => state.scaleMode.numStrings,
+		numFrets: state => state.scaleMode.numFrets,
+		tuning: state => state.scaleMode.tuning,
+	},
+
 	mutations: {
-		increment: (state, num) => {
-			state.counter += num;
+		updateNumStrings: (state: any, numStrings: number) => {
+			state.scaleMode.numStrings = numStrings;
+		},
+		updateNumFrets: (state: any, numFrets: number) => {
+			state.scaleMode.numFrets = numFrets;
 		}
 	},
 

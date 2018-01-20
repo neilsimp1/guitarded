@@ -1,16 +1,17 @@
 <template>
 	<div>
-		TEST 123
+		<ScaleControls />
 	</div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import ScaleControls from './ScaleControls.vue';
 
 @Component({
-	name: 'appscales'//,
-	//components: { Navbar }
+	name: 'appscales',
+	components: { ScaleControls }
 })
 export default class AppScales extends Vue {
 
