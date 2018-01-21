@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import router from './router';
 import App from './components/App.vue';
-import store from './store';
+import store from './store/store';
 import './sass/app.scss';
 
 Vue.config.devtools = true;
