@@ -30,9 +30,11 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import ScaleTuner from './ScaleTuner.vue';
 
 @Component({
-	name: 'scalecontrols'
+	name: 'scalecontrols',
+	components: { ScaleTuner }
 })
 export default class ScaleControls extends Vue {
 

@@ -1,9 +1,9 @@
 <template>
 	<nav>
 		<ul>
-			<li><router-link to="scalez">Scales</router-link></li>
-			<li><router-link to="tunerz">Tuner</router-link></li>
-			<li><router-link to="clickz">Metronome</router-link></li>
+			<li><router-link to="scalebook">Scale Book</router-link></li>
+			<li><router-link to="tuner">Tuner</router-link></li>
+			<li><router-link to="click">Metronome</router-link></li>
 		</ul>
 	</nav>
 </template>

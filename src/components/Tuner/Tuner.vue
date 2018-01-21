@@ -9,10 +9,9 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 
 @Component({
-	name: 'apptuner'//,
-	//components: { Navbar }
+	name: 'tuner'
 })
-export default class AppTuner extends Vue {
+export default class Tuner extends Vue {
 
 }
 </script>

@@ -10,10 +10,10 @@ import Component from 'vue-class-component';
 import ScaleControls from './ScaleControls.vue';
 
 @Component({
-	name: 'appscales',
+	name: 'scalebook',
 	components: { ScaleControls }
 })
-export default class AppScales extends Vue {
+export default class ScaleBook extends Vue {
 
 	public mounted(): void {
 		console.log(321);

@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import AppScales from './components/AppScales.vue';
-import AppMetronome from './components/AppMetronome.vue';
-import AppTuner from './components/AppTuner.vue';
+import ScaleBook from './components/ScaleBook/ScaleBook.vue';
+import Metronome from './components/Metronome/Metronome.vue';
+import Tuner from './components/Tuner/Tuner.vue';
 
 Vue.use(Router);
 
@@ -12,17 +12,17 @@ const routes: any[] = [
 		path: '/',
 		component: null
     }, {
-        name: 'scalez',
-        path: '/scalez',
-        component: AppScales
+        name: 'scalebook',
+        path: '/scalebook',
+        component: ScaleBook
     }, {
-        name: 'clickz',
-        path: '/clickz',
-        component: AppMetronome
+        name: 'click',
+        path: '/click',
+        component: Metronome
     }, {
-        name: 'tunerz',
-        path: '/tunerz',
-        component: AppTuner
+        name: 'tuner',
+        path: '/tuner',
+        component: Tuner
     }
 ];
 

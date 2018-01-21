@@ -7,16 +7,19 @@ Vue.use(Vuex);
 export default new Vuex.Store({
 	state: {
 		scaleMode: {
-			numStrings: <number> 6,
-			numFrets: <number> 19,
-			tuning: <[Note]> [
-				new Note('E', 'E'),
-				new Note('A', 'A'),
-				new Note('D', 'D'),
-				new Note('G', 'G'),
-				new Note('B', 'B'),
-				new Note('E', 'E')
-			]
+			// numStrings: <number> 6,
+			// numFrets: <number> 19,
+			// tuning: <[Note]> [
+			// 	new Note('E', 'E'),
+			// 	new Note('A', 'A'),
+			// 	new Note('D', 'D'),
+			// 	new Note('G', 'G'),
+			// 	new Note('B', 'B'),
+			// 	new Note('E', 'E')
+			// ]
+			numStrings: <number | null> null,
+			numFrets: <number | null> null,
+			tuning: <[Note] | null> null
 		}
 	},
 
@@ -32,6 +35,9 @@ export default new Vuex.Store({
 		},
 		updateNumFrets: (state: any, numFrets: number) => {
 			state.scaleMode.numFrets = numFrets;
+		},
+		updateTuning: (state: any, { stringNum, newPitch }) => {
+			state.scaleMode.tuning[stringNum] = newPitch;
 		}
 	},
 

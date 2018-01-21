@@ -9,10 +9,10 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 
 @Component({
-	name: 'appmetronome'//,
+	name: 'metronome'//,
 	//components: { Navbar }
 })
-export default class AppMetronome extends Vue {
+export default class Metronome extends Vue {
 
 }
 </script>
