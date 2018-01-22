@@ -1,5 +1,8 @@
 import Vuex from 'vuex';
+import ScaleBookStateLoader from './ScaleBookStateLoader';
 import Note from '../../classes/Note';
+
+const stateLoader = new ScaleBookStateLoader();
 
 const state = {
 	scaleMode: {
