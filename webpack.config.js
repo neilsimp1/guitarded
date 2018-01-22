@@ -2,12 +2,16 @@ const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
+
+const PROJECT_NAME = 'guitarded';
+const PUBLIC_PATH = 'dist/';
 
 module.exports = {
 	entry: './src/app.ts',
 	output: {
-		path: path.resolve(__dirname, 'dist'),
-		publicPath: 'dist',
+		path: path.resolve(__dirname, PUBLIC_PATH),
+		publicPath: PUBLIC_PATH,
 		filename: 'app.js'
 	},
 	module: {
@@ -55,7 +59,15 @@ module.exports = {
 	},
 	plugins: [
 		new CopyWebpackPlugin(['src/index.html'], { ignore: [] }),
-		new ExtractTextPlugin('assets/app.css')
+		new ExtractTextPlugin('assets/app.css'),
+		new SWPrecacheWebpackPlugin({
+			cacheId: PROJECT_NAME,
+			dontCacheBustUrlsMatching: /\.\w{8}\./,
+			filename: 'sw.js',
+			//minify: true,
+			navigateFallback: PUBLIC_PATH,
+			staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/],
+		}),
 	],
 	target: 'web',
 	devtool: '#eval-source-map'
