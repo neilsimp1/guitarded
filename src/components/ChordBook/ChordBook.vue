@@ -16,7 +16,7 @@ import ChordControls from './ChordControls.vue';
 export default class ChordBook extends Vue {
 
 	public mounted(): void {
-		console.log(321);
+		
 	}
 
 }

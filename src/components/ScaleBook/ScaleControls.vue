@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<label># Strings</label>
-		<select>
+		<select @click="asd">
 			<option value="3">3</option>
 			<option value="4">4</option>
 			<option value="5">5</option>
@@ -39,15 +39,20 @@ import ScaleTuner from './ScaleTuner.vue';
 export default class ScaleControls extends Vue {
 
 	public mounted(): void {
-		console.log(321);
+		
 	}
 
-	public get numStrings(): number {
-		return this.$store.getters.numStrings;
-	}
+	// public get numStrings(): number {
+	// 	return this.$store.getters.numStrings;
+	// }
 
-	public get numFrets(): number {
-		return this.$store.getters.numFrets;
+	// public get numFrets(): number {
+	// 	return this.$store.getters.numFrets;
+	// }
+
+	public asd(): void {
+		debugger
+		this.$store.commit('updateNumStrings', 7);
 	}
 }
 </script>

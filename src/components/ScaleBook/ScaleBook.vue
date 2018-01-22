@@ -16,7 +16,7 @@ import ScaleControls from './ScaleControls.vue';
 export default class ScaleBook extends Vue {
 
 	public mounted(): void {
-		console.log(321);
+		
 	}
 
 }

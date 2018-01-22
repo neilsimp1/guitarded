@@ -1,42 +1,124 @@
 import Vuex from 'vuex';
-import ScaleBookStateLoader from './ScaleBookStateLoader';
 import Note from '../../classes/Note';
-
-const stateLoader = new ScaleBookStateLoader();
+import Tuning from '../../classes/Tuning';
 
 const state = {
-	scaleMode: {
-		// numStrings: <number> 6,
-		// numFrets: <number> 19,
-		// tuning: <[Note]> [
-		// 	new Note('E', 'E'),
-		// 	new Note('A', 'A'),
-		// 	new Note('D', 'D'),
-		// 	new Note('G', 'G'),
-		// 	new Note('B', 'B'),
-		// 	new Note('E', 'E')
-		// ]
-		numStrings: <number | null> null,
-		numFrets: <number | null> null,
-		tuning: <[Note] | null> null
+	numStrings: <number> 6,
+	numFrets: <number> 19,
+	tunings: <any> {
+		_3: new Tuning([
+			new Note('E', 'E'),
+			new Note('A', 'A'),
+			new Note('D', 'D')
+		]),
+		_4: new Tuning([
+			new Note('E', 'E'),
+			new Note('A', 'A'),
+			new Note('D', 'D'),
+			new Note('G', 'G')
+		]),
+		_5: new Tuning([
+			new Note('E', 'E'),
+			new Note('A', 'A'),
+			new Note('D', 'D'),
+			new Note('G', 'G'),
+			new Note('B', 'B')
+		]),
+		_6: new Tuning([
+			new Note('E', 'E'),
+			new Note('A', 'A'),
+			new Note('D', 'D'),
+			new Note('G', 'G'),
+			new Note('B', 'B'),
+			new Note('E', 'E')
+		]),
+		_7: new Tuning([
+			new Note('B', 'B'),
+			new Note('E', 'E'),
+			new Note('A', 'A'),
+			new Note('D', 'D'),
+			new Note('G', 'G'),
+			new Note('B', 'B'),
+			new Note('E', 'E')
+		]),
+		_8: new Tuning([
+			new Note('F#/Gb', 'F#'),
+			new Note('B', 'B'),
+			new Note('E', 'E'),
+			new Note('A', 'A'),
+			new Note('D', 'D'),
+			new Note('G', 'G'),
+			new Note('B', 'B'),
+			new Note('E', 'E')
+		]),
+		_9: new Tuning([
+			new Note('C#/Db', 'C#'),
+			new Note('F#/Gb', 'F#'),
+			new Note('B', 'B'),
+			new Note('E', 'E'),
+			new Note('A', 'A'),
+			new Note('D', 'D'),
+			new Note('G', 'G'),
+			new Note('B', 'B'),
+			new Note('E', 'E')
+		]),
+		_10: new Tuning([
+			new Note('E', 'E'),
+			new Note('A', 'A'),
+			new Note('D', 'D'),
+			new Note('G', 'G'),
+			new Note('E', 'E'),
+			new Note('A', 'A'),
+			new Note('D', 'D'),
+			new Note('G', 'G'),
+			new Note('B', 'B'),
+			new Note('E', 'E')
+		]),
+		_11: new Tuning([
+			new Note('B', 'B'),
+			new Note('E', 'E'),
+			new Note('A', 'A'),
+			new Note('D', 'D'),
+			new Note('G', 'G'),
+			new Note('E', 'E'),
+			new Note('A', 'A'),
+			new Note('D', 'D'),
+			new Note('G', 'G'),
+			new Note('B', 'B'),
+			new Note('E', 'E')
+		]),
+		_12: new Tuning([
+			new Note('E', 'E'),
+			new Note('E', 'E'),
+			new Note('A', 'A'),
+			new Note('A', 'A'),
+			new Note('D', 'D'),
+			new Note('D', 'D'),
+			new Note('G', 'G'),
+			new Note('G', 'G'),
+			new Note('B', 'B'),
+			new Note('B', 'B'),
+			new Note('E', 'E'),
+			new Note('E', 'E')
+		])
 	}
 };
 
 const getters = {
-	numStrings: (state: any) => state.scaleMode.numStrings,
-	numFrets: (state: any) => state.scaleMode.numFrets,
-	tuning: (state: any) => state.scaleMode.tuning,
+	numStrings: (state: any) => state.numStrings,
+	numFrets: (state: any) => state.numFrets,
+	tuning: (state: any) => state.tuning,
 };
 
 const mutations = {
 	updateNumStrings: (state: any, numStrings: number) => {
-		state.scaleMode.numStrings = numStrings;
+		state.numStrings = numStrings;
 	},
 	updateNumFrets: (state: any, numFrets: number) => {
-		state.scaleMode.numFrets = numFrets;
+		state.numFrets = numFrets;
 	},
 	updateTuning: (state: any, { stringNum, newNote }: any) => {
-		state.scaleMode.tuning[stringNum] = newNote;
+		state.tuning[stringNum] = newNote;
 	}
 };
 

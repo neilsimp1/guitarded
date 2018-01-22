@@ -15,5 +15,7 @@ export default new Vuex.Store({
 	getters,
 	mutations,
 	actions,
-	plugins: [createPersistedState( )]
+	plugins: [
+		createPersistedState({ key: 'guitarded' })
+	]
 });
