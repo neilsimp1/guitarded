@@ -14,5 +14,5 @@ window.onload = () => {
 		components: { App },
 		render: h => h(App)
 	});
-	(() => {'serviceWorker' in navigator&&navigator.serviceWorker.register('/sw.js')})();
+	(() => {'serviceWorker' in navigator&&navigator.serviceWorker.register('/sw.js',{scope:'/'})})();
 };

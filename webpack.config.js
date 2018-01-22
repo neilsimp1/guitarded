@@ -3,8 +3,10 @@ const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
+const WebpackPwaManifest = require('webpack-pwa-manifest');
 
 const PROJECT_NAME = 'guitarded';
+const PROJECT_SHORTNAME = PROJECT_NAME;
 const PUBLIC_PATH = 'dist/';
 
 module.exports = {
@@ -68,6 +70,20 @@ module.exports = {
 			navigateFallback: PUBLIC_PATH,
 			staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/],
 		}),
+		new WebpackPwaManifest({
+			name: PROJECT_NAME,
+			short_name: PROJECT_SHORTNAME,
+			description: 'guitar, yo',
+			background_color: '#012',
+			theme_color: '#878787',
+			'theme-color': '#878787',
+			start_url: '/',
+			// icons: [{
+			// 	src: path.resolve('src/images/icon.png'),
+			// 	sizes: [96, 128, 192, 256, 384, 512],
+			// 	destination: path.join('assets', 'icons')
+			// }]
+		})
 	],
 	target: 'web',
 	devtool: '#eval-source-map'
