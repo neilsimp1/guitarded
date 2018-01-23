@@ -26,6 +26,8 @@
 			<option value="24">24</option>
 			<option value="25">25</option>
 		</select>
+
+		<ScaleTuner />
 	</div>
 </template>
 
@@ -42,14 +44,13 @@ export default class ScaleControls extends Vue {
 
 	public get numStrings(): number { return this.$store.getters.numStrings }
 	public get numFrets(): number { return this.$store.getters.numFrets }
-	public get tuning(): number { return this.$store.getters.tuning }
 
 	public updateNumStrings(event: Event): void {
-		this.$store.commit('updateNumStrings', (event.target as HTMLInputElement).value);
+		this.$store.commit('updateNumStrings', parseInt((event.target as HTMLInputElement).value));
 	}
 
 	public updateNumFrets(event: Event): void {
-		this.$store.commit('updateNumFrets', (event.target as HTMLInputElement).value);
+		this.$store.commit('updateNumFrets', parseInt((event.target as HTMLInputElement).value));
 	}
 }
 </script>

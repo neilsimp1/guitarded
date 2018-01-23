@@ -24,7 +24,7 @@ export default class Tuning {
 	}
 
 	public static async getAllDefaultTunings(): Promise<any> {
-		return {
+		return await {
 			"3": Tuning.getDefaultTuning(3),
 			"4": Tuning.getDefaultTuning(4),
 			"5": Tuning.getDefaultTuning(5),
