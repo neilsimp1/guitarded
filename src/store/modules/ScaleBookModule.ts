@@ -5,9 +5,8 @@ import Tuning from '../../classes/Tuning';
 const state = {
 	numStrings: <number> 6,
 	numFrets: <number> 19,
-	tunings: <any> {
-		
-	}
+	tunings: <any> Tuning.getAllDefaultTunings(),
+	tuning: Tuning.getDefaultTuning(6)
 };
 
 const getters = {
@@ -29,11 +28,7 @@ const mutations = {
 };
 
 const actions = {
-	asyncDecrement: ({ commit }: any, asyncNum: any) => {
-		setTimeout(() => {
-			commit('decrement', asyncNum.by);
-		}, asyncNum.duration);
-	}
+
 };
 
 export default {

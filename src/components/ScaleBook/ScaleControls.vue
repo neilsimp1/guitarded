@@ -1,7 +1,8 @@
 <template>
 	<div>
 		<label># Strings</label>
-		<select @click="asd">
+		<select :value="numStrings"
+			v-on:change="updateNumStrings">
 			<option value="3">3</option>
 			<option value="4">4</option>
 			<option value="5">5</option>
@@ -15,7 +16,8 @@
 		</select>
 
 		<label># Frets</label>
-		<select>
+		<select :value="numFrets"
+			v-on:change="updateNumFrets">
 			<option value="19">19</option>
 			<option value="20">20</option>
 			<option value="21">21</option>
@@ -38,21 +40,16 @@ import ScaleTuner from './ScaleTuner.vue';
 })
 export default class ScaleControls extends Vue {
 
-	public mounted(): void {
-		
+	public get numStrings(): number { return this.$store.getters.numStrings }
+	public get numFrets(): number { return this.$store.getters.numFrets }
+	public get tuning(): number { return this.$store.getters.tuning }
+
+	public updateNumStrings(event: Event): void {
+		this.$store.commit('updateNumStrings', (event.target as HTMLInputElement).value);
 	}
 
-	// public get numStrings(): number {
-	// 	return this.$store.getters.numStrings;
-	// }
-
-	// public get numFrets(): number {
-	// 	return this.$store.getters.numFrets;
-	// }
-
-	public asd(): void {
-		debugger
-		this.$store.commit('updateNumStrings', 7);
+	public updateNumFrets(event: Event): void {
+		this.$store.commit('updateNumFrets', (event.target as HTMLInputElement).value);
 	}
 }
 </script>

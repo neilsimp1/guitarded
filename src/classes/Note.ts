@@ -1,4 +1,4 @@
-export default class Pitch {
+export default class Note {
 
 	public name: string;
 	public displayName: string;
