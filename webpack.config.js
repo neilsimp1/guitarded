@@ -60,7 +60,10 @@ module.exports = {
 		noInfo: true
 	},
 	plugins: [
-		new CopyWebpackPlugin(['src/index.html'], { ignore: [] }),
+		new CopyWebpackPlugin([
+			'src/index.html',
+			{ from: 'src/data', to: 'assets' }
+		], { ignore: [] }),
 		new ExtractTextPlugin('assets/app.css'),
 		new SWPrecacheWebpackPlugin({
 			cacheId: PROJECT_NAME,
