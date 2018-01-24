@@ -9,11 +9,17 @@ const state = {
 	tuning: <Tuning | null> null
 };
 
-(async () => { // NEED TO DO THESE UPDATES VIA ACTIONS???
+(async () => {
 	const defaultTunings: any = await Tuning.getAllDefaultTunings();
-	state.tunings = defaultTunings;
+	//state.tunings = defaultTunings;
+	store.dispatch('updateTunings', defaultTunings);
 	const tuning: Tuning = await Tuning.getDefaultTuning(6);
-	state.tuning = tuning;
+	//state.tuning = tuning;
+	store.dispatch('updateTuningAll', tuning);
+
+
+	// https://stackoverflow.com/questions/40403657/making-async-calls-with-vuex
+	// See answer here. maybe need to load tuning, tunings from component
 })();
 
 const getters = {
@@ -29,13 +35,24 @@ const mutations = {
 	updateNumFrets: (state: any, numFrets: number) => {
 		state.numFrets = numFrets;
 	},
+	updateTunings: (state: any, tunings: any) => {
+		state.tunings = tunings;
+	},
+	updateTuningAll: (state: any, tuning: Tuning) => {
+		state.tuning = tuning;
+	},
 	updateTuning: (state: any, { stringNum, newNote }: any) => {
 		state.tuning[stringNum] = newNote;
 	}
 };
 
 const actions = {
-
+	updateTunings(context: any, tunings: any) {
+		context.commit('updateTunings', tunings);
+	},
+	updateTuningAll(context: any, tuning: Tuning) {
+		context.commit('updateTuningAll', tuning);
+	}
 };
 
 export default {

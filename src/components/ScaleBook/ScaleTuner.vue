@@ -3,9 +3,9 @@
 		<select v-for="stringNum in numStrings" :key="stringNum">
 			<option v-if="tuning[stringNum]"
 				v-for="note in allNotes"
-				:value="tuning[stringNum].name"
+				:value="tuning.notes[stringNum].name"
 				:key="note.name">
-				{{ tuning[stringNum].displayName }}
+				{{ tuning.notes[stringNum].displayName }}
 			</option>
 		</select>
 	</div>
@@ -26,11 +26,10 @@ export default class ScaleTuner extends Vue {
 		return this.$store.getters.tuning;
 	}
 	public get numStrings(): Tuning {
-		let asd = Note.getAllNotes();
 		return this.$store.getters.numStrings;
 	}
 	public get allNotes(): [Note] {
-		return Note.getAllNotes()
+		return Note.getAllNotes();
 	}
 	// public set tuning(): void {
 
