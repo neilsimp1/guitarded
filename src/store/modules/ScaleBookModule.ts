@@ -9,23 +9,10 @@ const state = {
 	tuning: <Tuning | null> null
 };
 
-(async () => {
-	const defaultTunings: any = await Tuning.getAllDefaultTunings();
-	//state.tunings = defaultTunings;
-	store.dispatch('updateTunings', defaultTunings);
-	const tuning: Tuning = await Tuning.getDefaultTuning(6);
-	//state.tuning = tuning;
-	store.dispatch('updateTuningAll', tuning);
-
-
-	// https://stackoverflow.com/questions/40403657/making-async-calls-with-vuex
-	// See answer here. maybe need to load tuning, tunings from component
-})();
-
 const getters = {
 	numStrings: (state: any) => state.numStrings,
 	numFrets: (state: any) => state.numFrets,
-	tuning: (state: any) => state.tuning,
+	tuning: (state: any) => state.tuning
 };
 
 const mutations = {
