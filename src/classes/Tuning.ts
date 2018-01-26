@@ -15,11 +15,18 @@ export default class Tuning {
 		if(!Tuning.defaultTunings){
 			Tuning.defaultTunings = {};
 			const response: Response = await fetch('/assets/tunings.json');
-			const tuningArrays: any = await response.json();
-			for(const key in tuningArrays){
-				const tuning = new Tuning('Standard ' + key, tuningArrays[key].map((noteName: string) => new Note(noteName, noteName.slice(0, 2))));
-				Tuning.defaultTunings[key] = tuning;
-			} // TODO: Move names into json
+			const tuningSets: any = await response.json();
+			for(const numStrings in tuningSets){
+				for(const tuningArray in tuningSets[numStrings]){
+					if((tuningArray as string).indexOf('Standard') === 0){
+						const tuning = new Tuning(tuningArray, tuningSets[numStrings][tuningArray].map(
+							(noteName: string) => new Note(noteName, noteName.slice(0, 2))
+						));
+						Tuning.defaultTunings[numStrings] = tuning;
+						continue;
+					}
+				}
+			}
 		}
 
 		return Tuning.defaultTunings[numStrings];
