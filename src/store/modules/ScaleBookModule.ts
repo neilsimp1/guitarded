@@ -12,6 +12,7 @@ const state = {
 const getters = {
 	numStrings: (state: any) => state.numStrings,
 	numFrets: (state: any) => state.numFrets,
+	tunings: (state: any) => state.tunings,
 	tuning: (state: any) => state.tuning
 };
 

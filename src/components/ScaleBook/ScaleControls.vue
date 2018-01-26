@@ -34,6 +34,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import { Watch } from 'vue-property-decorator';
 import ScaleTuner from './ScaleTuner.vue';
 
 @Component({
@@ -44,6 +45,11 @@ export default class ScaleControls extends Vue {
 
 	public get numStrings(): number { return this.$store.getters.numStrings }
 	public get numFrets(): number { return this.$store.getters.numFrets }
+
+	@Watch('numStrings')
+	public onPropertyChanged(numStrings: number) {
+		this.$store.commit('updateTuningAll', this.$store.getters.tunings[numStrings]);
+	}
 
 	public updateNumStrings(event: Event): void {
 		this.$store.commit('updateNumStrings', parseInt((event.target as HTMLInputElement).value));
