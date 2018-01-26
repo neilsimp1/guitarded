@@ -4,7 +4,7 @@ export default class Tuning {
 
 	public name: string;;
 	public notes: [Note];
-	private static defaultTunings: any = null;
+	public static defaultTunings: any = null;
 
 	constructor(name: string, notes: [Note]) {
 		this.name = name;
@@ -16,13 +16,13 @@ export default class Tuning {
 			Tuning.defaultTunings = {};
 			const response: Response = await fetch('/assets/tunings.json');
 			const tuningSets: any = await response.json();
-			for(const numStrings in tuningSets){
-				for(const tuningArray in tuningSets[numStrings]){
+			for(const tuningSetNumStrings in tuningSets){
+				for(const tuningArray in tuningSets[tuningSetNumStrings]){
 					if((tuningArray as string).indexOf('Standard') === 0){
-						const tuning = new Tuning(tuningArray, tuningSets[numStrings][tuningArray].map(
+						const tuning = new Tuning(tuningArray, tuningSets[tuningSetNumStrings][tuningArray].map(
 							(noteName: string) => new Note(noteName, noteName.slice(0, 2))
 						));
-						Tuning.defaultTunings[numStrings] = tuning;
+						Tuning.defaultTunings[tuningSetNumStrings] = tuning;
 						continue;
 					}
 				}
@@ -45,6 +45,19 @@ export default class Tuning {
 			"11": await Tuning.getDefaultTuning(11),
 			"12": await Tuning.getDefaultTuning(12)
 		};
+	}
+
+	public static async lookupTuningName(numStrings: number, notes: [Note]): Promise<string> {
+		const response: Response = await fetch('/assets/tunings.json');
+		const tuningSets: any = await response.json();
+		for(const tuningArray in tuningSets[numStrings]){
+			for(let i = 0; i < numStrings; i++){
+				if(tuningSets[numStrings][tuningArray][i] !== notes[i].name) break;
+				return tuningArray;
+			}
+		}
+
+		return 'Custom tuning';
 	}
 
 }

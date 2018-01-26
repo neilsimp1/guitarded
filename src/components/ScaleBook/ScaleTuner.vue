@@ -1,14 +1,15 @@
 <template>
 	<div>
-		<select v-for="stringNum in numStrings" :key="stringNum">
+		<select v-for="stringNum in numStrings" :key="stringNum" v-on:change="updateTuning(stringNum, $event)">
 			<option v-if="tuning && tuning.notes[stringNum - 1]"
 				v-for="note in allNotes"
-				:value="tuning.notes[stringNum - 1].name"
+				:value="note.name"
 				:key="note.name"
 				:selected="tuning.notes[stringNum - 1].name == note.name">
 				{{ note.displayName }}
 			</option>
 		</select>
+		<span>{{ tuning.name }}</span>
 	</div>
 </template>
 
@@ -32,9 +33,13 @@ export default class ScaleTuner extends Vue {
 	public get allNotes(): [Note] {
 		return Note.getAllNotes();
 	}
-	// public set tuning(): void {
 
-	// }
+	public updateTuning(stringNum: number, event: Event): void {
+		const newNote: Note = Note.lookupNote((event.target as HTMLSelectElement).value, 'name');
+		const store = this.$store;
+		const numStrings = this.numStrings;
+		this.$store.commit('updateTuning', { stringNum, numStrings, newNote, store });
+	}
 
 	public beforeCreate(): void {
 		if(!this.$store.getters.tuning){

@@ -17,20 +17,16 @@ const getters = {
 };
 
 const mutations = {
-	updateNumStrings: (state: any, numStrings: number) => {
-		state.numStrings = numStrings;
-	},
-	updateNumFrets: (state: any, numFrets: number) => {
-		state.numFrets = numFrets;
-	},
-	updateTunings: (state: any, tunings: any) => {
-		state.tunings = tunings;
-	},
-	updateTuningAll: (state: any, tuning: Tuning) => {
-		state.tuning = tuning;
-	},
-	updateTuning: (state: any, { stringNum, newNote }: any) => {
-		state.tuning[stringNum] = newNote;
+	updateNumStrings: (state: any, numStrings: number) => state.numStrings = numStrings,
+	updateNumFrets: (state: any, numFrets: number) => state.numFrets = numFrets,
+	updateTunings: (state: any, tunings: any) => state.tunings = tunings,
+	updateTuningAll: (state: any, tuning: Tuning) => state.tuning = tuning,
+	updateTuningName: (state: any, name: string) => state.tuning.name = name,
+	updateTuning: (state: any, { stringNum, numStrings, newNote, store }: any) => {
+		state.tuning.notes[stringNum - 1] = newNote;
+		Tuning.lookupTuningName(numStrings, state.tuning.notes).then((name: string) => {
+			store.dispatch('updateTuningName', name);
+		});
 	}
 };
 
@@ -40,6 +36,9 @@ const actions = {
 	},
 	updateTuningAll(context: any, tuning: Tuning) {
 		context.commit('updateTuningAll', tuning);
+	},
+	updateTuningName(context: any, name: string) {
+		context.commit('updateTuningName', name);
 	}
 };
 
