@@ -48,13 +48,15 @@ export default class Tuning {
 	}
 
 	public static async lookupTuningName(numStrings: number, notes: [Note]): Promise<string> {
+		const tuningsMatch = (notes: [Note], tuningArray: [string]): boolean => {
+			return notes.every((note: Note, i: number) => notes[i].name === tuningArray[i]);
+		};
+		
 		const response: Response = await fetch('/assets/tunings.json');
 		const tuningSets: any = await response.json();
-		for(const tuningArray in tuningSets[numStrings]){
-			for(let i = 0; i < numStrings; i++){
-				if(tuningSets[numStrings][tuningArray][i] !== notes[i].name) break;
-				return tuningArray;
-			}
+		
+		for(const tuningName in tuningSets[numStrings]){
+			if(tuningsMatch(notes, tuningSets[numStrings][tuningName])) return tuningName;
 		}
 
 		return 'Custom tuning';
