@@ -9,7 +9,7 @@
 				{{ note.displayName }}
 			</option>
 		</select>
-		<span>{{ tuning.name }}</span>
+		<span>{{ tuning && tuning.name || '' }}</span>
 	</div>
 </template>
 
