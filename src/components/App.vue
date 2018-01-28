@@ -1,7 +1,10 @@
 <template>
 	<div id="app">
-		<Navbar />
-		<main>
+		<button type="button"
+			:class="['mainmenu-toggle', isMenuOpen ? 'open' : '']"
+			v-on:click="toggleMainMenu" />
+		<MainMenu :isMenuOpen="isMenuOpen" />
+		<main v-on:click="isMenuOpen && closeMenu()">  <!-- TODO: This is not working -->
             <router-view></router-view>
         </main>
 	</div>
@@ -10,20 +13,27 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import Navbar from './Navbar.vue';
+import MainMenu from './MainMenu.vue';
 
 @Component({
 	name: 'app',
-	components: { Navbar }
+	components: { MainMenu }
 })
 export default class App extends Vue {
+
+	public isMenuOpen: boolean = false;
 
 	public exit(): void {
 		window.close();
 	}
 
-	public mounted(): void {
-		
+	public toggleMainMenu(): void {
+		this.isMenuOpen = !this.isMenuOpen;
 	}
+
+	public closeMenu(): void {
+		this.isMenuOpen = false;
+	}	
+
 }
 </script>
