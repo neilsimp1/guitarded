@@ -1,6 +1,10 @@
 @import '../util/colors';
 @import '../util/variables';
 
+html {
+	font-family: 'Open Sans', sans-serif;
+}
+
 #app {
 	position: relative;
 }

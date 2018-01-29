@@ -26,6 +26,7 @@ $mainmenu-w-lg: 20vw;
 }
 
 .mainmenu {
+	font-family: 'Ubuntu', sans-serif;
 	background-color: $gray-darker;
 
 	position: absolute;
@@ -60,8 +61,34 @@ nav {
 		margin: 0;
 		padding: 0;
 	}
+
 	li {
 		list-style-type: none;
+		height: 2.5em;
+
+		a {
+			display: block;
+			height: 100%;
+			line-height: 2.5em;
+			padding: 2px 8px;
+
+			text-decoration: none;
+			text-transform: uppercase;
+			font-weight: bold;
+			color: $primary;
+
+			&:hover {
+				color: $primary2;
+				border: 1px solid $primary2;
+				line-height: calc(2.5em - 2px);
+				padding: 2px 7px;
+			}
+			&:active {
+				color: $gray-light;
+				border: 1px solid $gray-light;
+			}
+		}
+
 	}
 }
 
