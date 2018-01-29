@@ -8,21 +8,35 @@ $mainmenu-w-lg: 20vw;
 
 .mainmenu-toggle {
 	background-color: transparent;
-	//border: 0;
+	border: 0;
+	outline: none;
+	cursor: pointer;
 
 	width: 2.5em;
 	height: 2.5em;
 	position: absolute;
 	top: 4px;
 	left: 4px;
+	padding: 0;
 
 	z-index: 100;
 
-	&.open {
-		transform: rotate(90);
-		//left: calc(100% - 4px);
-		transition: $trans-time-fast;
+	span, span:before, span:after {
+		border-radius: 1px;
+		height: 5px;
+		width: 100%; // 35px
+		background: $primary;
+		position: absolute;
+		display: block;
+		content: '';
+		transition: all $trans-time-fast ease-in-out;
 	}
+	span:before { top: -12px; }
+	span:after { bottom: -12px; }
+
+	&.open span { background-color: transparent; }
+	&.open span:before { transform: rotate(45deg); top: 0; }
+	&.open span:after { transform: rotate(-45deg); bottom: 0; }
 }
 
 .mainmenu {

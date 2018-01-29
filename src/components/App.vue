@@ -2,7 +2,9 @@
 	<div id="app">
 		<button type="button"
 			:class="['mainmenu-toggle', isMenuOpen ? 'open' : '']"
-			v-on:click="toggleMainMenu" />
+			v-on:click="toggleMainMenu">
+			<span></span>
+		</button>
 		<MainMenu :isMenuOpen="isMenuOpen" />
 		<main v-on:click.prevent="isMenuOpen && closeMenu()">
             <router-view></router-view>
