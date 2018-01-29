@@ -39,7 +39,7 @@ import ChordTuner from './ChordTuner.vue';
 export default class ChordControls extends Vue {
 
 	public mounted(): void {
-		console.log(321);
+
 	}
 
 	public get numStrings(): number {

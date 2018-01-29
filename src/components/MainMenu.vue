@@ -2,10 +2,10 @@
 	<aside :class="['mainmenu', isMenuOpen ? 'open' : '']">
 		<nav>
 			<ul>
-				<li><router-link to="scalebook">Scale Book</router-link></li>
-				<li><router-link to="chordbook">Chord Book</router-link></li>
-				<li><router-link to="tuner">Tuner</router-link></li>
-				<li><router-link to="click">Metronome</router-link></li>
+				<li v-on:click="$parent.isMenuOpen = false"><router-link to="scalebook">Scale Book</router-link></li>
+				<li v-on:click="$parent.isMenuOpen = false"><router-link to="chordbook">Chord Book</router-link></li>
+				<li v-on:click="$parent.isMenuOpen = false"><router-link to="tuner">Tuner</router-link></li>
+				<li v-on:click="$parent.isMenuOpen = false"><router-link to="click">Metronome</router-link></li>
 			</ul>
 		</nav>
 	</aside>
