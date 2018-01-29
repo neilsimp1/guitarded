@@ -27,7 +27,7 @@
 			<option value="25">25</option>
 		</select>
 
-		<ScaleTuner />
+		<GuitarTuner />
 	</div>
 </template>
 
@@ -35,13 +35,13 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Watch } from 'vue-property-decorator';
-import ScaleTuner from './ScaleTuner.vue';
+import GuitarTuner from './GuitarTuner.vue';
 
 @Component({
-	name: 'scalecontrols',
-	components: { ScaleTuner }
+	name: 'guitarcontrols',
+	components: { GuitarTuner }
 })
-export default class ScaleControls extends Vue {
+export default class GuitarControls extends Vue {
 
 	public get numStrings(): number { return this.$store.getters.numStrings }
 	public get numFrets(): number { return this.$store.getters.numFrets }

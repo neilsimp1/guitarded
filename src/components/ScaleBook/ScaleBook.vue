@@ -1,22 +1,22 @@
 <template>
 	<div>
-		<ScaleControls />
+		<GuitarControls />
 	</div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import ScaleControls from './ScaleControls.vue';
+import GuitarControls from '../Common/GuitarControls.vue';
 
 @Component({
 	name: 'scalebook',
-	components: { ScaleControls }
+	components: { GuitarControls }
 })
 export default class ScaleBook extends Vue {
 
 	public mounted(): void {
-		
+
 	}
 
 }

@@ -20,9 +20,9 @@ import Note from '../../classes/Note';
 import Tuning from '../../classes/Tuning';
 
 @Component({
-	name: 'scaletuner'
+	name: 'guitartuner'
 })
-export default class ScaleTuner extends Vue {
+export default class GuitarTuner extends Vue {
 
 	public get tuning(): Tuning {
 		return this.$store.getters.tuning;
