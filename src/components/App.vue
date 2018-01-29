@@ -4,7 +4,7 @@
 			:class="['mainmenu-toggle', isMenuOpen ? 'open' : '']"
 			v-on:click="toggleMainMenu" />
 		<MainMenu :isMenuOpen="isMenuOpen" />
-		<main v-on:click="isMenuOpen && closeMenu()">  <!-- TODO: This is not working -->
+		<main v-on:click.prevent="isMenuOpen && closeMenu()">
             <router-view></router-view>
         </main>
 	</div>
@@ -33,7 +33,7 @@ export default class App extends Vue {
 
 	public closeMenu(): void {
 		this.isMenuOpen = false;
-	}	
+	}
 
 }
 </script>
