@@ -27,7 +27,7 @@ export default class Scale {
 	}
 
 	public static async getAllScales(): Promise<Map<string, Scale>> {
-		if(!Scale.scaleDict) Scale.loadScaleDict();
+		if(!Scale.scaleDict) await Scale.loadScaleDict();
 		return Scale.scaleDict;
 	}
 

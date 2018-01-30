@@ -11,22 +11,12 @@ export default class Tuning {
 		this.notes = notes;
 	}
 
-	public static async getDefaultTuning(numStrings: number): Promise<Tuning> {
-		if(!Tuning.defaultTunings){
-			Tuning.defaultTunings = {};
-			const response: Response = await fetch('/assets/tunings.json');
-			Tuning.defaultTunings = await response.json();
-		}
+	public static async loadDefaultTunings(): Promise<any> {
+		Tuning.defaultTunings = {};
+		const response: Response = await fetch('/assets/tunings.json');
+		Tuning.defaultTunings = await response.json();
 
-		for(const tuningArray in Tuning.defaultTunings[numStrings]){
-			if((tuningArray as string).indexOf('Standard') === 0){
-				return new Tuning(tuningArray, Tuning.defaultTunings[numStrings][tuningArray].map(
-					(noteName: string) => new Note(noteName, noteName.slice(0, 2))
-				));
-			}
-		}
-
-		return new Tuning('', [new Note('', '')]);
+		return Tuning.defaultTunings;
 	}
 
 	public static async getAllDefaultTunings(): Promise<any> {
@@ -42,6 +32,20 @@ export default class Tuning {
 			"11": await Tuning.getDefaultTuning(11),
 			"12": await Tuning.getDefaultTuning(12)
 		};
+	}
+
+	public static async getDefaultTuning(numStrings: number): Promise<Tuning> {
+		if(!Tuning.defaultTunings) await Tuning.loadDefaultTunings();
+
+		for(const tuningArray in Tuning.defaultTunings[numStrings]){
+			if((tuningArray as string).indexOf('Standard') === 0){
+				return new Tuning(tuningArray, Tuning.defaultTunings[numStrings][tuningArray].map(
+					(noteName: string) => new Note(noteName, noteName.slice(0, 2))
+				));
+			}
+		}
+
+		return new Tuning('', [new Note('', '')]);
 	}
 
 	public static async lookupTuningName(numStrings: number, notes: [Note]): Promise<string> {
