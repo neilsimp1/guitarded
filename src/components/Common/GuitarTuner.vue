@@ -10,6 +10,7 @@
 			</option>
 		</select>
 		<span>{{ tuning && tuning.name || '' }}</span>
+		<button type="button" v-on:click="gotoStandardTuning">Standard Tuning</button>
 	</div>
 </template>
 
@@ -51,5 +52,13 @@ export default class GuitarTuner extends Vue {
 			})();
 		}
 	}
+
+	public gotoStandardTuning(): void {
+		(async () => {
+			const tuning: Tuning = await Tuning.getDefaultTuning(this.numStrings);
+			this.$store.dispatch('updateTuningAll', tuning);
+		})();
+	}
+
 }
 </script>

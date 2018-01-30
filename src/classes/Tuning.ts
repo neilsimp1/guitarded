@@ -15,21 +15,18 @@ export default class Tuning {
 		if(!Tuning.defaultTunings){
 			Tuning.defaultTunings = {};
 			const response: Response = await fetch('/assets/tunings.json');
-			const tuningSets: any = await response.json();
-			for(const tuningSetNumStrings in tuningSets){
-				for(const tuningArray in tuningSets[tuningSetNumStrings]){
-					if((tuningArray as string).indexOf('Standard') === 0){
-						const tuning = new Tuning(tuningArray, tuningSets[tuningSetNumStrings][tuningArray].map(
-							(noteName: string) => new Note(noteName, noteName.slice(0, 2))
-						));
-						Tuning.defaultTunings[tuningSetNumStrings] = tuning;
-						continue;
-					}
-				}
+			Tuning.defaultTunings = await response.json();
+		}
+
+		for(const tuningArray in Tuning.defaultTunings[numStrings]){
+			if((tuningArray as string).indexOf('Standard') === 0){
+				return new Tuning(tuningArray, Tuning.defaultTunings[numStrings][tuningArray].map(
+					(noteName: string) => new Note(noteName, noteName.slice(0, 2))
+				));
 			}
 		}
 
-		return Tuning.defaultTunings[numStrings];
+		return new Tuning('', [new Note('', '')]);
 	}
 
 	public static async getAllDefaultTunings(): Promise<any> {
@@ -51,10 +48,10 @@ export default class Tuning {
 		const tuningsMatch = (notes: [Note], tuningArray: [string]): boolean => {
 			return notes.every((note: Note, i: number) => notes[i].name === tuningArray[i]);
 		};
-		
+
 		const response: Response = await fetch('/assets/tunings.json');
 		const tuningSets: any = await response.json();
-		
+
 		for(const tuningName in tuningSets[numStrings]){
 			if(tuningsMatch(notes, tuningSets[numStrings][tuningName])) return tuningName;
 		}
