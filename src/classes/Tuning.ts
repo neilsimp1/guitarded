@@ -4,7 +4,7 @@ export default class Tuning {
 
 	public name: string;;
 	public notes: [Note];
-	public static defaultTunings: any = null;
+	private static defaultTunings: any = null;
 
 	constructor(name: string, notes: [Note]) {
 		this.name = name;
