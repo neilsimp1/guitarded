@@ -34,11 +34,9 @@ export default class ScaleBook extends Vue {
 
 	public beforeCreate(): void {
 		if(!this.$store.getters.scales){
-			(async () => {
-				const scales: any = await Scale.getAllScales();
-				this.$store.dispatch('updateScales', scales);
-				this.$store.dispatch('updateScale', scales[0]);
-			})();
+			const scales: any = Scale.getScales();
+			this.$store.commit('updateScales', scales);
+			this.$store.commit('updateScale', scales[0]);
 		}
 	}
 

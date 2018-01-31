@@ -45,10 +45,11 @@ export default class GuitarControls extends Vue {
 
 	public get numStrings(): number { return this.$store.getters.numStrings }
 	public get numFrets(): number { return this.$store.getters.numFrets }
+	public get tunings(): any { return this.$store.getters.tunings }
 
 	@Watch('numStrings')
 	public onPropertyChanged(numStrings: number) {
-		this.$store.commit('updateTuningAll', this.$store.getters.tunings[numStrings]);
+		this.$store.commit('updateTuningAll', this.tunings[numStrings]);
 	}
 
 	public updateNumStrings(event: Event): void {

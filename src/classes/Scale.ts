@@ -1,4 +1,5 @@
 import Note from './Note';
+import scalesJson from '../data/scales.json';
 
 export default class Scale {
 
@@ -14,23 +15,12 @@ export default class Scale {
 		this.root = root;
 	}
 
-	public static async loadScales(): Promise<[Scale]> {
-		const response: Response = await fetch('/assets/scales.json');
-		const scalesJson: [any] = await response.json();
-
-		(Scale.scales as any) = scalesJson.map((s: any) => new Scale(s.name, s.intervals));
-
-		return Scale.scales;
-	}
-
-	public static async getAllScales(): Promise<[Scale]> {
-		if(!Scale.scales) await Scale.loadScales();
-		return Scale.scales;
+	public static getScales(): [Scale] {
+		return scalesJson.map((s: any) => new Scale(s.name, s.intervals));
 	}
 
 	public static async getScale(name: string): Promise<Scale|undefined> {
-		if(!Scale.scales) Scale.loadScales();
-		return Scale.scales.find(s => s.name === name);
+		return Scale.getScales().find(s => s.name === name);
 	}
 
 }

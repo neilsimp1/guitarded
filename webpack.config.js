@@ -53,7 +53,7 @@ module.exports = {
 		alias: {
 			'vue$': 'vue/dist/vue.common.js'
 		},
-		extensions: ['.js', '.ts']
+		extensions: ['.js', '.ts', '.json']
 	},
 	devServer: {
 		historyApiFallback: true,
@@ -61,8 +61,7 @@ module.exports = {
 	},
 	plugins: [
 		new CopyWebpackPlugin([
-			'src/index.html',
-			{ from: 'src/data', to: 'assets' }
+			'src/index.html'
 		], { ignore: [] }),
 		new ExtractTextPlugin('assets/app.css'),
 		new SWPrecacheWebpackPlugin({
