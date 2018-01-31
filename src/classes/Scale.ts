@@ -6,7 +6,7 @@ export default class Scale {
 	public intervals: [number];
 	public root: string | null;
 
-	private static scaleDict: Map<string, Scale>;
+	private static scales: [Scale];
 
 	constructor(name: string, intervals: [number], root: string | null = null) {
 		this.name = name;
@@ -14,26 +14,23 @@ export default class Scale {
 		this.root = root;
 	}
 
-	public static async loadScaleDict(): Promise<Map<string, Scale>> {
-		Scale.scaleDict	= new Map<string, Scale>();
+	public static async loadScales(): Promise<[Scale]> {
 		const response: Response = await fetch('/assets/scales.json');
-		const scales: any = await response.json();
+		const scalesJson: [any] = await response.json();
 
-		for(const scaleName in scales){
-			Scale.scaleDict.set(scaleName, new Scale(scaleName, scales[scaleName].intervals));
-		}
+		(Scale.scales as any) = scalesJson.map((s: any) => new Scale(s.name, s.intervals));
 
-		return Scale.scaleDict;
+		return Scale.scales;
 	}
 
-	public static async getAllScales(): Promise<Map<string, Scale>> {
-		if(!Scale.scaleDict) await Scale.loadScaleDict();
-		return Scale.scaleDict;
+	public static async getAllScales(): Promise<[Scale]> {
+		if(!Scale.scales) await Scale.loadScales();
+		return Scale.scales;
 	}
 
 	public static async getScale(name: string): Promise<Scale> {
-		if(!Scale.scaleDict) Scale.loadScaleDict();
-		return Scale.scaleDict.get(name) || new Scale('', [0]);
+		if(!Scale.scales) Scale.loadScales();
+		return Scale.scales.find(s => s.name === name) || new Scale('', [0]);
 	}
 
 }

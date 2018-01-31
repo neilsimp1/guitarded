@@ -1,19 +1,24 @@
 import Vuex from 'vuex';
 import Note from '../../classes/Note';
+import Scale from '../../classes/Scale';
 import Tuning from '../../classes/Tuning';
 
 const state = {
 	numStrings: <number> 6,
 	numFrets: <number> 19,
 	tunings: <any | null> null,
-	tuning: <Tuning | null> null
+	tuning: <Tuning | null> null,
+	scales: <Map<string, Scale> | null> null,
+	scale: <Scale | null> null 
 };
 
 const getters = {
 	numStrings: (state: any) => state.numStrings,
 	numFrets: (state: any) => state.numFrets,
 	tunings: (state: any) => state.tunings,
-	tuning: (state: any) => state.tuning
+	tuning: (state: any) => state.tuning,
+	scales: (state: any) => state.scales,
+	scale: (state: any) => state.scale
 };
 
 const mutations = {
@@ -27,7 +32,9 @@ const mutations = {
 		Tuning.lookupTuningName(numStrings, state.tuning.notes).then((name: string) => {
 			store.dispatch('updateTuningName', name);
 		});
-	}
+	},
+	updateScales: (state: any, scales: Map<string, Scale>) => state.scales = scales,
+	updateScale: (state: any, scale: Scale) => state.scale = scale
 };
 
 const actions = {
@@ -39,6 +46,12 @@ const actions = {
 	},
 	updateTuningName(context: any, name: string) {
 		context.commit('updateTuningName', name);
+	},
+	updateScales(context: any, scales: [Scale]) {
+		context.commit('updateScales', scales);
+	},
+	updateScale(context: any, scale: Scale) {
+		context.commit('updateScale', scale);
 	}
 };
 
