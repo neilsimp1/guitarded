@@ -28,9 +28,9 @@ export default class Scale {
 		return Scale.scales;
 	}
 
-	public static async getScale(name: string): Promise<Scale> {
+	public static async getScale(name: string): Promise<Scale|undefined> {
 		if(!Scale.scales) Scale.loadScales();
-		return Scale.scales.find(s => s.name === name) || new Scale('', [0]);
+		return Scale.scales.find(s => s.name === name);
 	}
 
 }
