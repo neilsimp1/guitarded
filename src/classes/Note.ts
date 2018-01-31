@@ -8,8 +8,8 @@ export default class Note {
 		this.displayName = displayName;
 	}
 
-	public static lookupNote(value: string, propName: string): Note {
-		return Note.getAllNotes().find((note: Note) => (note as any)[propName] === value ) || new Note('', '');
+	public static lookupNote(value: string, propName: string): Note | null {
+		return Note.getAllNotes().find((note: Note) => (note as any)[propName] === value ) || null;
 	}
 
 	public static getAllNotes(): [Note] { // TODO: maybe make this a static property instead of static method?

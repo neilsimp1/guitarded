@@ -27,7 +27,7 @@ export default class Tuning {
 		return tunings;
 	}
 
-	public static getDefaultTuning(numStrings: number): Tuning {
+	public static getDefaultTuning(numStrings: number): Tuning | null {
 		for(const tuningArray in tuningsJson[numStrings]){
 			if((tuningArray as string).indexOf('Standard') === 0){
 				return new Tuning(tuningArray, tuningsJson[numStrings][tuningArray].map(
@@ -36,7 +36,7 @@ export default class Tuning {
 			}
 		}
 
-		return new Tuning('', [new Note('', '')]);
+		return null;
 	}
 
 	public static lookupTuningName(numStrings: number, notes: [Note]): string {
