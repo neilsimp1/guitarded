@@ -31,7 +31,7 @@ export default class GuitarTuner extends Vue {
 	public get numStrings(): number {
 		return this.$store.getters.numStrings;
 	}
-	public get allNotes(): [Note] { // TODO: This isn't really a prop, now is it
+	public get allNotes(): [Note] {
 		return Note.getAllNotes();
 	}
 
