@@ -10,8 +10,8 @@ export default class Note {
 		this.displayName = displayName;
 	}
 
-	public static lookupNote(value: string, propName: string): Note | null {
-		return Note.getAllNotes().find((note: Note) => (note as any)[propName] === value ) || null;
+	public static lookupNote(value: string | null, propName: string = 'displayName'): Note {
+		return Note.getAllNotes().find((note: Note) => (note as any)[propName] === value ) || new Note('', '');
 	}
 
 	public static getAllNotes(): [Note] {
