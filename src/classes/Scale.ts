@@ -19,7 +19,7 @@ export default class Scale {
 		return scalesJson.map((s: any) => new Scale(s.name, s.intervals));
 	}
 
-	public static async getScale(name: string): Promise<Scale|undefined> {
+	public static getScale(name: string): Scale|undefined {
 		return Scale.getScales().find(s => s.name === name);
 	}
 
