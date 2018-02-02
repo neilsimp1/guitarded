@@ -10,19 +10,20 @@
 				{{ _scale.name }}
 			</option>
 		</select>
+		<Guitar />
 	</div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import Guitar from '../Common/Guitar.vue';
 import GuitarControls from '../Common/GuitarControls.vue';
 import Scale from '../../classes/Scale';
-	import GuitarString from '../../classes/GuitarString';
 
 @Component({
 	name: 'scalebook',
-	components: { GuitarControls }
+	components: { Guitar, GuitarControls }
 })
 export default class ScaleBook extends Vue {
 
