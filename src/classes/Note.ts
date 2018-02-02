@@ -53,10 +53,11 @@ export default class Note {
 		const loopedNotes: [any] = Note.getLoopedNotes();
 		const dir: string = interval > 0 ? 'next' : 'prev';
 
+		let startIndex: number;
 		let nextNote: Note = this;
 		interval = Math.abs(interval);
 		while(interval--){
-			const startIndex: number = loopedNotes.findIndex(loopedNote => loopedNote.note.name === nextNote.name);
+			startIndex = loopedNotes.findIndex(loopedNote => loopedNote.note.name === nextNote.name);
 			nextNote = loopedNotes[startIndex][dir];
 		}
 

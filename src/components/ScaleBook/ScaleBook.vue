@@ -18,6 +18,7 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import GuitarControls from '../Common/GuitarControls.vue';
 import Scale from '../../classes/Scale';
+	import GuitarString from '../../classes/GuitarString';
 
 @Component({
 	name: 'scalebook',
