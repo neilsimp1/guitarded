@@ -1,4 +1,4 @@
-import './Note';
+import Note from './Note';
 
 interface INoteSet {
 	name: string;

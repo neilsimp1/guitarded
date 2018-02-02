@@ -15,6 +15,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import { Watch } from 'vue-property-decorator';
 //import Chord from '../../classes/Chord';
 import GuitarString from '../../classes/GuitarString';
 import INoteSet from '../../classes/INoteSet';
@@ -35,6 +36,11 @@ export default class Guitar extends Vue {
 	}
 	public get numFrets(): number {
 		return this.$store.getters.numFrets;
+	}
+
+	@Watch('tuning')
+	public onPropertyChanged(tuning: Tuning) {
+		this.buildFretboard();
 	}
 
 	public beforeCreate(): void { ///////////////////////////// TODO: This is BS

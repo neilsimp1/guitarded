@@ -49,7 +49,7 @@ export default class GuitarControls extends Vue {
 
 	@Watch('numStrings')
 	public onPropertyChanged(numStrings: number) {
-		this.$store.commit('updateTuningAll', this.tunings[numStrings]);
+		this.$store.commit('updateTuning', this.tunings[numStrings]);
 	}
 
 	public updateNumStrings(event: Event): void {

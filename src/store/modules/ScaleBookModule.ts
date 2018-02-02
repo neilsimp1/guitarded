@@ -25,9 +25,7 @@ const mutations = {
 	updateNumStrings: (state: any, numStrings: number) => state.numStrings = numStrings,
 	updateNumFrets: (state: any, numFrets: number) => state.numFrets = numFrets,
 	updateTunings: (state: any, tunings: any) => state.tunings = tunings,
-	updateTuningAll: (state: any, tuning: Tuning) => state.tuning = tuning,
-	updateTuningName: (state: any, name: string) => state.tuning.name = name,
-	updateTuning: (state: any, { stringNum, newNote }: any) => state.tuning.notes[stringNum - 1] = newNote,
+	updateTuning: (state: any, tuning: Tuning) => state.tuning = tuning,
 	updateScales: (state: any, scales: Map<string, Scale>) => state.scales = scales,
 	updateScale: (state: any, scale: Scale) => state.scale = scale
 };
@@ -35,12 +33,6 @@ const mutations = {
 const actions = {
 	// updateTunings(context: any, tunings: any) {
 	// 	context.commit('updateTunings', tunings);
-	// },
-	// updateTuningAll(context: any, tuning: Tuning) {
-	// 	context.commit('updateTuningAll', tuning);
-	// },
-	// updateTuningName(context: any, name: string) {
-	// 	context.commit('updateTuningName', name);
 	// },
 	// updateScales(context: any, scales: [Scale]) {
 	// 	context.commit('updateScales', scales);

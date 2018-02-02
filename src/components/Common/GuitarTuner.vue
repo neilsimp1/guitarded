@@ -37,19 +37,20 @@ export default class GuitarTuner extends Vue {
 
 	public updateTuning(stringNum: number, event: Event): void {
 		const newNote: Note | null = Note.lookupNote((event.target as HTMLSelectElement).value, 'name');
-		this.$store.commit('updateTuning', { stringNum, newNote });
-		this.$store.commit('updateTuningName', Tuning.lookupTuningName(this.numStrings, this.tuning.notes));
+		const newNotes: [Note] = (this.tuning.notes.map((n: Note, i: number) => i === stringNum - 1? newNote : n) as [Note]);
+		const newTuning: Tuning = new Tuning(Tuning.lookupTuningName(this.numStrings, newNotes), newNotes);
+		this.$store.commit('updateTuning', newTuning);
 	}
 
 	public beforeCreate(): void {
 		if(!this.$store.getters.tuning){
 			this.$store.commit('updateTunings', Tuning.getDefaultTunings());
-			this.$store.commit('updateTuningAll', Tuning.getDefaultTuning(6));
+			this.$store.commit('updateTuning', Tuning.getDefaultTuning(6));
 		}
 	}
 
 	public gotoStandardTuning(): void {
-		this.$store.commit('updateTuningAll', Tuning.getDefaultTuning(this.numStrings));
+		this.$store.commit('updateTuning', Tuning.getDefaultTuning(this.numStrings));
 	}
 
 }
