@@ -1,7 +1,5 @@
 <template>
 	<div>
-		<button v-on:click="buildFretboard">a</button>
-
 		<table v-if="fretboard">
 			<tr v-for="numFret in numFrets + 1" :key="numFret">
 				<td v-for="(gstring, index) in fretboard" :key="index">
@@ -56,6 +54,7 @@ export default class Guitar extends Vue {
 
 	public created(): void {
 		this.noteSet = this.scale;
+		this.buildFretboard();
 	}
 
 	private buildFretboard(): void {
