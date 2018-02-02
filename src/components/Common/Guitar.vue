@@ -37,15 +37,18 @@ export default class Guitar extends Vue {
 	public get numFrets(): number {
 		return this.$store.getters.numFrets;
 	}
-
-	@Watch('tuning')
-	public onPropertyChanged(tuning: Tuning) {
-		this.buildFretboard();
+	public get scale(): number {
+		return this.$store.getters.scale;
 	}
 
-	public beforeCreate(): void { ///////////////////////////// TODO: This is BS
-		const scale = new Scale(this.$store.getters.scale.name, this.$store.getters.scale.intervals, 'E');
+	@Watch('tuning')
+	public onTuningChanged() {
+		this.buildFretboard();
+	}
+	@Watch('scale')
+	public onScaleChanged(scale: Scale) {
 		this.noteSet = scale;
+		this.buildFretboard();
 	}
 
 	private buildFretboard(): void {

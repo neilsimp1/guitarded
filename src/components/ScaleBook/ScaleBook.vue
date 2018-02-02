@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<GuitarControls />
-		<select>
+		<select v-on:change="updateScale">
 			<option v-if="scales"
 				v-for="_scale in scales"
 				:key="_scale.name"
@@ -40,6 +40,11 @@ export default class ScaleBook extends Vue {
 			this.$store.commit('updateScales', scales);
 			this.$store.commit('updateScale', scales[0]);
 		}
+	}
+
+	public updateScale(event: Event): void {
+		const newScale = Scale.getScale((event.target as HTMLSelectElement).value, 'E');
+		this.$store.commit('updateScale', newScale);
 	}
 
 }
