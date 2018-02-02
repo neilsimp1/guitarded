@@ -16,7 +16,7 @@ export default class GuitarString {
 		const loopedNotes: [any] = Note.getLoopedNotes();
 		let frets: [boolean] = [true];
 		let fretPitch: string = this.root;
-		for(let i = 0; i < 12; i++){
+		for(let i = 0; i < 26; i++){
 			let index: number = loopedNotes.findIndex((ln: any) => ln.note.name === fretPitch);
 			frets[i] = !!noteSet.notes.find((n: Note) => n.name === fretPitch);
 			fretPitch = loopedNotes[index].next.name;

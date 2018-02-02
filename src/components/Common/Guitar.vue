@@ -1,11 +1,11 @@
 <template>
 	<div>
 		<button v-on:click="buildFretboard">a</button>
-		
+
 		<table v-if="fretboard">
 			<tr v-for="numFret in numFrets" :key="numFret">
 				<td v-for="(gstring, index) in fretboard" :key="index">
-					{{ gstring.frets[i] ? 1 : 0 }}
+					{{ gstring.frets[numFret] ? 1 : 0 }}
 				</td>
 			</tr>
 		</table>
@@ -26,7 +26,7 @@ import Tuning from '../../classes/Tuning';
 })
 export default class Guitar extends Vue {
 
-	private fretboard: [GuitarString];
+	private fretboard: [GuitarString] | null = null;
 	private noteSet: Scale /*| Chord*/;
 
 	public get tuning(): Tuning {
@@ -37,7 +37,8 @@ export default class Guitar extends Vue {
 	}
 
 	public beforeCreate(): void {
-		this.noteSet = this.$store.getters.scale;///////////////
+		const scale = new Scale(this.$store.getters.scale.name, this.$store.getters.scale.intervals, 'E');///////////////////
+		this.noteSet = scale;///////////////
 	}
 
 	private buildFretboard(): void {
