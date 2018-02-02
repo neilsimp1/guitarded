@@ -9,7 +9,8 @@ const state = {
 	tunings: <any | null> null,
 	tuning: <Tuning | null> null,
 	scales: <Map<string, Scale> | null> null,
-	scale: <Scale | null> null
+	scale: <Scale | null> null,
+	key: <string> 'C'
 };
 
 const getters = {
@@ -18,7 +19,8 @@ const getters = {
 	tunings: (state: any) => state.tunings,
 	tuning: (state: any) => state.tuning,
 	scales: (state: any) => state.scales,
-	scale: (state: any) => state.scale
+	scale: (state: any) => state.scale,
+	key: (state: any) => state.key
 };
 
 const mutations = {
@@ -27,7 +29,8 @@ const mutations = {
 	updateTunings: (state: any, tunings: any) => state.tunings = tunings,
 	updateTuning: (state: any, tuning: Tuning) => state.tuning = tuning,
 	updateScales: (state: any, scales: Map<string, Scale>) => state.scales = scales,
-	updateScale: (state: any, scale: Scale) => state.scale = scale
+	updateScale: (state: any, scale: Scale) => state.scale = scale,
+	updateKey: (state: any, key: string) => state.key = key
 };
 
 const actions = {

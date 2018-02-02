@@ -23,9 +23,9 @@ export default class Scale implements INoteSet {
 		return scalesJson.map((s: any) => new Scale(s.name, s.intervals));
 	}
 
-	public static getScale(name: string, root: string | null = null): Scale | undefined {
+	public static getScale(name: string, root: string | null = null): Scale {
 		let scale = Scale.getScales().find(s => s.name === name) || new Scale('', [0]);
-		if(!root) return Scale.getScales().find(s => s.name === name);
+		if(!root) return scale;
 		return new Scale(scale.name, scale.intervals, root);
 	}
 

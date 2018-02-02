@@ -37,8 +37,11 @@ export default class Guitar extends Vue {
 	public get numFrets(): number {
 		return this.$store.getters.numFrets;
 	}
-	public get scale(): number {
+	public get scale(): Scale {
 		return this.$store.getters.scale;
+	}
+	public get key(): Scale {
+		return this.$store.getters.key;
 	}
 
 	@Watch('tuning')
@@ -49,6 +52,10 @@ export default class Guitar extends Vue {
 	public onScaleChanged(scale: Scale) {
 		this.noteSet = scale;
 		this.buildFretboard();
+	}
+
+	public created(): void {
+		this.noteSet = this.scale;
 	}
 
 	private buildFretboard(): void {
