@@ -1,7 +1,8 @@
+import INoteSet from './INoteSet';
 import Note from './Note';
 import scalesJson from '../data/scales.json';
 
-export default class Scale {
+export default class Scale implements INoteSet {
 
 	public name: string;
 	public intervals: [number];
@@ -19,7 +20,6 @@ export default class Scale {
 	}
 
 	public static getScales(): [Scale] {
-		(window as any).Scale = Scale;
 		return scalesJson.map((s: any) => new Scale(s.name, s.intervals));
 	}
 

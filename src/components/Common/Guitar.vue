@@ -17,6 +17,7 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 //import Chord from '../../classes/Chord';
 import GuitarString from '../../classes/GuitarString';
+import INoteSet from '../../classes/INoteSet';
 import Note from '../../classes/Note';
 import Scale from '../../classes/Scale';
 import Tuning from '../../classes/Tuning';
@@ -27,7 +28,7 @@ import Tuning from '../../classes/Tuning';
 export default class Guitar extends Vue {
 
 	private fretboard: [GuitarString] | null = null;
-	private noteSet: Scale /*| Chord*/;
+	private noteSet: INoteSet;
 
 	public get tuning(): Tuning {
 		return this.$store.getters.tuning;
@@ -36,9 +37,9 @@ export default class Guitar extends Vue {
 		return this.$store.getters.numFrets;
 	}
 
-	public beforeCreate(): void {
-		const scale = new Scale(this.$store.getters.scale.name, this.$store.getters.scale.intervals, 'E');///////////////////
-		this.noteSet = scale;///////////////
+	public beforeCreate(): void { ///////////////////////////// TODO: This is BS
+		const scale = new Scale(this.$store.getters.scale.name, this.$store.getters.scale.intervals, 'E');
+		this.noteSet = scale;
 	}
 
 	private buildFretboard(): void {
