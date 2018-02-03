@@ -1,0 +1,13 @@
+@import '../util/colors';
+@import '../util/variables';
+
+.panel {
+	background-color: $gray-darker;
+	border: 2px solid $primary;
+	border-radius: 4px;
+	box-shadow: 2px 2px 2px 2px $primary2;
+
+	padding: 12px;
+
+	color: $primary;
+}

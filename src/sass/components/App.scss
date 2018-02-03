@@ -5,11 +5,22 @@ html {
 	font-family: 'Open Sans', sans-serif;
 }
 
+body {
+	background-color: $gray;
+	background: -moz-radial-gradient(center, ellipse cover, $gray 0%, $gray-dark 100%);
+	background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, $gray), color-stop(100%, $gray-dark));
+	background: -webkit-radial-gradient(center, ellipse cover, $gray 0%, $gray-dark 100%);
+	background: -o-radial-gradient(center, ellipse cover, $gray 0%, $gray-dark 100%);
+	background: -ms-radial-gradient(center, ellipse cover, $gray 0%, $gray-dark 100%);
+	background: radial-gradient(ellipse at center, $gray 0%, $gray-dark 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$gray', endColorstr='$gray-dark',GradientType=1 );
+}
+
 #app {
 	position: relative;
 }
 
 main {
 	padding: 3em 2px 0;
-	min-height: calc(200vh - 3em);
+	min-height: calc(100vh - 3em);
 }

@@ -1,0 +1,28 @@
+
+.scale-controls, .chord-controls {
+	display: grid;
+	grid-template-columns: 100%;
+	grid-gap: 1em;
+
+	padding: 1em;
+}
+
+@media (min-width: $bp-md) {
+	.scale-controls, .chord-controls {
+		grid-template-columns: 3fr 2fr;
+	}
+}
+
+@media (min-width: $bp-xl) {
+	.scale-controls, .chord-controls {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+// .panel-guitar-controls {
+
+// }
+
+// .panel-scale-controls {
+
+// }

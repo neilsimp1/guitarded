@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="guitar">
 		<table v-if="fretboard">
 			<tr v-for="numFret in numFrets + 1" :key="numFret">
 				<td v-for="(gstring, index) in fretboard" :key="index">

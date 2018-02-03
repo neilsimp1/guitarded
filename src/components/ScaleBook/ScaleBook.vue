@@ -1,28 +1,37 @@
 <template>
 	<div>
-		<GuitarControls />
 
-		<label>Key</label>
-		<select v-on:change="updateKey">
-			<option v-for="note in allNotes"
-				:value="note.name"
-				:key="note.name"
-				:selected="key === note.name">
-				{{ note.displayName }}
-			</option>
-		</select>
+		<div class="scale-controls">
 
-		<label>Scale</label>
-		<select v-on:change="updateScale">
-			<option v-if="scales"
-				v-for="_scale in scales"
-				:key="_scale.name"
-				:value="_scale.name"
-				:selected="_scale.name === scale.name">
-				{{ _scale.name }}
-			</option>
-		</select>
+			<GuitarControls />
+
+			<div class="panel panel-scale-controls">
+				<label for="key">Key</label>
+				<select id="key" v-on:change="updateKey">
+					<option v-for="note in allNotes"
+						 :value="note.name"
+						 :key="note.name"
+						 :selected="key === note.name">
+						{{ note.displayName }}
+					</option>
+				</select>
+
+				<label for="scale">Scale</label>
+				<select id="scale" v-on:change="updateScale">
+					<option v-if="scales"
+						 v-for="_scale in scales"
+						 :key="_scale.name"
+						 :value="_scale.name"
+						 :selected="_scale.name === scale.name">
+						{{ _scale.name }}
+					</option>
+				</select>
+			</div>
+
+		</div>
+
 		<Guitar :noteSetSource="'scale'" />
+
 	</div>
 </template>
 

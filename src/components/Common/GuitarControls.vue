@@ -1,8 +1,9 @@
 <template>
-	<div>
-		<label># Strings</label>
-		<select :value="numStrings"
-			v-on:change="updateNumStrings">
+	<div class="panel panel-guitar-controls">
+		<label for="numstrings"># Strings</label>
+		<select id="numstrings"
+			 :value="numStrings"
+			 v-on:change="updateNumStrings">
 			<option value="3">3</option>
 			<option value="4">4</option>
 			<option value="5">5</option>
@@ -15,9 +16,10 @@
 			<option value="12">12</option>
 		</select>
 
-		<label># Frets</label>
-		<select :value="numFrets"
-			v-on:change="updateNumFrets">
+		<label for="numfrets"># Frets</label>
+		<select id="numfrets"
+			 :value="numFrets"
+			 v-on:change="updateNumFrets">
 			<option value="19">19</option>
 			<option value="20">20</option>
 			<option value="21">21</option>
