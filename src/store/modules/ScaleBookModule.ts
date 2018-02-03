@@ -29,9 +29,7 @@ const mutations = {
 	updateTunings: (state: any, tunings: any) => state.tunings = tunings,
 	updateTuning: (state: any, tuning: Tuning) => state.tuning = tuning,
 	updateScales: (state: any, scales: Map<string, Scale>) => state.scales = scales,
-	updateScale: (state: any, scale: Scale) => {
-		state.scale = scale
-	},
+	updateScale: (state: any, scale: Scale) => state.scale = scale,
 	updateKey: (state: any, key: string) => state.key = key
 };
 
