@@ -13,7 +13,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { Watch } from 'vue-property-decorator';
+import { Prop, Watch } from 'vue-property-decorator';
 //import Chord from '../../classes/Chord';
 import GuitarString from '../../classes/GuitarString';
 import INoteSet from '../../classes/INoteSet';
@@ -29,18 +29,24 @@ export default class Guitar extends Vue {
 	private fretboard: [GuitarString] | null = null;
 	private noteSet: INoteSet;
 
+	@Prop()
+	noteSetSource: string;
+
 	public get tuning(): Tuning {
 		return this.$store.getters.tuning;
 	}
 	public get numFrets(): number {
 		return this.$store.getters.numFrets;
 	}
+	// public get chord(): Chord {
+	// 	return this.$store.getters.chord;
+	// }
 	public get scale(): Scale {
 		return this.$store.getters.scale;
 	}
-	public get key(): Scale {
-		return this.$store.getters.key;
-	}
+	// public get key(): string {
+	// 	return this.$store.getters.key;
+	// }
 
 	@Watch('tuning')
 	public onTuningChanged() {
@@ -53,7 +59,7 @@ export default class Guitar extends Vue {
 	}
 
 	public created(): void {
-		this.noteSet = this.scale;
+		this.noteSet = (this as any)[this.noteSetSource];
 		this.buildFretboard();
 	}
 

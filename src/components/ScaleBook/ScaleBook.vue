@@ -22,7 +22,7 @@
 				{{ _scale.name }}
 			</option>
 		</select>
-		<Guitar />
+		<Guitar :noteSetSource="'scale'" />
 	</div>
 </template>
 
@@ -57,8 +57,8 @@ export default class ScaleBook extends Vue {
 		if(!this.$store.getters.scales){
 			const scales: any = Scale.getScales();
 			this.$store.commit('updateScales', scales);
-			const scale = new Scale(scales[0].name, scales[0].intervals, this.key);
-			this.$store.commit('updateScale', scales[0]);
+			const scale = new Scale(scales[0].name, scales[0].intervals, this.$store.getters.key);
+			this.$store.commit('updateScale', scale);
 		}
 	}
 
