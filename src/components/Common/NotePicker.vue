@@ -8,7 +8,7 @@
 				 :id="'note-pick-' + i"
 				 v-on:click="updateNotesPicked(lookupNote($event.target.value))"
 				 :value="note.name"
-				 :checked="notesPicked.find(n => n.name === note.name)"
+				 :checked="notesPicked.notes.find(n => n.name === note.name)"
 				 :disabled="key === note.name" />
 			<label :for="'note-pick-' + i">{{ note.displayName }}</label>
 		</div>
@@ -20,6 +20,7 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Watch } from 'vue-property-decorator';
 import Note from '../../classes/Note';
+import INoteSet from '../../classes/INoteSet';
 
 @Component({
 	name: 'notepicker'
@@ -34,7 +35,7 @@ export default class NotePicker extends Vue {
 	public get allNotes(): [Note] {
 		return Note.getAllNotes();
 	}
-	public get notesPicked(): [Note] {
+	public get notesPicked(): INoteSet {
 		return this.$store.getters.notesPicked;
 	}
 
@@ -45,18 +46,28 @@ export default class NotePicker extends Vue {
 	
 	public beforeCreate(): void {
 		if(!this.$store.getters.notesPicked){
-			const notes: [Note] = [Note.lookupNote(this.$store.getters.key)];
-			this.$store.commit('updateNotesPicked', notes);
+			const notesPicked: INoteSet = {
+				name: 'Custom',
+				notes: [Note.lookupNote(this.$store.getters.key)],
+				root: this.$store.getters.key
+			};
+			this.$store.commit('updateNotesPicked', notesPicked);
 		}
 	}
 
 	private updateNotesPicked(note: Note, forceKeep: boolean = false): void {
-		const contains: boolean = !!this.notesPicked.find((n: Note) => n.name === note.name);
+		const contains: boolean = !!this.notesPicked.notes.find((n: Note) => n.name === note.name);
 		if(contains && forceKeep) return;
 
-		const newNotesPicked: [Note] = contains
-			? (this.notesPicked.filter((n: Note) => n.name !== note.name) as [Note])
-			: (this.notesPicked.concat([note]) as [Note]);
+		const newNotes: [Note] = contains
+			? (this.notesPicked.notes.filter((n: Note) => n.name !== note.name) as [Note])
+			: (this.notesPicked.notes.concat([note]) as [Note]);
+		
+		const newNotesPicked: INoteSet = {
+			name: this.notesPicked.name,
+			notes: newNotes,
+			root: this.notesPicked.root
+		};
 
 		this.$store.commit('updateNotesPicked', newNotesPicked);
 	}

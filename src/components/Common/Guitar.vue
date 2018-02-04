@@ -59,7 +59,7 @@ export default class Guitar extends Vue {
 	}
 	@Watch('notesPicked')
 	public onNotesPickedChanged(notesPicked: INoteSet) {
-		(this.noteSet as any) = { name: 'Custom', notes: notesPicked, root: this.key };
+		this.noteSet = notesPicked;
 		this.buildFretboard();
 	}
 	@Watch('scale')
@@ -70,8 +70,13 @@ export default class Guitar extends Vue {
 
 	public created(): void {
 		if(!this.noteSet){
-			if(this.noteSetSource === 'scale') this.noteSet = this.scaleNoteSetSource === 'browser' ? this.scale : this.notesPicked;
+			if(this.noteSetSource === 'scale'){
+				this.noteSet = this.scaleNoteSetSource === 'browser'
+					? this.scale
+					: this.notesPicked;
+			}
 		}
+
 		this.buildFretboard();
 	}
 

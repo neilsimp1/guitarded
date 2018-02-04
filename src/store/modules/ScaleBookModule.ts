@@ -1,4 +1,5 @@
 import Vuex from 'vuex';
+import INoteSet from '../../classes/INoteSet';
 import Note from '../../classes/Note';
 import Scale from '../../classes/Scale';
 import Tuning from '../../classes/Tuning';
@@ -6,7 +7,7 @@ import Tuning from '../../classes/Tuning';
 const state = {
 	key: <string> 'C',
 	mode: <string> 'browser',
-	notesPicked: <[Note] | null> null,
+	notesPicked: <INoteSet | null> null,
 	numFrets: <number> 19,
 	numStrings: <number> 6,
 	scale: <Scale | null> null,
@@ -30,7 +31,7 @@ const getters = {
 const mutations = {
 	updateKey: (state: any, key: string) => state.key = key,
 	updateMode: (state: any, mode: string) => state.mode = mode,
-	updateNotesPicked: (state: any, notesPicked: number) => state.notesPicked = notesPicked,
+	updateNotesPicked: (state: any, notesPicked: INoteSet) => state.notesPicked = notesPicked,
 	updateNumFrets: (state: any, numFrets: number) => state.numFrets = numFrets,
 	updateNumStrings: (state: any, numStrings: number) => state.numStrings = numStrings,
 	updateScale: (state: any, scale: Scale) => state.scale = scale,
