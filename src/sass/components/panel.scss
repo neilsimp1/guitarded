@@ -11,3 +11,19 @@
 
 	color: $primary;
 }
+
+.panel-viewtoggle {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+
+	margin-bottom: 1em;
+
+	a {
+		text-decoration: none;
+		color: $primary2;
+		&:hover { color: $primary; }
+		&:active { color: $gray-light; }
+		&.active { text-decoration: underline; }
+	}
+}

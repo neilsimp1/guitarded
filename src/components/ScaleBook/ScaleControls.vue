@@ -1,6 +1,19 @@
 <template>
 	<div class="panel panel-scale-controls">
 
+		<div class="panel-viewtoggle">
+			<a href="#browser"
+				 v-on:click="updateMode('browser')"
+				 :class="[mode === 'browser' ? 'active' : '']">
+				Browse Scales
+			</a>
+			<a href="#builder"
+				 v-on:click="updateMode('builder')"
+				 :class="[mode === 'builder' ? 'active' : '']">
+				Build Scale
+			</a>
+		</div>
+
 		<label for="key">Key</label>
 		<select id="key" v-on:change="updateKey">
 			<option v-for="note in allNotes"
@@ -11,16 +24,22 @@
 			</option>
 		</select>
 
-		<label for="scale">Scale</label>
-		<select id="scale" v-on:change="updateScale">
-			<option v-if="scales"
-					v-for="_scale in scales"
-					:key="_scale.name"
-					:value="_scale.name"
-					:selected="_scale.name === scale.name">
-				{{ _scale.name }}
-			</option>
-		</select>
+		<template v-if="mode === 'browser'">
+			<label for="scale">Scale</label>
+			<select id="scale" v-on:change="updateScale">
+				<option v-if="scales"
+						v-for="_scale in scales"
+						:key="_scale.name"
+						:value="_scale.name"
+						:selected="_scale.name === scale.name">
+					{{ _scale.name }}
+				</option>
+			</select>
+		</template>
+
+		<template v-else-if="mode === 'builder'">
+			<NotePicker />
+		</template>
 
 	</div>
 </template>
@@ -28,13 +47,17 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import NotePicker from '../Common/NotePicker.vue';
 import Note from '../../classes/Note';
 import Scale from '../../classes/Scale';
 
 @Component({
-	name: 'scalecontrols'
+	name: 'scalecontrols',
+	components: { NotePicker }
 })
 export default class ScaleControls extends Vue {
+
+	private mode: string = 'browser';
 
 	public get scales(): any {
 		return this.$store.getters.scales;
@@ -67,6 +90,10 @@ export default class ScaleControls extends Vue {
 	public updateScale(event: Event): void {
 		const newScale: Scale = Scale.getScale((event.target as HTMLSelectElement).value, this.key);
 		this.$store.commit('updateScale', newScale);
+	}
+
+	private updateMode(mode: string): void {
+		this.mode = mode;
 	}
 
 }

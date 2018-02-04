@@ -15,7 +15,7 @@ const routes: any[] = [
     }, {
         name: 'scalebook',
         path: '/scalebook',
-        component: ScaleBook
+		component: ScaleBook
     }, {
         name: 'chordbook',
         path: '/chordbook',
