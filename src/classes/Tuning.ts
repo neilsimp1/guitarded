@@ -5,20 +5,22 @@ export default class Tuning {
 
 	public name: string;;
 	public notes: [Note];
+	public isStandard: boolean;
 
-	constructor(name: string, notes: [Note]) {
+	constructor(name: string, notes: [Note], isStandard = false) {
 		this.name = name;
 		this.notes = notes;
+		this.isStandard = isStandard;
 	}
 
 	public static getDefaultTunings(): any {
 		let tunings: any = {};
 		for(const numStrings in tuningsJson){
-			for(const tuningArray in tuningsJson[numStrings]){
-				if((tuningArray as string).indexOf('Standard') === 0){
-					tunings[numStrings] = new Tuning(tuningArray, tuningsJson[numStrings][tuningArray].map(
+			for(const tuningName in tuningsJson[numStrings]){
+				if(tuningsJson[numStrings][tuningName]['isStandard']){
+					tunings[numStrings] = new Tuning(tuningName, tuningsJson[numStrings][tuningName]['tuning'].map(
 						(noteName: string) => new Note(noteName, noteName.slice(0, 2))
-					));
+					), true);
 					break;
 				}
 			}
@@ -28,11 +30,11 @@ export default class Tuning {
 	}
 
 	public static getDefaultTuning(numStrings: number): Tuning | null {
-		for(const tuningArray in tuningsJson[numStrings]){
-			if((tuningArray as string).indexOf('Standard') === 0){
-				return new Tuning(tuningArray, tuningsJson[numStrings][tuningArray].map(
+		for(const tuningName in tuningsJson[numStrings]){
+			if(tuningsJson[numStrings][tuningName]['isStandard']){
+				return new Tuning(tuningName, tuningsJson[numStrings][tuningName]['tuning'].map(
 					(noteName: string) => new Note(noteName, noteName.slice(0, 2))
-				));
+				), true);
 			}
 		}
 
