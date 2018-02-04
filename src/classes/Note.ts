@@ -49,6 +49,19 @@ export default class Note {
 		return Note.loopedNotes;
 	}
 
+	public static getInterval(note1: Note, note2: Note): number {
+		const loopedNotes: [any] = Note.getLoopedNotes();
+
+		let index: number = loopedNotes.findIndex(loopedNote => loopedNote.note.name === note1.name);
+		let interval: number = 0;
+		while(loopedNotes[index].note.name !== note2.name){
+			index = loopedNotes.findIndex(loopedNote => loopedNote.note.name === loopedNotes[index].next.name);
+			interval++;
+		}
+
+		return interval;
+	}
+
 	public getNextNote(interval: number): Note {
 		const loopedNotes: [any] = Note.getLoopedNotes();
 		const dir: string = interval > 0 ? 'next' : 'prev';

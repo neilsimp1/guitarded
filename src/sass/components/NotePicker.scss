@@ -17,6 +17,8 @@
 		line-height: 1.5em;
 		font-size: 0.9em;
 
+		user-select: none;
+
 		&.root { border-color: $gray-darker; }
 	}
 

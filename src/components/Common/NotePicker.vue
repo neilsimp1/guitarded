@@ -1,16 +1,19 @@
 <template>
-	<div class="note-picker">
-		<div v-for="(note, i) in allNotes"
-			 :key="note.name"
-			 :class="[key === note.name ? 'root' : '']">
-			
-			<input type="checkbox"
-				 :id="'note-pick-' + i"
-				 v-on:click="updateNotesPicked(lookupNote($event.target.value))"
-				 :value="note.name"
-				 :checked="notesPicked.notes.find(n => n.name === note.name)"
-				 :disabled="key === note.name" />
-			<label :for="'note-pick-' + i">{{ note.displayName }}</label>
+	<div>
+		<span>{{ notesPicked.name }}</span>
+		<div class="note-picker">
+			<div v-for="(note, i) in allNotes"
+				:key="note.name"
+				:class="[key === note.name ? 'root' : '']">
+				
+				<input type="checkbox"
+					:id="'note-pick-' + i"
+					v-on:click="updateNotesPicked(lookupNote($event.target.value))"
+					:value="note.name"
+					:checked="notesPicked.notes.find(n => n.name === note.name)"
+					:disabled="key === note.name" />
+				<label :for="'note-pick-' + i">{{ note.displayName }}</label>
+			</div>
 		</div>
 	</div>
 </template>
@@ -21,6 +24,7 @@ import Component from 'vue-class-component';
 import { Watch } from 'vue-property-decorator';
 import Note from '../../classes/Note';
 import INoteSet from '../../classes/INoteSet';
+import Scale from '../../classes/Scale';
 
 @Component({
 	name: 'notepicker'
@@ -59,17 +63,30 @@ export default class NotePicker extends Vue {
 		const contains: boolean = !!this.notesPicked.notes.find((n: Note) => n.name === note.name);
 		if(contains && forceKeep) return;
 
-		const newNotes: [Note] = contains
+		let newNotes: [Note] = contains
 			? (this.notesPicked.notes.filter((n: Note) => n.name !== note.name) as [Note])
 			: (this.notesPicked.notes.concat([note]) as [Note]);
+		newNotes = Scale.sort(this.key, newNotes);
 		
+		let newScaleChordName = 'Custom';
+		if(newNotes.length > 2){
+			if(this.$route.path.includes('scale')){
+				newScaleChordName = Scale.lookupScaleName(this.key, newNotes);
+			}
+			else if(this.$route.path.includes('chord')){
+				//newScaleChordName = '';
+			}
+		}
+
 		const newNotesPicked: INoteSet = {
-			name: this.notesPicked.name,
+			name: newScaleChordName,
 			notes: newNotes,
-			root: this.notesPicked.root
+			root: this.key
 		};
 
 		this.$store.commit('updateNotesPicked', newNotesPicked);
+
+		
 	}
 
 }

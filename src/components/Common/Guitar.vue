@@ -27,16 +27,10 @@ import Tuning from '../../classes/Tuning';
 export default class Guitar extends Vue {
 
 	private fretboard: [GuitarString] | null = null;
-	private noteSet: INoteSet;
 
 	@Prop()
-	noteSetSource: string;
-	@Prop()
-	scaleNoteSetSource: string;
+	noteSet: INoteSet;
 
-	// public get chord(): Chord {
-	// 	return this.$store.getters.chord;
-	// }
 	public get key(): string {
 		return this.$store.getters.key;
 	}
@@ -53,30 +47,24 @@ export default class Guitar extends Vue {
 		return this.$store.getters.scale;
 	}
 
-	@Watch('tuning')
-	public onTuningChanged() {
+	@Watch('noteSet')
+	public onNoteSetChanged() {
 		this.buildFretboard();
 	}
 	@Watch('notesPicked')
 	public onNotesPickedChanged(notesPicked: INoteSet) {
-		this.noteSet = notesPicked;
 		this.buildFretboard();
 	}
 	@Watch('scale')
 	public onScaleChanged(scale: INoteSet) {
-		this.noteSet = scale;
+		this.buildFretboard();
+	}
+	@Watch('tuning')
+	public onTuningChanged() {
 		this.buildFretboard();
 	}
 
 	public created(): void {
-		if(!this.noteSet){
-			if(this.noteSetSource === 'scale'){
-				this.noteSet = this.scaleNoteSetSource === 'browser'
-					? this.scale
-					: this.notesPicked;
-			}
-		}
-
 		this.buildFretboard();
 	}
 
