@@ -57,8 +57,9 @@ import Scale from '../../classes/Scale';
 })
 export default class ScaleControls extends Vue {
 
-	private mode: string = 'browser';
-
+	public get mode(): any {
+		return this.$store.getters.mode;
+	}
 	public get scales(): any {
 		return this.$store.getters.scales;
 	}
@@ -93,7 +94,7 @@ export default class ScaleControls extends Vue {
 	}
 
 	private updateMode(mode: string): void {
-		this.mode = mode;
+		this.$store.commit('updateMode', mode);
 	}
 
 }

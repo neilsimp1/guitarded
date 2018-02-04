@@ -6,7 +6,7 @@
 			<GuitarControls />
 		</div>
 
-		<Guitar :noteSetSource="'scale'" />
+		<Guitar :noteSetSource="'scale'" :scaleNoteSetSource="mode" />
 
 	</div>
 </template>
@@ -25,6 +25,10 @@ import Scale from '../../classes/Scale';
 	components: { Guitar, GuitarControls, ScaleControls }
 })
 export default class ScaleBook extends Vue {
+
+	public get mode(): any {
+		return this.$store.getters.mode;
+	}
 
 }
 </script>

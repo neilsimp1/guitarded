@@ -55,13 +55,14 @@ $mainmenu-w-lg: 20vw;
 	&.open {
 		left: 0;
 		transition: $trans-time-fast;
-		border-right: 2px solid $secondary;
+		border-right: none;
 	}
 }
 @media (min-width: $bp-sm) {
 	.mainmenu {
 		left: -$mainmenu-w-sm;
 		width: $mainmenu-w-sm;
+		&.open { border-right: 2px solid $secondary; }
 	}
 }
 @media (min-width: $bp-md) {
@@ -74,7 +75,6 @@ $mainmenu-w-lg: 20vw;
 	.mainmenu {
 		left: -$mainmenu-w-lg;
 		width: $mainmenu-w-lg;
-		&.open { border-right: none; }
 	}
 }
 

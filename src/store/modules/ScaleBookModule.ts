@@ -4,33 +4,39 @@ import Scale from '../../classes/Scale';
 import Tuning from '../../classes/Tuning';
 
 const state = {
-	numStrings: <number> 6,
+	key: <string> 'C',
+	mode: <string> 'browser',
+	notesPicked: <[Note] | null> null,
 	numFrets: <number> 19,
-	tunings: <any | null> null,
-	tuning: <Tuning | null> null,
-	scales: <Map<string, Scale> | null> null,
+	numStrings: <number> 6,
 	scale: <Scale | null> null,
-	key: <string> 'C'
+	scales: <Map<string, Scale> | null> null,
+	tuning: <Tuning | null> null,
+	tunings: <any | null> null
 };
 
 const getters = {
-	numStrings: (state: any) => state.numStrings,
+	key: (state: any) => state.key,
+	mode: (state: any) => state.mode,
+	notesPicked: (state: any) => state.notesPicked,
 	numFrets: (state: any) => state.numFrets,
-	tunings: (state: any) => state.tunings,
-	tuning: (state: any) => state.tuning,
-	scales: (state: any) => state.scales,
+	numStrings: (state: any) => state.numStrings,
 	scale: (state: any) => state.scale,
-	key: (state: any) => state.key
+	scales: (state: any) => state.scales,
+	tuning: (state: any) => state.tuning,
+	tunings: (state: any) => state.tunings
 };
 
 const mutations = {
-	updateNumStrings: (state: any, numStrings: number) => state.numStrings = numStrings,
+	updateKey: (state: any, key: string) => state.key = key,
+	updateMode: (state: any, mode: string) => state.mode = mode,
+	updateNotesPicked: (state: any, notesPicked: number) => state.notesPicked = notesPicked,
 	updateNumFrets: (state: any, numFrets: number) => state.numFrets = numFrets,
-	updateTunings: (state: any, tunings: any) => state.tunings = tunings,
-	updateTuning: (state: any, tuning: Tuning) => state.tuning = tuning,
-	updateScales: (state: any, scales: Map<string, Scale>) => state.scales = scales,
+	updateNumStrings: (state: any, numStrings: number) => state.numStrings = numStrings,
 	updateScale: (state: any, scale: Scale) => state.scale = scale,
-	updateKey: (state: any, key: string) => state.key = key
+	updateScales: (state: any, scales: Map<string, Scale>) => state.scales = scales,
+	updateTuning: (state: any, tuning: Tuning) => state.tuning = tuning,
+	updateTunings: (state: any, tunings: any) => state.tunings = tunings
 };
 
 const actions = {

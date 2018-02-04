@@ -6,7 +6,7 @@
 			<span></span>
 		</button>
 		<MainMenu :isMenuOpen="isMenuOpen" />
-		<main v-on:click.prevent="isMenuOpen && closeMenu()">
+		<main v-on:click="isMenuOpen && closeMenu()">
             <router-view></router-view>
         </main>
 	</div>
@@ -29,7 +29,8 @@ export default class App extends Vue {
 		window.close();
 	}
 
-	public toggleMainMenu(): void {
+	public toggleMainMenu(event: Event): void {
+		event.preventDefault();
 		this.isMenuOpen = !this.isMenuOpen;
 	}
 

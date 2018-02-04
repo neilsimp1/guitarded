@@ -31,35 +31,47 @@ export default class Guitar extends Vue {
 
 	@Prop()
 	noteSetSource: string;
+	@Prop()
+	scaleNoteSetSource: string;
 
+	// public get chord(): Chord {
+	// 	return this.$store.getters.chord;
+	// }
+	public get key(): string {
+		return this.$store.getters.key;
+	}
 	public get tuning(): Tuning {
 		return this.$store.getters.tuning;
+	}
+	public get notesPicked(): INoteSet {
+		return this.$store.getters.notesPicked;
 	}
 	public get numFrets(): number {
 		return this.$store.getters.numFrets;
 	}
-	// public get chord(): Chord {
-	// 	return this.$store.getters.chord;
-	// }
-	public get scale(): Scale {
+	public get scale(): INoteSet {
 		return this.$store.getters.scale;
 	}
-	// public get key(): string {
-	// 	return this.$store.getters.key;
-	// }
 
 	@Watch('tuning')
 	public onTuningChanged() {
 		this.buildFretboard();
 	}
+	@Watch('notesPicked')
+	public onNotesPickedChanged(notesPicked: INoteSet) {
+		(this.noteSet as any) = { name: 'Custom', notes: notesPicked, root: this.key };
+		this.buildFretboard();
+	}
 	@Watch('scale')
-	public onScaleChanged(scale: Scale) {
+	public onScaleChanged(scale: INoteSet) {
 		this.noteSet = scale;
 		this.buildFretboard();
 	}
 
 	public created(): void {
-		this.noteSet = (this as any)[this.noteSetSource];
+		if(!this.noteSet){
+			if(this.noteSetSource === 'scale') this.noteSet = this.scaleNoteSetSource === 'browser' ? this.scale : this.notesPicked;
+		}
 		this.buildFretboard();
 	}
 

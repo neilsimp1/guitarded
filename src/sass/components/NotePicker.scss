@@ -16,16 +16,18 @@
 		height: 1.5em;
 		line-height: 1.5em;
 		font-size: 0.9em;
+
+		&.root { border-color: $gray-darker; }
 	}
 
 	label {
 		display: block;
 	}
-	input:not(disabled) + label {
+	input:not([disabled]) + label {
 		cursor: pointer;
 	}
 	input:checked + label {
-		color: $secondary;
+		color: $gray;
 	}
 	input {
 		position: absolute;
