@@ -25,7 +25,7 @@
 			"isStandard": true
 		},
 		"Drop D": { "tuning": ["D", "A", "D", "G", "B", "E"] },
-		"Eb Standard": { "tuning": ["Eb", "Ab", "Db", "Gb", "Bb", "Eb"] },
+		"Eb Standard": { "tuning": ["D#/Eb", "G#/Ab", "C#/Db", "F#/Gb", "A#/Bb", "D#/Eb"] },
 		"D Standard": { "tuning": ["D", "G", "C", "F", "A", "D"] }
 	},
 	"7": {
@@ -40,7 +40,7 @@
 			"isStandard": true
 		},
 		"Drop E 8": { "tuning": ["E", "B", "E", "A", "D", "G", "B", "E"] },
-		"Meshuggah Tuning": { "tuning": ["F", "Bb", "Eb", "Ab", "Db", "Gb", "Bb", "Eb"] }
+		"Meshuggah Tuning": { "tuning": ["F", "A#/Bb", "D#/Eb", "G#/Ab", "C#/Db", "F#/Gb", "A#/Bb", "D#/Eb"] }
 	},
 	"9": {
 		"Standard 9": {
