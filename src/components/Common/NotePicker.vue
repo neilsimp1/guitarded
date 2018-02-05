@@ -1,6 +1,9 @@
 <template>
 	<div>
-		<span>{{ notesPicked.name }}</span>
+		<div class="panel-row">
+			<span class="panel-display">{{ notesPicked.name }}</span>
+		</div>
+
 		<div class="note-picker">
 			<div v-for="(note, i) in allNotes"
 				:key="note.name"

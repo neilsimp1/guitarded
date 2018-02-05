@@ -1,0 +1,17 @@
+@import '../util/colors';
+
+.guitar-tuner {
+	justify-content: space-evenly;
+
+	label {
+		display: inline-block;
+		margin: 0 4px;
+		min-width: 50px;
+		line-height: 1.5em;
+		font-size: 0.9em;
+		margin-bottom: 8px;
+	}
+	select { 
+		flex-grow: initial;
+	}
+}

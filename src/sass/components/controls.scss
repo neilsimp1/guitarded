@@ -1,6 +1,8 @@
 @import '../util/colors';
 
 select {
+	flex-grow: 100;
+
 	color: $primary;
 	background-color: $gray-darkest;
 	border-color: $primary;

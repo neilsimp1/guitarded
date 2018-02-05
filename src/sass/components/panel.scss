@@ -13,12 +13,6 @@
 }
 
 .panel-viewtoggle {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-around;
-
-	margin-bottom: 1em;
-
 	a {
 		color: $primary2;
 		border: 1px solid $primary2;
@@ -36,4 +30,29 @@
 			color: $primary2;
 		}
 	}
+}
+
+.panel-row {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	margin-bottom: 1em;
+
+	label {
+		display: inline-block;
+		margin: 0 4px;
+		min-width: 50px;
+	
+		line-height: 1.5em;
+		font-size: 0.9em;
+
+		&:not(:first-child) {
+			margin: 0 4px 0 16px;
+		}
+	}
+}
+
+.panel-display {
+	&:before { content: "- "; }
+	&:after { content: " -"; }
 }

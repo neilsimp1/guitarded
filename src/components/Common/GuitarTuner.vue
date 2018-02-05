@@ -1,23 +1,37 @@
 <template>
 	<div>
-		<select v-for="stringNum in numStrings" :key="stringNum" v-on:change="updateTuning(stringNum, $event)">
-			<option v-if="tuning && tuning.notes[stringNum - 1]"
-				v-for="note in allNotes"
-				:value="note.name"
-				:key="note.name"
-				:selected="tuning.notes[stringNum - 1].name == note.name">
-				{{ note.displayName }}
-			</option>
-		</select>
-		<span>{{ tuning && tuning.name || '' }}</span>
-		<select v-on:change="gotoTuning">
-			<option value="">Choose Preset Tuning</option>
-			<option v-for="tuning in tuningsForNumStrings"
-				 :key="tuning.name"
-				 :value="tuning.name">
-				{{ tuning.name }}
-			</option>
-		</select>
+
+		<div class="guitar-tuner">
+			<label>Tuning</label>
+			<div class="panel-row">
+				<select v-for="stringNum in numStrings" :key="stringNum" v-on:change="updateTuning(stringNum, $event)">
+					<option v-if="tuning && tuning.notes[stringNum - 1]"
+						 v-for="note in allNotes"
+						 :value="note.name"
+						 :key="note.name"
+						 :selected="tuning.notes[stringNum - 1].name == note.name">
+						{{ note.displayName }}
+					</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="panel-row">
+			<span class="panel-display">{{ tuning && tuning.name || '' }}</span>
+		</div>
+		
+		<div class="panel-row">
+			<label for="tuningpreset">Choose Preset Tuning</label>
+			<select id="tuningpreset" v-on:change="gotoTuning">
+				<option value="">...</option>
+				<option v-for="tuning in tuningsForNumStrings"
+					 :key="tuning.name"
+					 :value="tuning.name">
+					{{ tuning.name }}
+				</option>
+			</select>
+		</div>
+
 	</div>
 </template>
 

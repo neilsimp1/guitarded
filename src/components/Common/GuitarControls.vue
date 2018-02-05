@@ -1,33 +1,36 @@
 <template>
 	<div class="panel panel-guitar-controls">
-		<label for="numstrings"># Strings</label>
-		<select id="numstrings"
-			 :value="numStrings"
-			 v-on:change="updateNumStrings">
-			<option value="3">3</option>
-			<option value="4">4</option>
-			<option value="5">5</option>
-			<option value="6">6</option>
-			<option value="7">7</option>
-			<option value="8">8</option>
-			<option value="9">9</option>
-			<option value="10">10</option>
-			<option value="11">11</option>
-			<option value="12">12</option>
-		</select>
 
-		<label for="numfrets"># Frets</label>
-		<select id="numfrets"
-			 :value="numFrets"
-			 v-on:change="updateNumFrets">
-			<option value="19">19</option>
-			<option value="20">20</option>
-			<option value="21">21</option>
-			<option value="22">22</option>
-			<option value="23">23</option>
-			<option value="24">24</option>
-			<option value="25">25</option>
-		</select>
+		<div class="panel-row">
+			<label for="numstrings"># Strings</label>
+			<select id="numstrings"
+				 :value="numStrings"
+				 v-on:change="updateNumStrings">
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+				<option value="7">7</option>
+				<option value="8">8</option>
+				<option value="9">9</option>
+				<option value="10">10</option>
+				<option value="11">11</option>
+				<option value="12">12</option>
+			</select>
+
+			<label for="numfrets"># Frets</label>
+			<select id="numfrets"
+				 :value="numFrets"
+				 v-on:change="updateNumFrets">
+				<option value="19">19</option>
+				<option value="20">20</option>
+				<option value="21">21</option>
+				<option value="22">22</option>
+				<option value="23">23</option>
+				<option value="24">24</option>
+				<option value="25">25</option>
+			</select>
+		</div>
 
 		<GuitarTuner />
 	</div>

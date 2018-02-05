@@ -1,7 +1,7 @@
 <template>
 	<div class="panel panel-scale-controls">
 
-		<div class="panel-viewtoggle">
+		<div class="panel-row panel-viewtoggle">
 			<a href="#browser"
 				 v-on:click="updateMode('browser')"
 				 :class="[mode === 'browser' ? 'active' : '']">
@@ -14,27 +14,31 @@
 			</a>
 		</div>
 
-		<label for="key">Key</label>
-		<select id="key" v-on:change="updateKey">
-			<option v-for="note in allNotes"
-					:value="note.name"
-					:key="note.name"
-					:selected="key === note.name">
-				{{ note.displayName }}
-			</option>
-		</select>
-
-		<template v-if="mode === 'browser'">
-			<label for="scale">Scale</label>
-			<select id="scale" v-on:change="updateScale">
-				<option v-if="scales"
-						v-for="_scale in scales"
-						:key="_scale.name"
-						:value="_scale.name"
-						:selected="_scale.name === scale.name">
-					{{ _scale.name }}
+		<div class="panel-row">
+			<label for="key">Key</label>
+			<select id="key" v-on:change="updateKey">
+				<option v-for="note in allNotes"
+					 :value="note.name"
+					 :key="note.name"
+					 :selected="key === note.name">
+					{{ note.displayName }}
 				</option>
 			</select>
+		</div>
+
+		<template v-if="mode === 'browser'">
+			<div class="panel-row">
+				<label for="scale">Scale</label>
+				<select id="scale" v-on:change="updateScale">
+					<option v-if="scales"
+						 v-for="_scale in scales"
+						 :key="_scale.name"
+						 :value="_scale.name"
+						 :selected="_scale.name === scale.name">
+						{{ _scale.name }}
+					</option>
+				</select>
+			</div>
 		</template>
 
 		<template v-else-if="mode === 'builder'">
