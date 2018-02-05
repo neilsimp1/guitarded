@@ -64,11 +64,19 @@ export default class NotePicker extends Vue {
 
 	private updateNotesPicked(note: Note, forceKeep: boolean = false): void {
 		const contains: boolean = !!this.notesPicked.notes.find((n: Note) => n.name === note.name);
-		if(contains && forceKeep) return;
+		//if(contains && forceKeep) return;
 
-		let newNotes: [Note] = contains
-			? (this.notesPicked.notes.filter((n: Note) => n.name !== note.name) as [Note])
-			: (this.notesPicked.notes.concat([note]) as [Note]);
+		// let newNotes: [Note] = contains
+		// 	? (this.notesPicked.notes.filter((n: Note) => n.name !== note.name) as [Note])
+		// 	: (this.notesPicked.notes.concat([note]) as [Note]);
+		// newNotes = Scale.sort(this.key, newNotes);
+
+		let newNotes;
+		if(contains){
+			newNotes = forceKeep ? this.notesPicked.notes
+				: (this.notesPicked.notes.filter((n: Note) => n.name !== note.name) as [Note])
+		}
+		else newNotes = (this.notesPicked.notes.concat([note]) as [Note]);
 		newNotes = Scale.sort(this.key, newNotes);
 		
 		let newScaleChordName = 'Custom';
@@ -88,8 +96,6 @@ export default class NotePicker extends Vue {
 		};
 
 		this.$store.commit('updateNotesPicked', newNotesPicked);
-
-		
 	}
 
 }

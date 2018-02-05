@@ -49,6 +49,9 @@ export default class GuitarTuner extends Vue {
 
 	private tuningsForNumStrings: [Tuning];
 
+	public get key(): Tuning {
+		return this.$store.getters.key;
+	}
 	public get tuning(): Tuning {
 		return this.$store.getters.tuning;
 	}
@@ -60,8 +63,8 @@ export default class GuitarTuner extends Vue {
 	}
 
 	@Watch('numStrings')
-	public onNumStringsChanged() {
-		this.tuningsForNumStrings = Tuning.getTuningsForNumStrings(this.numStrings);
+	public onNumStringsChanged(numStrings: number): void {
+		this.tuningsForNumStrings = Tuning.getTuningsForNumStrings(numStrings);
 	}
 
 	public updateTuning(stringNum: number, event: Event): void {
