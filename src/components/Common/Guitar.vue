@@ -1,12 +1,13 @@
 <template>
 	<div class="guitar">
-		<table v-if="fretboard">
+		<!-- <table v-if="fretboard">
 			<tr v-for="numFret in numFrets + 1" :key="numFret">
 				<td v-for="(gstring, index) in fretboard" :key="index">
 					{{ gstring.frets[numFret - 1] ? 'O' : '|' }}
 				</td>
 			</tr>
-		</table>
+		</table> -->
+		<canvas ref="canvas"></canvas>
 	</div>
 </template>
 
@@ -15,6 +16,7 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Prop, Watch } from 'vue-property-decorator';
 //import Chord from '../../classes/Chord';
+import GuitarRenderer from '../../classes/GuitarRenderer';
 import GuitarString from '../../classes/GuitarString';
 import INoteSet from '../../classes/INoteSet';
 import Note from '../../classes/Note';
@@ -27,6 +29,7 @@ import Tuning from '../../classes/Tuning';
 export default class Guitar extends Vue {
 
 	private fretboard: [GuitarString] | null = null;
+	private renderer: GuitarRenderer;
 
 	@Prop()
 	noteSet: INoteSet;
@@ -60,6 +63,7 @@ export default class Guitar extends Vue {
 	}
 
 	public mounted(): void {
+		this.renderer = new GuitarRenderer(this.$refs.canvas as HTMLCanvasElement);
 		this.buildFretboard();
 	}
 
