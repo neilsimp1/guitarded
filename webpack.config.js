@@ -5,7 +5,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
 
-const PROJECT_NAME = 'guitarded';
+const PROJECT_NAME = 'guitarkit';
 const PROJECT_SHORTNAME = PROJECT_NAME;
 const PUBLIC_PATH = 'dist/';
 

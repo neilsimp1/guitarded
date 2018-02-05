@@ -16,6 +16,6 @@ export default new Vuex.Store({
 	mutations,
 	actions,
 	plugins: [
-		createPersistedState({ key: 'guitarded' })
+		createPersistedState({ key: 'guitarkit' })
 	]
 });

@@ -1,5 +1,5 @@
 {
-  "name": "guitarded",
+  "name": "guitarkit",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.html",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/neilsimp1/guitarded.git"
+    "url": "git+https://github.com/neilsimp1/guitarkit.git"
   },
   "author": "Neil Simpson",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/neilsimp1/guitarded/issues"
+    "url": "https://github.com/neilsimp1/guitarkit/issues"
   },
-  "homepage": "https://github.com/neilsimp1/guitarded#readme",
+  "homepage": "https://github.com/neilsimp1/guitarkit#readme",
   "dependencies": {
     "normalize-scss": "^7.0.0",
     "vue": "^2.5.13",
