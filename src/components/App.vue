@@ -6,6 +6,7 @@
 			<span></span>
 		</button>
 		<MainMenu :isMenuOpen="isMenuOpen" />
+		<h1 class="logo">GuitarKit</h1>
 		<main v-on:click="isMenuOpen && closeMenu()">
             <router-view></router-view>
         </main>

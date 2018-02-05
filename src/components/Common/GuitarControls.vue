@@ -37,15 +37,11 @@
 				<button type="button"
 					 v-on:click="updateHandedness('left')"
 					 :disabled="handedness === 'left'"
-					 :class="[handedness === 'left' ? 'active' : '', 'btn-toggle']">
-					Left-handed
-				</button>
+					 :class="[handedness === 'left' ? 'active' : '', 'btn-toggle']">LH</button>
 				<button type="button"
 					 v-on:click="updateHandedness('right')"
 					 :disabled="handedness === 'right'"
-					 :class="[handedness === 'right' ? 'active' : '', 'btn-toggle']">
-					Right-handed
-				</button>
+					 :class="[handedness === 'right' ? 'active' : '', 'btn-toggle']">RH</button>
 			</div>
 		</div>
 
