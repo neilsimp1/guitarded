@@ -1,6 +1,8 @@
 <template>
 	<div class="panel panel-scale-controls">
 
+		<h1>Scales</h1>
+
 		<div class="panel-row panel-viewtoggle">
 			<a href="#browser"
 				 v-on:click="updateMode('browser')"

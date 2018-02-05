@@ -1,6 +1,8 @@
 <template>
 	<div class="panel panel-guitar-controls">
 
+		<h1>Guitar Setup</h1>
+
 		<div class="panel-row">
 			<label for="numstrings"># Strings</label>
 			<select id="numstrings"

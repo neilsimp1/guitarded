@@ -10,6 +10,14 @@
 	padding: 12px;
 
 	color: $primary;
+
+	h1 {
+		font-family: 'Ubuntu', sans-serif;
+		text-transform: uppercase;
+		font-size: 1.2em;
+		margin: 0 0 1em;
+		font-style: italic;
+	}
 }
 
 .panel-viewtoggle {
@@ -49,7 +57,7 @@
 		&:not(:first-child) {
 			margin: 0 4px 0 16px;
 		}
-	}
+	}	
 }
 
 .panel-display {
