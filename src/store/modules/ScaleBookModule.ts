@@ -5,6 +5,7 @@ import Scale from '../../classes/Scale';
 import Tuning from '../../classes/Tuning';
 
 const state = {
+	handedness: <string> 'right',
 	key: <string> 'C',
 	mode: <string> 'browser',
 	notesPicked: <INoteSet | null> null,
@@ -17,6 +18,7 @@ const state = {
 };
 
 const getters = {
+	handedness: (state: any) => state.handedness,
 	key: (state: any) => state.key,
 	mode: (state: any) => state.mode,
 	notesPicked: (state: any) => state.notesPicked,
@@ -29,6 +31,7 @@ const getters = {
 };
 
 const mutations = {
+	updateHandedness: (state: any, handedness: string) => state.handedness = handedness,
 	updateKey: (state: any, key: string) => state.key = key,
 	updateMode: (state: any, mode: string) => state.mode = mode,
 	updateNotesPicked: (state: any, notesPicked: INoteSet) => state.notesPicked = notesPicked,

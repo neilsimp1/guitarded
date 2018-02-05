@@ -31,22 +31,17 @@ export default class Guitar extends Vue {
 	@Prop()
 	noteSet: INoteSet;
 
-	public get key(): string {
-		return this.$store.getters.key;
-	}
-	public get tuning(): Tuning {
-		return this.$store.getters.tuning;
-	}
-	public get notesPicked(): INoteSet {
-		return this.$store.getters.notesPicked;
-	}
-	public get numFrets(): number {
-		return this.$store.getters.numFrets;
-	}
-	public get scale(): INoteSet {
-		return this.$store.getters.scale;
-	}
+	public get handedness(): string { return this.$store.getters.handedness }
+	public get key(): string { return this.$store.getters.key }
+	public get tuning(): Tuning { return this.$store.getters.tuning }
+	public get notesPicked(): INoteSet { return this.$store.getters.notesPicked }
+	public get numFrets(): number { return this.$store.getters.numFrets }
+	public get scale(): INoteSet { return this.$store.getters.scale }
 
+	@Watch('handedness')
+	public onHandednessChanged() {
+		this.buildFretboard();
+	}
 	@Watch('noteSet')
 	public onNoteSetChanged() {
 		this.buildFretboard();
@@ -70,7 +65,11 @@ export default class Guitar extends Vue {
 
 	private buildFretboard(): void {
 		if(!this.noteSet) return;
-		this.fretboard = (this.tuning.notes.map((note: Note) => new GuitarString(note.name, this.noteSet)) as [GuitarString]);
+		
+		let tuning: Tuning = JSON.parse(JSON.stringify(this.tuning));
+		if(this.handedness === 'left') tuning.notes.reverse();
+
+		this.fretboard = (tuning.notes.map((note: Note) => new GuitarString(note.name, this.noteSet)) as [GuitarString]);
 	}
 
 }

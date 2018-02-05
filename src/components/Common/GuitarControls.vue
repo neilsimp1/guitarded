@@ -32,6 +32,21 @@
 				<option value="24">24</option>
 				<option value="25">25</option>
 			</select>
+
+			<div class="handedness-buttons button-grp-toggle">
+				<button type="button"
+					 v-on:click="updateHandedness('left')"
+					 :disabled="handedness === 'left'"
+					 :class="[handedness === 'left' ? 'active' : '', 'btn-toggle']">
+					Left-handed
+				</button>
+				<button type="button"
+					 v-on:click="updateHandedness('right')"
+					 :disabled="handedness === 'right'"
+					 :class="[handedness === 'right' ? 'active' : '', 'btn-toggle']">
+					Right-handed
+				</button>
+			</div>
 		</div>
 
 		<GuitarTuner />
@@ -50,6 +65,7 @@ import GuitarTuner from './GuitarTuner.vue';
 })
 export default class GuitarControls extends Vue {
 
+	public get handedness(): string { return this.$store.getters.handedness }
 	public get numStrings(): number { return this.$store.getters.numStrings }
 	public get numFrets(): number { return this.$store.getters.numFrets }
 	public get tunings(): any { return this.$store.getters.tunings }
@@ -57,6 +73,10 @@ export default class GuitarControls extends Vue {
 	@Watch('numStrings')
 	public onPropertyChanged(numStrings: number) {
 		this.$store.commit('updateTuning', this.tunings[numStrings]);
+	}
+
+	public updateHandedness(handedness: string): void {
+		this.$store.commit('updateHandedness', handedness);
 	}
 
 	public updateNumStrings(event: Event): void {
