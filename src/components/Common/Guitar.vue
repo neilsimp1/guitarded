@@ -64,11 +64,12 @@ export default class Guitar extends Vue {
 		this.buildFretboard();
 	}
 
-	public created(): void {
+	public mounted(): void {
 		this.buildFretboard();
 	}
 
 	private buildFretboard(): void {
+		if(!this.noteSet) return;
 		this.fretboard = (this.tuning.notes.map((note: Note) => new GuitarString(note.name, this.noteSet)) as [GuitarString]);
 	}
 

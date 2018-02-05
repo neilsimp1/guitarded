@@ -17,7 +17,7 @@ export default class Tuning {
 		let tunings: any = {};
 		for(const numStrings in tuningsJson){
 			for(const tuningName in tuningsJson[numStrings]){
-				if(tuningsJson[numStrings][tuningName]['isStandard']){
+				if(tuningsJson[numStrings][tuningName].isStandard){
 					tunings[numStrings] = new Tuning(tuningName, tuningsJson[numStrings][tuningName]['tuning'].map(
 						(noteName: string) => new Note(noteName, noteName.slice(0, 2))
 					), true);
@@ -47,10 +47,34 @@ export default class Tuning {
 		};
 
 		for(const tuningName in tuningsJson[numStrings]){
-			if(tuningsMatch(notes, tuningsJson[numStrings][tuningName])) return tuningName;
+			if(tuningsMatch(notes, tuningsJson[numStrings][tuningName].tuning)) return tuningName;
 		}
 
 		return 'Custom tuning';
+	}
+
+	public static lookupTuning(numStrings: number, name: string): Tuning {
+		const tuningJson = tuningsJson[numStrings][name];
+		
+		return new Tuning(
+			name,
+			tuningJson.tuning.map((noteName: string) => new Note(noteName, noteName.slice(0, 2))),
+			tuningJson.isStandard || false
+		)
+	}
+
+	public static getTuningsForNumStrings(numStrings: number): [Tuning] {
+		let tunings = [];
+
+		for(const tuningName in tuningsJson[numStrings]){
+			tunings.push(new Tuning(
+				tuningName,
+				tuningsJson[numStrings][tuningName].tuning.map((noteName: string) => new Note(noteName, noteName.slice(0, 2))),
+				tuningsJson[numStrings][tuningName].isStandard || false
+			));
+		}
+
+		return tunings as [Tuning];
 	}
 
 }

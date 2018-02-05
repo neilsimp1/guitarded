@@ -6,7 +6,7 @@
 			<GuitarControls />
 		</div>
 
-		<Guitar :noteSet="mode === 'browser' ? this.scale : this.notesPicked" />
+		<Guitar :noteSet="mode === 'browser' ? scale : notesPicked" />
 
 	</div>
 </template>

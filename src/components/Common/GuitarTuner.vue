@@ -10,13 +10,21 @@
 			</option>
 		</select>
 		<span>{{ tuning && tuning.name || '' }}</span>
-		<button type="button" v-on:click="gotoStandardTuning">Standard Tuning</button>
+		<select v-on:change="gotoTuning">
+			<option value="">Choose Preset Tuning</option>
+			<option v-for="tuning in tuningsForNumStrings"
+				 :key="tuning.name"
+				 :value="tuning.name">
+				{{ tuning.name }}
+			</option>
+		</select>
 	</div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import { Watch } from 'vue-property-decorator';
 import Note from '../../classes/Note';
 import Tuning from '../../classes/Tuning';
 
@@ -24,6 +32,8 @@ import Tuning from '../../classes/Tuning';
 	name: 'guitartuner'
 })
 export default class GuitarTuner extends Vue {
+
+	private tuningsForNumStrings: [Tuning];
 
 	public get tuning(): Tuning {
 		return this.$store.getters.tuning;
@@ -35,6 +45,11 @@ export default class GuitarTuner extends Vue {
 		return Note.getAllNotes();
 	}
 
+	@Watch('numStrings')
+	public onNumStringsChanged() {
+		this.tuningsForNumStrings = Tuning.getTuningsForNumStrings(this.numStrings);
+	}
+
 	public updateTuning(stringNum: number, event: Event): void {
 		const newNote: Note | null = Note.lookupNote((event.target as HTMLSelectElement).value, 'name');
 		const newNotes: [Note] = (this.tuning.notes.map((n: Note, i: number) => i === stringNum - 1? newNote : n) as [Note]);
@@ -43,14 +58,20 @@ export default class GuitarTuner extends Vue {
 	}
 
 	public beforeCreate(): void {
+		const numStrings: number = this.$store.getters.numStrings;
 		if(!this.$store.getters.tuning){
 			this.$store.commit('updateTunings', Tuning.getDefaultTunings());
-			this.$store.commit('updateTuning', Tuning.getDefaultTuning(6));
+			this.$store.commit('updateTuning', Tuning.getDefaultTuning(numStrings));
+		}
+		if(!this.tuningsForNumStrings){
+			this.tuningsForNumStrings = Tuning.getTuningsForNumStrings(numStrings);
 		}
 	}
 
-	public gotoStandardTuning(): void {
-		this.$store.commit('updateTuning', Tuning.getDefaultTuning(this.numStrings));
+	public gotoTuning(event: Event): void {
+		const select: HTMLSelectElement = event.target as HTMLSelectElement;
+		this.$store.commit('updateTuning', Tuning.lookupTuning(this.numStrings, select.value));
+		select.selectedIndex = 0;
 	}
 
 }
