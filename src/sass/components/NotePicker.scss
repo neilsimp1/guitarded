@@ -30,6 +30,7 @@
 	}
 	input:checked + label {
 		color: $gray;
+		background-color: $gray-darkest;
 	}
 	input {
 		position: absolute;

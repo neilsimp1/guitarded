@@ -1,0 +1,9 @@
+@import '../util/colors';
+
+select {
+	color: $primary;
+	background-color: $gray-darkest;
+	border-color: $primary;
+
+	&:focus, &:active { border-color: $secondary; }
+}

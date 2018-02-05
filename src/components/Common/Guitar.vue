@@ -3,7 +3,7 @@
 		<table v-if="fretboard">
 			<tr v-for="numFret in numFrets + 1" :key="numFret">
 				<td v-for="(gstring, index) in fretboard" :key="index">
-					{{ gstring.frets[numFret - 1] ? 1 : 0 }}
+					{{ gstring.frets[numFret - 1] ? 'O' : '|' }}
 				</td>
 			</tr>
 		</table>
