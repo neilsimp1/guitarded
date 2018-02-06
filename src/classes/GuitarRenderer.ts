@@ -35,7 +35,7 @@ export default class GuitarRenderer extends Renderer {
 
 	private getNeckDimensions(): any {
 		const neckWidth: number = (this.numStrings * 8) + 4; // 8px wide for each string, plus 2 + 2 on each side of outer strings
-		const neckLength: number = (this.numFrets + 1) * 24; // 24 =px per fret, + 1 for the space above the nut on the neck
+		const neckLength: number = (this.numFrets + 1) * 24; // 24px per fret, + 1 for the space above the nut on the neck
 
 		return {
 			width: neckWidth,
