@@ -39,6 +39,7 @@ export default class Guitar extends Vue {
 	public get tuning(): Tuning { return this.$store.getters.tuning }
 	public get notesPicked(): INoteSet { return this.$store.getters.notesPicked }
 	public get numFrets(): number { return this.$store.getters.numFrets }
+	public get numStrings(): number { return this.$store.getters.numStrings }
 	public get scale(): INoteSet { return this.$store.getters.scale }
 
 	@Watch('handedness')
@@ -63,8 +64,13 @@ export default class Guitar extends Vue {
 	}
 
 	public mounted(): void {
-		this.renderer = new GuitarRenderer(this.$refs.canvas as HTMLCanvasElement);
 		this.buildFretboard();
+		this.renderer = new GuitarRenderer(
+			this.$refs.canvas as HTMLCanvasElement,
+			this.numFrets,
+			this.numStrings,
+			(this.fretboard as [GuitarString])
+		);
 	}
 
 	private buildFretboard(): void {
