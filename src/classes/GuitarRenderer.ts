@@ -8,6 +8,7 @@ export default class GuitarRenderer extends Renderer {
 	private neckDimensions: any;
 	private numFrets: number;
 	private numStrings: number;
+	private scale: number = 3;
 
 	constructor(canvas: HTMLCanvasElement, numFrets: number, numStrings: number, fretboard: [GuitarString]) {
 		super(canvas);
@@ -17,9 +18,19 @@ export default class GuitarRenderer extends Renderer {
 		this.fretboard = fretboard;
 
 		this.neckDimensions = this.getNeckDimensions();
-		let ads = 123;
 
-		this.ctx.fillRect(50, 50, this.neckDimensions.width, this.neckDimensions.length);
+
+
+
+
+		const neckBg: HTMLImageElement = new Image();
+		neckBg.src = '/assets/neck.jpg';
+		neckBg.onload = () => {
+			const neckPattern: CanvasPattern = this.ctx.createPattern(neckBg, 'repeat');
+
+			this.ctx.fillStyle = neckPattern;
+			this.ctx.fillRect(50 * this.scale, 50 * this.scale, this.neckDimensions.width * this.scale, this.neckDimensions.length * this.scale);
+		};
 	}
 
 	private getNeckDimensions(): any {
@@ -31,20 +42,20 @@ export default class GuitarRenderer extends Renderer {
 			length: neckLength
 		};
 	}
-	
+
 	// private getFretboardPath(): Path2D {
-		
+
 	// }
-	
+
 	// private getFretsPath(): Path2D {
-		
+
 	// }
 
 	// private getStringsPath(): Path2D {
-		
+
 	// }
 
 	// private getNotesPath(): Path2D {
-		
+
 	// }
 }

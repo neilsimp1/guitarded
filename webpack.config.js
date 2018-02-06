@@ -61,7 +61,8 @@ module.exports = {
 	},
 	plugins: [
 		new CopyWebpackPlugin([
-			'src/index.html'
+			'src/index.html',
+			{ from: 'src/img', to: 'assets' }
 		], { ignore: [] }),
 		new ExtractTextPlugin('assets/app.css'),
 		new SWPrecacheWebpackPlugin({
