@@ -10,6 +10,13 @@ export default class GuitarRenderer extends Renderer {
 	private numStrings: number;
 	private scale: number = 3;
 
+	private FRET_SPACE_H = 24; // 24px in each fret, 2 of which at bottom for metal
+	private FRET_H = 2; // 2px for each metal fret
+	private NUT_H = 6; // 6px for height of nut at top of neck, so only 18 would show above it for headstock
+	private STRING_SPACE_W = 8; // 8px for string and space around it
+	private STRING_W = 2; // 2px wide
+	private STRING_OUTER_W = 2; // 2 + 2px on each side
+
 	constructor(canvas: HTMLCanvasElement, numFrets: number, numStrings: number, fretboard: [GuitarString]) {
 		super(canvas);
 
@@ -34,8 +41,8 @@ export default class GuitarRenderer extends Renderer {
 	}
 
 	private getNeckDimensions(): any {
-		const neckWidth: number = (this.numStrings * 8) + 4; // 8px wide for each string, plus 2 + 2 on each side of outer strings
-		const neckLength: number = (this.numFrets + 1) * 24; // 24px per fret, + 1 for the space above the nut on the neck
+		const neckWidth: number = (this.numStrings * this.STRING_SPACE_W) + (this.STRING_OUTER_W * 2);
+		const neckLength: number = (this.numFrets + 1) * this.FRET_SPACE_H;
 
 		return {
 			width: neckWidth,
