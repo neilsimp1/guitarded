@@ -11,4 +11,12 @@ export default class Renderer {
 		this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D;
 	}
 
+	protected async loadImage(url: string): Promise<HTMLImageElement> {
+		return new Promise((resolve: Function) => {
+			let img = new Image();
+			img.onload = () =>{ resolve(img) };
+			img.src = url;
+		}) as Promise<HTMLImageElement>;
+	}
+
 }
