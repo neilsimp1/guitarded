@@ -71,6 +71,7 @@ export default class Guitar extends Vue {
 			this.numStrings,
 			(this.fretboard as [GuitarString])
 		);
+		this.renderer.doStuff();
 	}
 
 	private buildFretboard(): void {
