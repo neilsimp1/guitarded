@@ -2,6 +2,7 @@ export default class Renderer {
 
 	protected canvas: HTMLCanvasElement;
 	protected ctx: CanvasRenderingContext2D;
+	protected scale: number;
 
 	constructor(canvas: HTMLCanvasElement) {
 		canvas.width = canvas.parentElement!.clientWidth;

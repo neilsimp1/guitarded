@@ -8,7 +8,6 @@ export default class GuitarRenderer extends Renderer {
 	private neckDimensions: any;
 	private numFrets: number;
 	private numStrings: number;
-	private scale: number = 3;
 
 	private FRET_SPACE_H: number = 24; // 24px in each fret, 2 of which at bottom for metal
 	private FRET_H: number = 2; // 2px for each metal fret
@@ -23,6 +22,8 @@ export default class GuitarRenderer extends Renderer {
 		this.numFrets = numFrets;
 		this.numStrings = numStrings;
 		this.fretboard = fretboard;
+		this.scale = this.getScale(numStrings);
+
 
 		// ABOVE IS CONSTRUCTOR, BELOW IS STUFF NEEDIGN TO BE ORGANIZED INTO METHODS
 
@@ -35,6 +36,12 @@ export default class GuitarRenderer extends Renderer {
 			this.ctx.fillStyle = neckPattern;
 			this.ctx.fillRect(50 * this.scale, 50 * this.scale, this.neckDimensions.width * this.scale, this.neckDimensions.length * this.scale);
 		})();
+	}
+
+	private getScale(numStrings: number): number {
+		const neckWidth: number = (numStrings * this.STRING_SPACE_W) + (this.STRING_OUTER_W * 2);
+
+
 	}
 
 	private getNeckDimensions(): any {
