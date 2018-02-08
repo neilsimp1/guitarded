@@ -2,7 +2,7 @@ export default class Renderer {
 
 	protected canvas: HTMLCanvasElement;
 	protected ctx: CanvasRenderingContext2D;
-	protected scale: number;
+	protected scale: number = 1;
 	protected map: any = {};
 
 	protected BP_XS: number = 0;

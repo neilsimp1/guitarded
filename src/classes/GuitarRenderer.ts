@@ -43,12 +43,23 @@ export default class GuitarRenderer extends Renderer {
 	}
 
 	public doStuff(): void {
+		/*
+		 * 1. fretboard
+		 * 2. inlays - maybe switch these? -
+		 * 3. nut                          |
+		 * 4. frets - maybe switch these?  -
+		 * 5. strings
+		 * 6. notes
+		 */
+
 		const fretboardPath: Path2D = this.getFretboardPath();
 		const neckPattern: CanvasPattern = this.ctx.createPattern(this.imgs.neckBg, 'repeat');
-
 		this.ctx.fillStyle = neckPattern;
-		//this.ctx.stroke(fretboardPath);
 		(this.ctx as any).fill(fretboardPath);
+
+		const nutPath: Path2D = this.getNutPath();
+		this.ctx.fillStyle = '#f2edce';
+		(this.ctx as any).fill(nutPath);
 	}
 
 	private getScale(numStrings: number): number {
@@ -84,6 +95,18 @@ export default class GuitarRenderer extends Renderer {
 			this.map.fretboard.coords.y,
 			this.map.fretboard.dimensions.width * this.scale,
 			this.map.fretboard.dimensions.length * this.scale
+		);
+
+		return path;
+	}
+
+	private getNutPath(): Path2D {
+		let path: Path2D = new Path2D();
+		path.rect(
+			this.map.fretboard.coords.x,
+			this.map.fretboard.coords.y + (this.FRET_SPACE_H * this.scale) - (this.NUT_H * this.scale),
+			this.map.fretboard.dimensions.width * this.scale,
+			this.NUT_H * this.scale
 		);
 
 		return path;
