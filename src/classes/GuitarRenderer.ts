@@ -13,6 +13,7 @@ export default class GuitarRenderer extends Renderer {
 
 	private imgs: any = {};
 
+	private INLAY_RADIUS: number = 4;
 	private FRET_SPACE_H: number = 18; // 18px in each fret, 2 of which at bottom for metal
 	private FRET_H: number = 2; // 2px for each metal fret
 	private NUT_H: number = 4; // 4px for height of nut at top of neck, so only 14 would show above it for headstock
@@ -57,6 +58,10 @@ export default class GuitarRenderer extends Renderer {
 		this.ctx.fillStyle = neckPattern;
 		(this.ctx as any).fill(fretboardPath);
 
+		const inlayPath: Path2D = this.getInlayPath();
+		this.ctx.fillStyle = '#000';
+		(this.ctx as any).fill(inlayPath);
+
 		const nutPath: Path2D = this.getNutPath();
 		this.ctx.fillStyle = '#f2edce';
 		(this.ctx as any).fill(nutPath);
@@ -95,6 +100,55 @@ export default class GuitarRenderer extends Renderer {
 			this.map.fretboard.coords.y,
 			this.map.fretboard.dimensions.width * this.scale,
 			this.map.fretboard.dimensions.length * this.scale
+		);
+
+		return path;
+	}
+
+	private getInlayPath(): Path2D {
+		let path: Path2D = new Path2D();
+
+		for(let i = 3; i < this.numFrets; i++){
+			switch(i){
+				case 12: case 24:
+					path.ellipse(
+						this.map.fretboard.coords.x + Math.floor((this.map.fretboard.dimensions.width * this.scale) / 4),
+						this.map.fretboard.coords.y + (i * this.FRET_SPACE_H * this.scale),
+						this.INLAY_RADIUS * this.scale,
+						this.INLAY_RADIUS * this.scale,
+						0,
+						0,
+						2 * Math.PI
+					)
+					// path.ellipse(
+					// 	this.map.fretboard.coords.x + ((this.map.fretboard.dimensions.width * this.scale) * 0.75),
+					// 	this.map.fretboard.coords.y + (i * this.FRET_SPACE_H * this.scale),
+					// 	this.INLAY_RADIUS * this.scale,
+					// 	this.INLAY_RADIUS * this.scale,
+					// 	0,
+					// 	0,
+					// 	2 * Math.PI
+					// )
+					break;
+				case 3: case 5: case 7: case 9: case 15: case 17: case 19: case 21:
+					path.ellipse(
+						this.map.fretboard.coords.x + ((this.map.fretboard.dimensions.width * this.scale) / 2),
+						this.map.fretboard.coords.y + (i * this.FRET_SPACE_H * this.scale),
+						this.INLAY_RADIUS * this.scale,
+						this.INLAY_RADIUS * this.scale,
+						0,
+						0,
+						2 * Math.PI
+					)
+					break;
+			}
+		}
+
+		path.rect(
+			this.map.fretboard.coords.x,
+			this.map.fretboard.coords.y + (this.FRET_SPACE_H * this.scale) - (this.NUT_H * this.scale),
+			this.map.fretboard.dimensions.width * this.scale,
+			this.NUT_H * this.scale
 		);
 
 		return path;
