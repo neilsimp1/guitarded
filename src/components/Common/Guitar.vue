@@ -71,12 +71,18 @@ export default class Guitar extends Vue {
 			this.numStrings,
 			(this.fretboard as [GuitarString])
 		);
-		this.renderer.doStuff();
+
+		const handle: number = setInterval(() => {
+			if(this.renderer.isLoaded){
+				this.renderer.doStuff();
+				clearInterval(handle);
+			}
+		}, 50);
 	}
 
 	private buildFretboard(): void {
 		if(!this.noteSet) return;
-		
+
 		let tuning: Tuning = JSON.parse(JSON.stringify(this.tuning));
 		if(this.handedness === 'left') tuning.notes.reverse();
 

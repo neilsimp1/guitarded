@@ -9,6 +9,7 @@ export default class GuitarRenderer extends Renderer {
 	//private neckDimensions: any;
 	private numFrets: number;
 	private numStrings: number;
+	public isLoaded: boolean = false;
 
 	private imgs: any = {};
 
@@ -21,47 +22,33 @@ export default class GuitarRenderer extends Renderer {
 
 	constructor(canvas: HTMLCanvasElement, numFrets: number, numStrings: number, fretboard: [GuitarString]) {
 		super(canvas);
-		
-		this.loadAssets();
-
+		this.loadAssets().then((isSuccess: boolean) => this.isLoaded = isSuccess);
 		this.numFrets = numFrets;
 		this.numStrings = numStrings;
 		this.fretboard = fretboard;
 		this.scale = this.getScale(numStrings);
-
-		// ABOVE IS CONSTRUCTOR, BELOW IS STUFF NEEDIGN TO BE ORGANIZED INTO METHODS
-
-		//this.neckDimensions = this.getNeckDimensions();
+		this.map.fretboard = this.getFretboardPoints();
 	}
 
-	private async loadAssets(): Promise<void> {
-		this.imgs.neckBg = await this.loadImage('/assets/neck.jpg');
-		return;
+	private async loadAssets(): Promise<boolean> {
+		try{
+			this.imgs.neckBg = await this.loadImage('/assets/neck.jpg');
+		}
+		catch(e){
+			console.error(e);
+			return false;
+		}
+
+		return true;
 	}
 
 	public doStuff(): void {
-		// (async () => {
-		// 	const neckBg: HTMLImageElement = await this.loadImage('/assets/neck.jpg');
-		// 	const neckPattern: CanvasPattern = this.ctx.createPattern(neckBg, 'repeat');
-		// 	this.ctx.fillStyle = neckPattern;
-
-		// 	//const neckCoords: any = this.getNeckCoords();
-
-		// 	//this.ctx.fillRect(neckCoords.x, neckCoords.y, this.neckDimensions.width * this.scale, this.neckDimensions.length * this.scale);
-		// })();
-
 		const fretboardPath: Path2D = this.getFretboardPath();
+		const neckPattern: CanvasPattern = this.ctx.createPattern(this.imgs.neckBg, 'repeat');
 
-		(async () => {
-			const neckBg: HTMLImageElement = await this.loadImage('/assets/neck.jpg');
-			const neckPattern: CanvasPattern = this.ctx.createPattern(neckBg, 'repeat');
-
-			//this.ctx.scale(this.scale, this.scale);
-			this.ctx.fillStyle = neckPattern;
-
-			//this.ctx.stroke(fretboardPath);
-			(this.ctx as any).fill(fretboardPath);
-		})();
+		this.ctx.fillStyle = neckPattern;
+		//this.ctx.stroke(fretboardPath);
+		(this.ctx as any).fill(fretboardPath);
 	}
 
 	private getScale(numStrings: number): number {
@@ -77,24 +64,7 @@ export default class GuitarRenderer extends Renderer {
 		return scale;
 	}
 
-	// private getNeckDimensions(): any {
-	// 	const width: number = (this.numStrings * this.STRING_SPACE_W) + (this.STRING_OUTER_W * 2);
-	// 	const length: number = (this.numFrets + 1) * this.FRET_SPACE_H;
-
-	// 	return {
-	// 		width: width,
-	// 		length: length
-	// 	};
-	// }
-
-	// private getNeckCoords(): any {
-	// 	return {
-	// 		x: Math.floor((this.canvas.parentElement!.clientWidth / 2) - ((this.neckDimensions.width * this.scale) / 2)),
-	// 		y: 15
-	// 	};
-	// }
-
-	private getFretboardPath(): Path2D {
+	private getFretboardPoints(): any {
 		const dimensions: IDimensions = {
 			width: (this.numStrings * this.STRING_SPACE_W) + (this.STRING_OUTER_W * 2),
 			length: (this.numFrets + 1) * this.FRET_SPACE_H
@@ -104,15 +74,32 @@ export default class GuitarRenderer extends Renderer {
 			y: 15
 		};
 
+		return { dimensions, coords};
+	}
+
+	private getFretboardPath(): Path2D {
 		let path: Path2D = new Path2D();
-		path.rect(coords.x, coords.y, dimensions.width * this.scale, dimensions.length * this.scale);
+		path.rect(
+			this.map.fretboard.coords.x,
+			this.map.fretboard.coords.y,
+			this.map.fretboard.dimensions.width * this.scale,
+			this.map.fretboard.dimensions.length * this.scale
+		);
 
 		return path;
 	}
 
-	// private getFretsPath(): Path2D {
+	private getFretsPath(): Path2D {
+		let path: Path2D = new Path2D();
+		// path.rect(
+		// 	this.map.fretboard.coords.x,
+		// 	this.map.fretboard.coords.y,
+		// 	this.map.fretboard.dimensions.width * this.scale,
+		// 	this.map.fretboard.dimensions.length * this.scale
+		// );
 
-	// }
+		return path;
+	}
 
 	// private getStringsPath(): Path2D {
 
