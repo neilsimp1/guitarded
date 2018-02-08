@@ -59,7 +59,8 @@ export default class GuitarRenderer extends Renderer {
 			//this.ctx.scale(this.scale, this.scale);
 			this.ctx.fillStyle = neckPattern;
 
-			this.ctx.fill(fretboardPath);
+			//this.ctx.stroke(fretboardPath);
+			(this.ctx as any).fill(fretboardPath);
 		})();
 	}
 
@@ -104,7 +105,7 @@ export default class GuitarRenderer extends Renderer {
 		};
 
 		let path: Path2D = new Path2D();
-		path.rect(coords.x, coords.y, dimensions.width, dimensions.length);
+		path.rect(coords.x, coords.y, dimensions.width * this.scale, dimensions.length * this.scale);
 
 		return path;
 	}
