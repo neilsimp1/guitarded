@@ -69,6 +69,10 @@ export default class GuitarRenderer extends Renderer {
 		const fretsPath: Path2D = this.getFretsPath();
 		this.ctx.fillStyle = '#adadad';
 		(this.ctx as any).fill(fretsPath);
+
+		const stringsPath: Path2D = this.getStringsPath();
+		this.ctx.fillStyle = '#666';
+		(this.ctx as any).fill(stringsPath);
 	}
 
 	private getScale(numStrings: number): number {
@@ -86,7 +90,7 @@ export default class GuitarRenderer extends Renderer {
 
 	private getFretboardPoints(): any {
 		const dimensions: IDimensions = {
-			width: (this.numStrings * this.STRING_SPACE_W) + (this.STRING_OUTER_W * 2),
+			width: ((this.numStrings - 1) * this.STRING_SPACE_W) + (this.STRING_OUTER_W * 2),
 			length: (this.numFrets + 1) * this.FRET_SPACE_H
 		};
 		const coords: IPoint = {
@@ -175,9 +179,21 @@ export default class GuitarRenderer extends Renderer {
 		return path;
 	}
 
-	// private getStringsPath(): Path2D {
+	private getStringsPath(): Path2D {
+		let path: Path2D = new Path2D();
 
-	// }
+		for(let i = 0; i < this.numStrings; i++){
+			const stringX: number = this.map.fretboard.coords.x + (i * this.STRING_SPACE_W * this.scale) + (this.STRING_OUTER_W * this.scale);
+			path.rect(
+				stringX,
+				this.map.fretboard.coords.y,
+				this.STRING_W,
+				this.map.fretboard.dimensions.length * this.scale
+			);
+		}
+
+		return path;
+	}
 
 	// private getNotesPath(): Path2D {
 
