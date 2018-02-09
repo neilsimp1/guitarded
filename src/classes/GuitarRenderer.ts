@@ -67,7 +67,7 @@ export default class GuitarRenderer extends Renderer {
 		(this.ctx as any).fill(nutPath);
 
 		const fretsPath: Path2D = this.getFretsPath();
-		this.ctx.fillStyle = '#f2edce';
+		this.ctx.fillStyle = '#adadad';
 		(this.ctx as any).fill(fretsPath);
 	}
 
@@ -163,7 +163,7 @@ export default class GuitarRenderer extends Renderer {
 		const fretWidth: number = this.map.fretboard.dimensions.width * this.scale;
 		const fretHeight: number = this.FRET_H * this.scale;
 
-		for(let i = 1; i <= this.numFrets + 1; i++){
+		for(let i = 2; i <= this.numFrets + 1; i++){
 			path.rect(
 				this.map.fretboard.coords.x,
 				this.map.fretboard.coords.y + (i * this.FRET_SPACE_H * this.scale) - (this.FRET_H * this.scale),
