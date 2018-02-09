@@ -65,6 +65,10 @@ export default class GuitarRenderer extends Renderer {
 		const nutPath: Path2D = this.getNutPath();
 		this.ctx.fillStyle = '#f2edce';
 		(this.ctx as any).fill(nutPath);
+
+		const fretsPath: Path2D = this.getFretsPath();
+		this.ctx.fillStyle = '#f2edce';
+		(this.ctx as any).fill(fretsPath);
 	}
 
 	private getScale(numStrings: number): number {
@@ -108,33 +112,24 @@ export default class GuitarRenderer extends Renderer {
 	private getInlayPath(): Path2D {
 		let path: Path2D = new Path2D();
 
+		const inlayRadius: number = this.INLAY_RADIUS * this.scale;
+		const endAngle: number = 2 * Math.PI;
+		const fretWidth: number = this.map.fretboard.dimensions.width * this.scale;
+		const inlayXLeft = this.map.fretboard.coords.x + Math.floor(fretWidth * 0.25)
+		const inlayXCenter = this.map.fretboard.coords.x + Math.floor(fretWidth / 2);
+		const inlayXRight = this.map.fretboard.coords.x + Math.floor(fretWidth * 0.75);
+
 		for(let i = 3; i <= this.numFrets; i++){
+			const inlayY = (i: number) => this.map.fretboard.coords.y + (i * this.FRET_SPACE_H * this.scale) + ((this.FRET_SPACE_H * this.scale) / 2);
+
 			switch(i){
 				case 12: case 24:
-					path.arc(
-						this.map.fretboard.coords.x + Math.floor((this.map.fretboard.dimensions.width * this.scale) * 0.25),
-						this.map.fretboard.coords.y + (i * this.FRET_SPACE_H * this.scale),
-						this.INLAY_RADIUS * this.scale,
-						0,
-						2 * Math.PI
-					);
+					path.arc(inlayXLeft, inlayY(i), inlayRadius, 0, endAngle);
 					path.closePath();
-					path.arc(
-						this.map.fretboard.coords.x + Math.floor((this.map.fretboard.dimensions.width * this.scale) * 0.75),
-						this.map.fretboard.coords.y + (i * this.FRET_SPACE_H * this.scale),
-						this.INLAY_RADIUS * this.scale,
-						0,
-						2 * Math.PI
-					);
+					path.arc(inlayXRight, inlayY(i), inlayRadius, 0, endAngle);
 					break;
 				case 3: case 5: case 7: case 9: case 15: case 17: case 19: case 21:
-					path.arc(
-						this.map.fretboard.coords.x + Math.floor((this.map.fretboard.dimensions.width * this.scale) / 2),
-						this.map.fretboard.coords.y + (i * this.FRET_SPACE_H * this.scale),
-						this.INLAY_RADIUS * this.scale,
-						0,
-						2 * Math.PI
-					);
+					path.arc(inlayXCenter, inlayY(i), inlayRadius, 0, endAngle);
 					break;
 			}
 			path.closePath();
@@ -164,12 +159,18 @@ export default class GuitarRenderer extends Renderer {
 
 	private getFretsPath(): Path2D {
 		let path: Path2D = new Path2D();
-		// path.rect(
-		// 	this.map.fretboard.coords.x,
-		// 	this.map.fretboard.coords.y,
-		// 	this.map.fretboard.dimensions.width * this.scale,
-		// 	this.map.fretboard.dimensions.length * this.scale
-		// );
+
+		const fretWidth: number = this.map.fretboard.dimensions.width * this.scale;
+		const fretHeight: number = this.FRET_H * this.scale;
+
+		for(let i = 1; i <= this.numFrets + 1; i++){
+			path.rect(
+				this.map.fretboard.coords.x,
+				this.map.fretboard.coords.y + (i * this.FRET_SPACE_H * this.scale) - (this.FRET_H * this.scale),
+				fretWidth,
+				fretHeight
+			);
+		}
 
 		return path;
 	}
