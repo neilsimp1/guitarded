@@ -90,7 +90,7 @@ export default class GuitarRenderer extends Renderer {
 			y: 15
 		};
 
-		return { dimensions, coords};
+		return { dimensions, coords };
 	}
 
 	private getFretboardPath(): Path2D {
@@ -109,17 +109,15 @@ export default class GuitarRenderer extends Renderer {
 		let path: Path2D = new Path2D();
 
 		for(let i = 3; i < this.numFrets; i++){
-			switch(i){
+			switch(i){				// NEED TO USE closePath() method somewhere to stop the triangle thingy maybe???
 				case 12: case 24:
-					path.ellipse(
-						this.map.fretboard.coords.x + Math.floor((this.map.fretboard.dimensions.width * this.scale) / 4),
+					path.arc(
+						this.map.fretboard.coords.x + Math.floor((this.map.fretboard.dimensions.width * this.scale) / 2),
 						this.map.fretboard.coords.y + (i * this.FRET_SPACE_H * this.scale),
 						this.INLAY_RADIUS * this.scale,
-						this.INLAY_RADIUS * this.scale,
-						0,
 						0,
 						2 * Math.PI
-					)
+					);
 					// path.ellipse(
 					// 	this.map.fretboard.coords.x + ((this.map.fretboard.dimensions.width * this.scale) * 0.75),
 					// 	this.map.fretboard.coords.y + (i * this.FRET_SPACE_H * this.scale),
@@ -128,18 +126,16 @@ export default class GuitarRenderer extends Renderer {
 					// 	0,
 					// 	0,
 					// 	2 * Math.PI
-					// )
+					// );
 					break;
 				case 3: case 5: case 7: case 9: case 15: case 17: case 19: case 21:
-					path.ellipse(
-						this.map.fretboard.coords.x + ((this.map.fretboard.dimensions.width * this.scale) / 2),
+					path.arc(
+						this.map.fretboard.coords.x + Math.floor((this.map.fretboard.dimensions.width * this.scale) / 2),
 						this.map.fretboard.coords.y + (i * this.FRET_SPACE_H * this.scale),
 						this.INLAY_RADIUS * this.scale,
-						this.INLAY_RADIUS * this.scale,
-						0,
 						0,
 						2 * Math.PI
-					)
+					);
 					break;
 			}
 		}
