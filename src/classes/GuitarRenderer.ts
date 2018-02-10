@@ -16,6 +16,7 @@ export default class GuitarRenderer extends Renderer {
 	private INLAY_RADIUS: number = 2;
 	private FRET_SPACE_H: number = 9; // 18px in each fret, 2 of which at bottom for metal
 	private FRET_H: number = 1; // 2px for each metal fret
+	private NOTE_RADIUS: number = 1.2;
 	private NUT_H: number = 2; // 4px for height of nut at top of neck, so only 14 would show above it for headstock
 	private PADDING: number = 15;
 	private STRING_SPACE_W: number = 3; // 6px for string and space around it
@@ -75,6 +76,10 @@ export default class GuitarRenderer extends Renderer {
 		const stringsPath: Path2D = this.getStringsPath();
 		this.ctx.fillStyle = '#666';
 		(this.ctx as any).fill(stringsPath);
+
+		const notesPath: Path2D = this.getNotesPath();
+		this.ctx.fillStyle = '#2949ff';
+		(this.ctx as any).fill(notesPath);
 	}
 
 	private getScale(numStrings: number): number {
@@ -197,7 +202,21 @@ export default class GuitarRenderer extends Renderer {
 		return path;
 	}
 
-	// private getNotesPath(): Path2D {
+	private getNotesPath(): Path2D {
+		let path: Path2D = new Path2D();
 
-	// }
+		const endAngle: number = 2 * Math.PI;
+
+		for(let i = 0; i < this.fretboard.length; i++){
+			const noteX: number = this.map.fretboard.coords.x + (i * this.STRING_SPACE_W * this.scale) + (this.STRING_OUTER_W * this.scale);
+			for(let j = 0; j < this.fretboard[i].frets.length; j++){
+				if(!this.fretboard[i].frets[j]) continue;
+				const noteY = (i: number) => this.map.fretboard.coords.y + (i * this.FRET_SPACE_H * this.scale) + ((this.FRET_SPACE_H * this.scale) / 2);
+				path.arc(noteX, noteY(j), this.NOTE_RADIUS * this.scale, 0, endAngle);
+				path.closePath();
+			}
+		}
+
+		return path;
+	}
 }
