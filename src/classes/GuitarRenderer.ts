@@ -13,13 +13,14 @@ export default class GuitarRenderer extends Renderer {
 
 	private imgs: any = {};
 
-	private INLAY_RADIUS: number = 4;
-	private FRET_SPACE_H: number = 18; // 18px in each fret, 2 of which at bottom for metal
-	private FRET_H: number = 2; // 2px for each metal fret
-	private NUT_H: number = 4; // 4px for height of nut at top of neck, so only 14 would show above it for headstock
-	private STRING_SPACE_W: number = 6; // 6px for string and space around it
-	private STRING_W: number = 2; // 2px wide
-	private STRING_OUTER_W: number = 2; // 2 + 2px on each side
+	private INLAY_RADIUS: number = 2;
+	private FRET_SPACE_H: number = 9; // 18px in each fret, 2 of which at bottom for metal
+	private FRET_H: number = 1; // 2px for each metal fret
+	private NUT_H: number = 2; // 4px for height of nut at top of neck, so only 14 would show above it for headstock
+	private PADDING: number = 15;
+	private STRING_SPACE_W: number = 3; // 6px for string and space around it
+	private STRING_W: number = 1; // 2px wide
+	private STRING_OUTER_W: number = 1; // 2 + 2px on each side
 
 	constructor(canvas: HTMLCanvasElement, numFrets: number, numStrings: number, fretboard: [GuitarString]) {
 		super(canvas);
@@ -29,6 +30,7 @@ export default class GuitarRenderer extends Renderer {
 		this.fretboard = fretboard;
 		this.scale = this.getScale(numStrings);
 		this.map.fretboard = this.getFretboardPoints();
+		this.canvas.height = (this.map.fretboard.dimensions.length * this.scale) + (this.PADDING * 2);
 	}
 
 	private async loadAssets(): Promise<boolean> {
@@ -80,10 +82,10 @@ export default class GuitarRenderer extends Renderer {
 		const containerWidth: number = this.canvas.parentElement!.clientWidth;
 
 		let scale: number;
-		if(containerWidth < this.BP_SM) scale = 1;
-		else if(containerWidth < this.BP_MD) scale = 2;
-		else if(containerWidth < this.BP_XXL) scale = 5;
-		else scale = 4;
+		if(containerWidth < this.BP_SM) scale = 2;
+		else if(containerWidth < this.BP_LG) scale = 3;
+		else if(containerWidth < this.BP_XXL) scale = 4;
+		else scale = 3;
 
 		return scale;
 	}
@@ -95,7 +97,7 @@ export default class GuitarRenderer extends Renderer {
 		};
 		const coords: IPoint = {
 			x: Math.floor((this.canvas.parentElement!.clientWidth / 2) - ((dimensions.width * this.scale) / 2)),
-			y: 15
+			y: this.PADDING
 		};
 
 		return { dimensions, coords };

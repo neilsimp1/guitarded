@@ -14,7 +14,6 @@ export default class Renderer {
 
 	constructor(canvas: HTMLCanvasElement) {
 		canvas.width = canvas.parentElement!.clientWidth;
-		canvas.height = 5000;
 		this.canvas = canvas;
 
 		this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D;
