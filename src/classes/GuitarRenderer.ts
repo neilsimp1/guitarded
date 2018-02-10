@@ -47,27 +47,18 @@ export default class GuitarRenderer extends Renderer {
 	}
 
 	public doStuff(): void {
-		/*
-		 * 1. fretboard
-		 * 2. inlays - maybe switch these? -
-		 * 3. nut                          |
-		 * 4. frets - maybe switch these?  -
-		 * 5. strings
-		 * 6. notes
-		 */
-
 		const fretboardPath: Path2D = this.getFretboardPath();
 		const neckPattern: CanvasPattern = this.ctx.createPattern(this.imgs.neckBg, 'repeat');
 		this.ctx.fillStyle = neckPattern;
 		(this.ctx as any).fill(fretboardPath);
 
-		const inlayPath: Path2D = this.getInlayPath();
-		this.ctx.fillStyle = '#000';
-		(this.ctx as any).fill(inlayPath);
-
 		const nutPath: Path2D = this.getNutPath();
 		this.ctx.fillStyle = '#f2edce';
 		(this.ctx as any).fill(nutPath);
+
+		const inlayPath: Path2D = this.getInlayPath();
+		this.ctx.fillStyle = '#000';
+		(this.ctx as any).fill(inlayPath);
 
 		const fretsPath: Path2D = this.getFretsPath();
 		this.ctx.fillStyle = '#adadad';
@@ -146,13 +137,6 @@ export default class GuitarRenderer extends Renderer {
 			path.closePath();
 		}
 
-		path.rect(
-			this.map.fretboard.coords.x,
-			this.map.fretboard.coords.y + (this.FRET_SPACE_H * this.scale) - (this.NUT_H * this.scale),
-			this.map.fretboard.dimensions.width * this.scale,
-			this.NUT_H * this.scale
-		);
-
 		return path;
 	}
 
@@ -209,7 +193,7 @@ export default class GuitarRenderer extends Renderer {
 
 		for(let i = 0; i < this.fretboard.length; i++){
 			const noteX: number = this.map.fretboard.coords.x + (i * this.STRING_SPACE_W * this.scale) + (this.STRING_OUTER_W * this.scale);
-			for(let j = 0; j < this.fretboard[i].frets.length; j++){
+			for(let j = 0; j <= this.numFrets; j++){
 				if(!this.fretboard[i].frets[j]) continue;
 				const noteY = (i: number) => this.map.fretboard.coords.y + (i * this.FRET_SPACE_H * this.scale) + ((this.FRET_SPACE_H * this.scale) / 2);
 				path.arc(noteX, noteY(j), this.NOTE_RADIUS * this.scale, 0, endAngle);
