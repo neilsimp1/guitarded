@@ -45,22 +45,27 @@ export default class Guitar extends Vue {
 	@Watch('handedness')
 	public onHandednessChanged() {
 		this.buildFretboard();
+		this.renderer.update(this.numFrets, this.numStrings, (this.fretboard as [GuitarString]));
 	}
 	@Watch('noteSet')
 	public onNoteSetChanged() {
 		this.buildFretboard();
+		this.renderer.update(this.numFrets, this.numStrings, this.fretboard as [GuitarString]);
 	}
 	@Watch('notesPicked')
 	public onNotesPickedChanged(notesPicked: INoteSet) {
 		this.buildFretboard();
+		this.renderer.update(this.numFrets, this.numStrings, this.fretboard as [GuitarString]);
 	}
 	@Watch('scale')
 	public onScaleChanged(scale: INoteSet) {
 		this.buildFretboard();
+		this.renderer.update(this.numFrets, this.numStrings, this.fretboard as [GuitarString]);
 	}
 	@Watch('tuning')
 	public onTuningChanged() {
 		this.buildFretboard();
+		this.renderer.update(this.numFrets, this.numStrings, this.fretboard as [GuitarString]);
 	}
 
 	public mounted(): void {
@@ -72,12 +77,7 @@ export default class Guitar extends Vue {
 			(this.fretboard as [GuitarString])
 		);
 
-		const handle: number = setInterval(() => {
-			if(this.renderer.isLoaded){
-				this.renderer.doStuff();
-				clearInterval(handle);
-			}
-		}, 50);
+		this.renderer.render();
 	}
 
 	private buildFretboard(): void {

@@ -46,31 +46,48 @@ export default class GuitarRenderer extends Renderer {
 		return true;
 	}
 
-	public doStuff(): void {
-		const fretboardPath: Path2D = this.getFretboardPath();
-		const neckPattern: CanvasPattern = this.ctx.createPattern(this.imgs.neckBg, 'repeat');
-		this.ctx.fillStyle = neckPattern;
-		(this.ctx as any).fill(fretboardPath);
+	public render(): void {
+		const handle: number = setInterval(() => {
+			if(this.isLoaded){
+				clearInterval(handle);
 
-		const nutPath: Path2D = this.getNutPath();
-		this.ctx.fillStyle = '#f2edce';
-		(this.ctx as any).fill(nutPath);
+				const fretboardPath: Path2D = this.getFretboardPath();
+				const neckPattern: CanvasPattern = this.ctx.createPattern(this.imgs.neckBg, 'repeat');
+				this.ctx.fillStyle = neckPattern;
+				(this.ctx as any).fill(fretboardPath);
 
-		const inlayPath: Path2D = this.getInlayPath();
-		this.ctx.fillStyle = '#000';
-		(this.ctx as any).fill(inlayPath);
+				const nutPath: Path2D = this.getNutPath();
+				this.ctx.fillStyle = '#f2edce';
+				(this.ctx as any).fill(nutPath);
 
-		const fretsPath: Path2D = this.getFretsPath();
-		this.ctx.fillStyle = '#adadad';
-		(this.ctx as any).fill(fretsPath);
+				const inlayPath: Path2D = this.getInlayPath();
+				this.ctx.fillStyle = '#000';
+				(this.ctx as any).fill(inlayPath);
 
-		const stringsPath: Path2D = this.getStringsPath();
-		this.ctx.fillStyle = '#666';
-		(this.ctx as any).fill(stringsPath);
+				const fretsPath: Path2D = this.getFretsPath();
+				this.ctx.fillStyle = '#adadad';
+				(this.ctx as any).fill(fretsPath);
 
-		const notesPath: Path2D = this.getNotesPath();
-		this.ctx.fillStyle = '#2949ff';
-		(this.ctx as any).fill(notesPath);
+				const stringsPath: Path2D = this.getStringsPath();
+				this.ctx.fillStyle = '#666';
+				(this.ctx as any).fill(stringsPath);
+
+				const notesPath: Path2D = this.getNotesPath();
+				this.ctx.fillStyle = '#2949ff';
+				(this.ctx as any).fill(notesPath);
+			}
+		}, 50);
+	}
+
+	public update(numFrets: number, numStrings: number, fretboard: [GuitarString]): void {
+		this.numFrets = numFrets;
+		this.numStrings = numStrings;
+		this.fretboard = fretboard;
+		this.scale = this.getScale(numStrings);
+		this.map.fretboard = this.getFretboardPoints();
+		this.canvas.height = (this.map.fretboard.dimensions.length * this.scale) + (this.PADDING * 2);
+		
+		this.render();
 	}
 
 	private getScale(numStrings: number): number {
@@ -203,4 +220,5 @@ export default class GuitarRenderer extends Renderer {
 
 		return path;
 	}
+
 }
