@@ -13,6 +13,13 @@ export default class GuitarRenderer extends Renderer {
 
 	private imgs: any = {};
 
+	private FRET_COLOR: string = '#adadad';
+	private INLAY_COLOR: string = '#3d301a';
+	private NOTE_COLOR: string = '#2949ff';
+	private NOTE_ROOT_COLOR: string = '#37db00';
+	private NUT_COLOR: string = '#f2edce';
+	private STRING_COLOR: string = '#666';
+
 	private INLAY_RADIUS: number = 2;
 	private FRET_SPACE_H: number = 9; // 18px in each fret, 2 of which at bottom for metal
 	private FRET_H: number = 1; // 2px for each metal fret
@@ -47,36 +54,26 @@ export default class GuitarRenderer extends Renderer {
 	}
 
 	public render(): void {
-		const handle: number = setInterval(() => {
-			if(this.isLoaded){
-				clearInterval(handle);
+		const doRender = () => {
+			this.drawFretboard();
+			this.drawNut();
+			this.drawInlays();
+			this.drawFrets();
+			this.drawStrings();
+			this.drawNotes();
+		};
 
-				const fretboardPath: Path2D = this.getFretboardPath();
-				const neckPattern: CanvasPattern = this.ctx.createPattern(this.imgs.neckBg, 'repeat');
-				this.ctx.fillStyle = neckPattern;
-				(this.ctx as any).fill(fretboardPath);
-
-				const nutPath: Path2D = this.getNutPath();
-				this.ctx.fillStyle = '#f2edce';
-				(this.ctx as any).fill(nutPath);
-
-				const inlayPath: Path2D = this.getInlayPath();
-				this.ctx.fillStyle = '#000';
-				(this.ctx as any).fill(inlayPath);
-
-				const fretsPath: Path2D = this.getFretsPath();
-				this.ctx.fillStyle = '#adadad';
-				(this.ctx as any).fill(fretsPath);
-
-				const stringsPath: Path2D = this.getStringsPath();
-				this.ctx.fillStyle = '#666';
-				(this.ctx as any).fill(stringsPath);
-
-				const notesPath: Path2D = this.getNotesPath();
-				this.ctx.fillStyle = '#2949ff';
-				(this.ctx as any).fill(notesPath);
-			}
-		}, 50);
+		if(this.isLoaded){
+			doRender();
+		}
+		else{
+			const handle: number = setInterval(() => {
+				if(this.isLoaded){
+					clearInterval(handle);
+					doRender();
+				}
+			}, 25);
+		}
 	}
 
 	public update(numFrets: number, numStrings: number, fretboard: [GuitarString]): void {
@@ -116,21 +113,27 @@ export default class GuitarRenderer extends Renderer {
 		return { dimensions, coords };
 	}
 
-	private getFretboardPath(): Path2D {
-		let path: Path2D = new Path2D();
-		path.rect(
+	private drawFretboard(): void {
+		this.ctx.fillStyle = this.ctx.createPattern(this.imgs.neckBg, 'repeat');
+		this.ctx.fillRect(
 			this.map.fretboard.coords.x,
 			this.map.fretboard.coords.y,
 			this.map.fretboard.dimensions.width * this.scale,
 			this.map.fretboard.dimensions.length * this.scale
 		);
-
-		return path;
 	}
 
-	private getInlayPath(): Path2D {
-		let path: Path2D = new Path2D();
+	private drawNut(): void {
+		this.ctx.fillStyle = this.NUT_COLOR;
+		this.ctx.fillRect(
+			this.map.fretboard.coords.x,
+			this.map.fretboard.coords.y + (this.FRET_SPACE_H * this.scale) - (this.NUT_H * this.scale),
+			this.map.fretboard.dimensions.width * this.scale,
+			this.NUT_H * this.scale
+		);
+	}
 
+	private drawInlays(): void {
 		const inlayRadius: number = this.INLAY_RADIUS * this.scale;
 		const endAngle: number = 2 * Math.PI;
 		const fretWidth: number = this.map.fretboard.dimensions.width * this.scale;
@@ -138,87 +141,78 @@ export default class GuitarRenderer extends Renderer {
 		const inlayXCenter = this.map.fretboard.coords.x + Math.floor(fretWidth / 2);
 		const inlayXRight = this.map.fretboard.coords.x + Math.floor(fretWidth * 0.75);
 
+		this.ctx.fillStyle = this.INLAY_COLOR;
+
 		for(let i = 3; i <= this.numFrets; i++){
 			const inlayY = (i: number) => this.map.fretboard.coords.y + (i * this.FRET_SPACE_H * this.scale) + ((this.FRET_SPACE_H * this.scale) / 2);
 
 			switch(i){
 				case 12: case 24:
-					path.arc(inlayXLeft, inlayY(i), inlayRadius, 0, endAngle);
-					path.closePath();
-					path.arc(inlayXRight, inlayY(i), inlayRadius, 0, endAngle);
+					this.ctx.beginPath();
+					this.ctx.arc(inlayXLeft, inlayY(i), inlayRadius, 0, endAngle);
+					this.ctx.fill();
+					this.ctx.closePath();
+					this.ctx.beginPath();
+					this.ctx.arc(inlayXRight, inlayY(i), inlayRadius, 0, endAngle);
+					this.ctx.fill();
 					break;
 				case 3: case 5: case 7: case 9: case 15: case 17: case 19: case 21:
-					path.arc(inlayXCenter, inlayY(i), inlayRadius, 0, endAngle);
+					this.ctx.beginPath();
+					this.ctx.arc(inlayXCenter, inlayY(i), inlayRadius, 0, endAngle);
+					this.ctx.fill();
 					break;
 			}
-			path.closePath();
+			this.ctx.closePath();
 		}
-
-		return path;
 	}
 
-	private getNutPath(): Path2D {
-		let path: Path2D = new Path2D();
-		path.rect(
-			this.map.fretboard.coords.x,
-			this.map.fretboard.coords.y + (this.FRET_SPACE_H * this.scale) - (this.NUT_H * this.scale),
-			this.map.fretboard.dimensions.width * this.scale,
-			this.NUT_H * this.scale
-		);
-
-		return path;
-	}
-
-	private getFretsPath(): Path2D {
-		let path: Path2D = new Path2D();
-
+	private drawFrets(): void {
 		const fretWidth: number = this.map.fretboard.dimensions.width * this.scale;
 		const fretHeight: number = this.FRET_H * this.scale;
 
+		this.ctx.fillStyle = this.FRET_COLOR;
+
 		for(let i = 2; i <= this.numFrets + 1; i++){
-			path.rect(
+			this.ctx.fillRect(
 				this.map.fretboard.coords.x,
 				this.map.fretboard.coords.y + (i * this.FRET_SPACE_H * this.scale) - (this.FRET_H * this.scale),
 				fretWidth,
 				fretHeight
 			);
 		}
-
-		return path;
 	}
 
-	private getStringsPath(): Path2D {
-		let path: Path2D = new Path2D();
+	private drawStrings(): void {
+		this.ctx.fillStyle = this.STRING_COLOR;
 
 		for(let i = 0; i < this.numStrings; i++){
 			const stringX: number = this.map.fretboard.coords.x + (i * this.STRING_SPACE_W * this.scale) + (this.STRING_OUTER_W * this.scale);
-			path.rect(
+			this.ctx.fillRect(
 				stringX,
 				this.map.fretboard.coords.y,
 				this.STRING_W,
 				this.map.fretboard.dimensions.length * this.scale
 			);
 		}
-
-		return path;
 	}
 
-	private getNotesPath(): Path2D {
-		let path: Path2D = new Path2D();
-
+	private drawNotes(): void {
 		const endAngle: number = 2 * Math.PI;
 
+		this.ctx.fillStyle = this.NOTE_COLOR;
+		
 		for(let i = 0; i < this.fretboard.length; i++){
 			const noteX: number = this.map.fretboard.coords.x + (i * this.STRING_SPACE_W * this.scale) + (this.STRING_OUTER_W * this.scale);
 			for(let j = 0; j <= this.numFrets; j++){
 				if(!this.fretboard[i].frets[j]) continue;
 				const noteY = (i: number) => this.map.fretboard.coords.y + (i * this.FRET_SPACE_H * this.scale) + ((this.FRET_SPACE_H * this.scale) / 2);
-				path.arc(noteX, noteY(j), this.NOTE_RADIUS * this.scale, 0, endAngle);
-				path.closePath();
+				
+				this.ctx.beginPath();
+				this.ctx.arc(noteX, noteY(j), this.NOTE_RADIUS * this.scale, 0, endAngle);
+				this.ctx.fill();
+				this.ctx.closePath();
 			}
 		}
-
-		return path;
 	}
 
 }
