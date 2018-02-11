@@ -46,6 +46,20 @@
 		</div>
 
 		<GuitarTuner />
+
+		<div class="panel-row">
+			<div class="handedness-buttons button-grp-toggle">
+				<button type="button"
+					 v-on:click="updateOrientation('horizontal')"
+					 :disabled="orientation === 'horizontal'"
+					 :class="[orientation === 'horizontal' ? 'active' : '', 'btn-toggle']">Horizontal</button>
+				<button type="button"
+					 v-on:click="updateOrientation('vertical')"
+					 :disabled="orientation === 'vertical'"
+					 :class="[orientation === 'vertical' ? 'active' : '', 'btn-toggle']">Vertical</button>
+			</div>
+		</div>
+
 	</div>
 </template>
 
@@ -64,6 +78,7 @@ export default class GuitarControls extends Vue {
 	public get handedness(): string { return this.$store.getters.handedness }
 	public get numStrings(): number { return this.$store.getters.numStrings }
 	public get numFrets(): number { return this.$store.getters.numFrets }
+	public get orientation(): number { return this.$store.getters.orientation }
 	public get tunings(): any { return this.$store.getters.tunings }
 
 	@Watch('numStrings')
@@ -73,6 +88,10 @@ export default class GuitarControls extends Vue {
 
 	public updateHandedness(handedness: string): void {
 		this.$store.commit('updateHandedness', handedness);
+	}
+
+	public updateOrientation(orientation: string): void {
+		this.$store.commit('updateOrientation', orientation);
 	}
 
 	public updateNumStrings(event: Event): void {
