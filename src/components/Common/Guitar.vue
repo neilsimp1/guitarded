@@ -28,7 +28,7 @@ import Tuning from '../../classes/Tuning';
 })
 export default class Guitar extends Vue {
 
-	private fretboard: [GuitarString] | null = null;
+	private fretboard: GuitarString[];
 	private renderer: GuitarRenderer;
 
 	@Prop()
@@ -45,27 +45,27 @@ export default class Guitar extends Vue {
 	@Watch('handedness')
 	public onHandednessChanged() {
 		this.buildFretboard();
-		this.renderer.update(this.numFrets, this.numStrings, (this.fretboard as [GuitarString]));
+		this.renderer.update(this.numFrets, this.numStrings, this.fretboard);
 	}
 	@Watch('noteSet')
 	public onNoteSetChanged() {
 		this.buildFretboard();
-		this.renderer.update(this.numFrets, this.numStrings, this.fretboard as [GuitarString]);
+		this.renderer.update(this.numFrets, this.numStrings, this.fretboard);
 	}
 	@Watch('notesPicked')
 	public onNotesPickedChanged(notesPicked: INoteSet) {
 		this.buildFretboard();
-		this.renderer.update(this.numFrets, this.numStrings, this.fretboard as [GuitarString]);
+		this.renderer.update(this.numFrets, this.numStrings, this.fretboard);
 	}
 	@Watch('scale')
 	public onScaleChanged(scale: INoteSet) {
 		this.buildFretboard();
-		this.renderer.update(this.numFrets, this.numStrings, this.fretboard as [GuitarString]);
+		this.renderer.update(this.numFrets, this.numStrings, this.fretboard);
 	}
 	@Watch('tuning')
 	public onTuningChanged() {
 		this.buildFretboard();
-		this.renderer.update(this.numFrets, this.numStrings, this.fretboard as [GuitarString]);
+		this.renderer.update(this.numFrets, this.numStrings, this.fretboard);
 	}
 
 	public mounted(): void {
@@ -74,7 +74,7 @@ export default class Guitar extends Vue {
 			this.$refs.canvas as HTMLCanvasElement,
 			this.numFrets,
 			this.numStrings,
-			(this.fretboard as [GuitarString])
+			this.fretboard
 		);
 
 		this.renderer.render();
@@ -86,7 +86,7 @@ export default class Guitar extends Vue {
 		let tuning: Tuning = JSON.parse(JSON.stringify(this.tuning));
 		if(this.handedness === 'left') tuning.notes.reverse();
 
-		this.fretboard = (tuning.notes.map((note: Note) => new GuitarString(note.name, this.noteSet)) as [GuitarString]);
+		this.fretboard = tuning.notes.map((note: Note) => new GuitarString(note.name, this.noteSet));
 	}
 
 }

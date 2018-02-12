@@ -2,19 +2,19 @@ export default class Note {
 
 	public name: string;
 	public displayName: string;
-	private static notes: [Note];
-	private static loopedNotes: [any];
+	private static notes: Note[];
+	private static loopedNotes: any[];
 
 	constructor(name: string, displayName: string) {
 		this.name = name;
 		this.displayName = displayName;
 	}
 
-	public static lookupNote(value: string | null, propName: string = 'name'): Note {
-		return Note.getAllNotes().find((note: Note) => (note as any)[propName] === value ) || new Note('', '');
+	public static lookupNote(value: string, propName: string = 'name'): Note {
+		return Note.getAllNotes().find((note: Note) => (note as any)[propName] === value)!;
 	}
 
-	public static getAllNotes(): [Note] {
+	public static getAllNotes(): Note[] {
 		if(!Note.notes){
 			Note.notes = [
 				new Note('A', 'A'),
@@ -35,22 +35,22 @@ export default class Note {
 		return Note.notes;
 	}
 
-	public static getLoopedNotes(): [any] {
+	public static getLoopedNotes(): any[] {
 		if(!Note.loopedNotes){
-			Note.loopedNotes = (Note.notes.map((n: Note, i: number) => {
+			Note.loopedNotes = Note.notes.map((n: Note, i: number) => {
 				return {
 					prev: i - 1 < 0 ? Note.notes[Note.notes.length - 1] : Note.notes[i - 1],
 					next: i + 1 >= Note.notes.length ? Note.notes[0] : Note.notes[i + 1],
 					note: n
 				};
-			}) as [any]);
+			});
 		}
 
 		return Note.loopedNotes;
 	}
 
 	public static getInterval(note1: Note, note2: Note): number {
-		const loopedNotes: [any] = Note.getLoopedNotes();
+		const loopedNotes: any[] = Note.getLoopedNotes();
 
 		let index: number = loopedNotes.findIndex(loopedNote => loopedNote.note.name === note1.name);
 		let interval: number = 0;
@@ -63,7 +63,7 @@ export default class Note {
 	}
 
 	public getNextNote(interval: number): Note {
-		const loopedNotes: [any] = Note.getLoopedNotes();
+		const loopedNotes: any[] = Note.getLoopedNotes();
 		const dir: string = interval > 0 ? 'next' : 'prev';
 
 		let startIndex: number;

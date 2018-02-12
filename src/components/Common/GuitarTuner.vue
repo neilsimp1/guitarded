@@ -47,7 +47,7 @@ import Tuning from '../../classes/Tuning';
 })
 export default class GuitarTuner extends Vue {
 
-	private tuningsForNumStrings: [Tuning];
+	private tuningsForNumStrings: Tuning[];
 
 	public get key(): Tuning {
 		return this.$store.getters.key;
@@ -58,7 +58,7 @@ export default class GuitarTuner extends Vue {
 	public get numStrings(): number {
 		return this.$store.getters.numStrings;
 	}
-	public get allNotes(): [Note] {
+	public get allNotes(): Note[] {
 		return Note.getAllNotes();
 	}
 
@@ -68,8 +68,8 @@ export default class GuitarTuner extends Vue {
 	}
 
 	public updateTuning(stringNum: number, event: Event): void {
-		const newNote: Note | null = Note.lookupNote((event.target as HTMLSelectElement).value, 'name');
-		const newNotes: [Note] = (this.tuning.notes.map((n: Note, i: number) => i === stringNum - 1? newNote : n) as [Note]);
+		const newNote: Note = Note.lookupNote((event.target as HTMLSelectElement).value, 'name');
+		const newNotes: Note[] = this.tuning.notes.map((n: Note, i: number) => i === stringNum - 1? newNote : n);
 		const newTuning: Tuning = new Tuning(Tuning.lookupTuningName(this.numStrings, newNotes), newNotes);
 		this.$store.commit('updateTuning', newTuning);
 	}

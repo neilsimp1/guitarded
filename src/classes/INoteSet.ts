@@ -2,7 +2,7 @@ import Note from './Note';
 
 interface INoteSet {
 	name: string;
-	notes: [Note];
+	notes: Note[];
 	root: string;
 }
 

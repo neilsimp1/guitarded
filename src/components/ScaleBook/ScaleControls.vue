@@ -75,7 +75,7 @@ export default class ScaleControls extends Vue {
 	public get key(): string {
 		return this.$store.getters.key;
 	}
-	public get allNotes(): [Note] {
+	public get allNotes(): Note[] {
 		return Note.getAllNotes();
 	}
 

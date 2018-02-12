@@ -19,9 +19,9 @@ export default class Scale implements INoteSet {
 		if(root) this.buildScale();
 	}
 
-	public static lookupScaleName(root: string, notes: [Note]): string {
-		const intervals: [number] = Scale.computeIntervals(root, notes);
-		const intervalsEqual = (a: [number], b: [number]): boolean => {
+	public static lookupScaleName(root: string, notes: Note[]): string {
+		const intervals: number[] = Scale.computeIntervals(root, notes);
+		const intervalsEqual = (a: number[], b: number[]): boolean => {
 			if(a.length !== b.length) return false;
 			for(let i = 0; i < a.length; i++){
 				if(a[i] !== b[i]) return false;
@@ -39,14 +39,14 @@ export default class Scale implements INoteSet {
 	}
 
 	public static getScale(name: string, root: string | null = null): Scale {
-		let scale = Scale.getScales().find(s => s.name === name) || new Scale('', [0]);
+		let scale: Scale = Scale.getScales().find(s => s.name === name)!;
 		if(!root) return scale;
 		return new Scale(scale.name, scale.intervals, root);
 	}
 
 	// TODO: Put in base class NoteSet
-	public static sort(root: string, notes: [Note]): [Note] {
-		let alphaSorted: [Note] = notes.sort((n1: Note, n2: Note) => {
+	public static sort(root: string, notes: Note[]): Note[] {
+		let alphaSorted: Note[] = notes.sort((n1: Note, n2: Note) => {
 			if(n1.name < n2.name) return -1;
 			if(n1.name === n2.name) return 0;
 			return 1;
@@ -55,19 +55,19 @@ export default class Scale implements INoteSet {
 		if(root === 'A') return alphaSorted;
 
 		const removeUpTo: number = alphaSorted.findIndex((n: Note) => n.name === root);
-		const sorted: [Note] = (alphaSorted.concat(alphaSorted.splice(0, removeUpTo)) as [Note]);
+		const sorted: Note[] = alphaSorted.concat(alphaSorted.splice(0, removeUpTo));
 
 		return sorted;
 	}
 
 	// TODO: Put in base class NoteSet
-	private static computeIntervals(root: string, notes: [Note]): [number] {
-		let intervals: [number] = [0];
+	private static computeIntervals(root: string, notes: Note[]): number[] {
+		let intervals: number[] = [];
 		for(let i = 1; i < notes.length; i++){
 			intervals[i - 1] = Note.getInterval(notes[i - 1], notes[i]);
 		}
 
-		return intervals;
+		return intervals!;
 	}
 
 	// TODO: maybe rename to build() and put in interface to use in Chord?

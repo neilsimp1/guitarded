@@ -5,7 +5,7 @@ import Renderer from './Renderer';
 
 export default class GuitarRenderer extends Renderer {
 
-	private fretboard: [GuitarString];
+	private fretboard: GuitarString[];
 	//private neckDimensions: any;
 	private numFrets: number;
 	private numStrings: number;
@@ -30,7 +30,7 @@ export default class GuitarRenderer extends Renderer {
 	private STRING_W: number = 1; // 2px wide
 	private STRING_OUTER_W: number = 1; // 2 + 2px on each side
 
-	constructor(canvas: HTMLCanvasElement, numFrets: number, numStrings: number, fretboard: [GuitarString]) {
+	constructor(canvas: HTMLCanvasElement, numFrets: number, numStrings: number, fretboard: GuitarString[]) {
 		super(canvas);
 		this.loadAssets().then((isSuccess: boolean) => this.isLoaded = isSuccess);
 		this.numFrets = numFrets;
@@ -76,7 +76,7 @@ export default class GuitarRenderer extends Renderer {
 		}
 	}
 
-	public update(numFrets: number, numStrings: number, fretboard: [GuitarString]): void {
+	public update(numFrets: number, numStrings: number, fretboard: GuitarString[]): void {
 		this.numFrets = numFrets;
 		this.numStrings = numStrings;
 		this.fretboard = fretboard;

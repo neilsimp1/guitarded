@@ -4,10 +4,10 @@ import tuningsJson from '../data/tunings.json';
 export default class Tuning {
 
 	public name: string;;
-	public notes: [Note];
+	public notes: Note[];
 	public isStandard: boolean;
 
-	constructor(name: string, notes: [Note], isStandard = false) {
+	constructor(name: string, notes: Note[], isStandard = false) {
 		this.name = name;
 		this.notes = notes;
 		this.isStandard = isStandard;
@@ -41,8 +41,8 @@ export default class Tuning {
 		return null;
 	}
 
-	public static lookupTuningName(numStrings: number, notes: [Note]): string {
-		const tuningsMatch = (notes: [Note], tuningArray: [string]): boolean => {
+	public static lookupTuningName(numStrings: number, notes: Note[]): string {
+		const tuningsMatch = (notes: Note[], tuningArray: string[]): boolean => {
 			return notes.every((note: Note, i: number) => notes[i].name === tuningArray[i]);
 		};
 
@@ -63,8 +63,8 @@ export default class Tuning {
 		)
 	}
 
-	public static getTuningsForNumStrings(numStrings: number): [Tuning] {
-		let tunings = [];
+	public static getTuningsForNumStrings(numStrings: number): Tuning[] {
+		let tunings: Tuning[] = [];
 
 		for(const tuningName in tuningsJson[numStrings]){
 			tunings.push(new Tuning(
@@ -74,7 +74,7 @@ export default class Tuning {
 			));
 		}
 
-		return tunings as [Tuning];
+		return tunings;
 	}
 
 }

@@ -39,7 +39,7 @@ export default class NotePicker extends Vue {
 	public get key(): string {
 		return this.$store.getters.key;
 	}
-	public get allNotes(): [Note] {
+	public get allNotes(): Note[] {
 		return Note.getAllNotes();
 	}
 	public get notesPicked(): INoteSet {
@@ -64,19 +64,13 @@ export default class NotePicker extends Vue {
 
 	private updateNotesPicked(note: Note, forceKeep: boolean = false): void {
 		const contains: boolean = !!this.notesPicked.notes.find((n: Note) => n.name === note.name);
-		//if(contains && forceKeep) return;
-
-		// let newNotes: [Note] = contains
-		// 	? (this.notesPicked.notes.filter((n: Note) => n.name !== note.name) as [Note])
-		// 	: (this.notesPicked.notes.concat([note]) as [Note]);
-		// newNotes = Scale.sort(this.key, newNotes);
-
-		let newNotes;
+		
+		let newNotes: Note[] = [];
 		if(contains){
 			newNotes = forceKeep ? this.notesPicked.notes
-				: (this.notesPicked.notes.filter((n: Note) => n.name !== note.name) as [Note])
+				: this.notesPicked.notes.filter((n: Note) => n.name !== note.name);
 		}
-		else newNotes = (this.notesPicked.notes.concat([note]) as [Note]);
+		else newNotes = this.notesPicked.notes.concat([note]);
 		newNotes = Scale.sort(this.key, newNotes);
 		
 		let newScaleChordName = 'Custom';
