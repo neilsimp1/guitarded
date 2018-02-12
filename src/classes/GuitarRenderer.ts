@@ -6,10 +6,11 @@ import Renderer from './Renderer';
 export default class GuitarRenderer extends Renderer {
 
 	private fretboard: GuitarString[];
+	public isLoaded: boolean = false;
 	//private neckDimensions: any;
 	private numFrets: number;
 	private numStrings: number;
-	public isLoaded: boolean = false;
+	private orientation: string;
 
 	private imgs: any = {};
 
@@ -30,12 +31,13 @@ export default class GuitarRenderer extends Renderer {
 	private STRING_W: number = 1; // 2px wide
 	private STRING_OUTER_W: number = 1; // 2 + 2px on each side
 
-	constructor(canvas: HTMLCanvasElement, numFrets: number, numStrings: number, fretboard: GuitarString[]) {
+	constructor(canvas: HTMLCanvasElement, numFrets: number, numStrings: number, fretboard: GuitarString[], orientation: string) {
 		super(canvas);
 		this.loadAssets().then((isSuccess: boolean) => this.isLoaded = isSuccess);
+		this.fretboard = fretboard;
 		this.numFrets = numFrets;
 		this.numStrings = numStrings;
-		this.fretboard = fretboard;
+		this.orientation = orientation;
 		this.scale = this.getScale(numStrings);
 		this.map.fretboard = this.getFretboardPoints();
 		this.canvas.height = (this.map.fretboard.dimensions.length * this.scale) + (this.PADDING * 2);
@@ -76,10 +78,11 @@ export default class GuitarRenderer extends Renderer {
 		}
 	}
 
-	public update(numFrets: number, numStrings: number, fretboard: GuitarString[]): void {
+	public update(numFrets: number, numStrings: number, fretboard: GuitarString[], orientation: string): void {
+		this.fretboard = fretboard;
 		this.numFrets = numFrets;
 		this.numStrings = numStrings;
-		this.fretboard = fretboard;
+		this.orientation = orientation;
 		this.scale = this.getScale(numStrings);
 		this.map.fretboard = this.getFretboardPoints();
 		this.canvas.height = (this.map.fretboard.dimensions.length * this.scale) + (this.PADDING * 2);
@@ -88,27 +91,42 @@ export default class GuitarRenderer extends Renderer {
 	}
 
 	private getScale(numStrings: number): number {
-		const neckWidth: number = (numStrings * this.STRING_SPACE_W) + (this.STRING_OUTER_W * 2);
-		const containerWidth: number = this.canvas.parentElement!.clientWidth;
+		const containerWL: number = this.orientation === 'vertical'
+			? this.canvas.parentElement!.clientWidth
+			: this.canvas.parentElement!.clientHeight;
 
 		let scale: number;
-		if(containerWidth < this.BP_SM) scale = 2;
-		else if(containerWidth < this.BP_LG) scale = 3;
-		else if(containerWidth < this.BP_XXL) scale = 4;
+		if(containerWL < this.BP_SM) scale = 2;
+		else if(containerWL < this.BP_LG) scale = 3;
+		else if(containerWL < this.BP_XXL) scale = 4;
 		else scale = 3;
 
 		return scale;
 	}
 
 	private getFretboardPoints(): any {
-		const dimensions: IDimensions = {
-			width: ((this.numStrings - 1) * this.STRING_SPACE_W) + (this.STRING_OUTER_W * 2),
-			length: (this.numFrets + 1) * this.FRET_SPACE_H
-		};
-		const coords: IPoint = {
-			x: Math.floor((this.canvas.parentElement!.clientWidth / 2) - ((dimensions.width * this.scale) / 2)),
-			y: this.PADDING
-		};
+		let dimensions: IDimensions;
+		let coords: IPoint;
+		if(this.orientation === 'vertical'){
+			dimensions = {
+				width: ((this.numStrings - 1) * this.STRING_SPACE_W) + (this.STRING_OUTER_W * 2),
+				length: (this.numFrets + 1) * this.FRET_SPACE_H
+			};
+			coords = {
+				x: Math.floor((this.canvas.parentElement!.clientWidth / 2) - ((dimensions.width * this.scale) / 2)),
+				y: this.PADDING
+			};
+		}
+		else{
+			dimensions = {
+				width: (this.numFrets + 1) * this.FRET_SPACE_H,
+				length: ((this.numStrings - 1) * this.STRING_SPACE_W) + (this.STRING_OUTER_W * 2)
+			};
+			coords = {
+				x: this.PADDING,
+				y: Math.floor((this.canvas.parentElement!.clientHeight / 2) - ((dimensions.width * this.scale) / 2))
+			};
+		}
 
 		return { dimensions, coords };
 	}
@@ -125,12 +143,22 @@ export default class GuitarRenderer extends Renderer {
 
 	private drawNut(): void {
 		this.ctx.fillStyle = this.NUT_COLOR;
-		this.ctx.fillRect(
-			this.map.fretboard.coords.x,
-			this.map.fretboard.coords.y + (this.FRET_SPACE_H * this.scale) - (this.NUT_H * this.scale),
-			this.map.fretboard.dimensions.width * this.scale,
-			this.NUT_H * this.scale
-		);
+		if(this.orientation === 'vertical'){
+			this.ctx.fillRect(
+				this.map.fretboard.coords.x,
+				this.map.fretboard.coords.y + (this.FRET_SPACE_H * this.scale) - (this.NUT_H * this.scale),
+				this.map.fretboard.dimensions.width * this.scale,
+				this.NUT_H * this.scale
+			);
+		}
+		else{
+			this.ctx.fillRect(
+				this.map.fretboard.coords.x + (this.FRET_SPACE_H * this.scale),
+				this.map.fretboard.coords.y,
+				this.NUT_H * this.scale,
+				this.map.fretboard.dimensions.width * this.scale
+			);
+		}
 	}
 
 	private drawInlays(): void {
