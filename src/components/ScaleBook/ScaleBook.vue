@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div :class="['scalebook', 'scalebook-' + orientation ]">
 
 		<div class="scale-controls">
 			<ScaleControls />
@@ -27,15 +27,10 @@ import Scale from '../../classes/Scale';
 })
 export default class ScaleBook extends Vue {
 
-	public get mode(): any {
-		return this.$store.getters.mode;
-	}
-	public get notesPicked(): INoteSet {
-		return this.$store.getters.notesPicked;
-	}
-	public get scale(): INoteSet {
-		return this.$store.getters.scale;
-	}
+	public get mode(): any { return this.$store.getters.mode }
+	public get orientation(): any { return this.$store.getters.orientation }
+	public get notesPicked(): INoteSet { return this.$store.getters.notesPicked }
+	public get scale(): INoteSet { return this.$store.getters.scale }
 
 }
 </script>
