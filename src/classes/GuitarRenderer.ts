@@ -59,8 +59,8 @@ export default class GuitarRenderer extends Renderer {
 			this.canvas.height = (this.map.fretboard.dimensions.length * this.scale) + (this.PADDING * 2);
 			this.drawFretboard();
 			this.drawNut();
-			// this.drawInlays();
-			// this.drawFrets();
+			this.drawInlays();
+			this.drawFrets();
 			// this.drawStrings();
 			// this.drawNotes();
 		};
@@ -160,49 +160,95 @@ export default class GuitarRenderer extends Renderer {
 	private drawInlays(): void {
 		const inlayRadius: number = this.INLAY_RADIUS * this.scale;
 		const endAngle: number = 2 * Math.PI;
-		const fretWidth: number = this.map.fretboard.dimensions.width * this.scale;
-		const inlayXLeft = this.map.fretboard.coords.x + Math.floor(fretWidth * 0.25)
-		const inlayXCenter = this.map.fretboard.coords.x + Math.floor(fretWidth / 2);
-		const inlayXRight = this.map.fretboard.coords.x + Math.floor(fretWidth * 0.75);
 
 		this.ctx.fillStyle = this.INLAY_COLOR;
 
-		for(let i = 3; i <= this.numFrets; i++){
-			const inlayY = (i: number) => this.map.fretboard.coords.y + (i * this.FRET_SPACE_H * this.scale) + ((this.FRET_SPACE_H * this.scale) / 2);
+		if(this.orientation === 'vertical'){
+			const fretWidth: number = this.map.fretboard.dimensions.width * this.scale;
+			const inlayXLeft = this.map.fretboard.coords.x + Math.floor(fretWidth * 0.25)
+			const inlayXCenter = this.map.fretboard.coords.x + Math.floor(fretWidth / 2);
+			const inlayXRight = this.map.fretboard.coords.x + Math.floor(fretWidth * 0.75);
 
-			switch(i){
-				case 12: case 24:
-					this.ctx.beginPath();
-					this.ctx.arc(inlayXLeft, inlayY(i), inlayRadius, 0, endAngle);
-					this.ctx.fill();
-					this.ctx.closePath();
-					this.ctx.beginPath();
-					this.ctx.arc(inlayXRight, inlayY(i), inlayRadius, 0, endAngle);
-					this.ctx.fill();
-					break;
-				case 3: case 5: case 7: case 9: case 15: case 17: case 19: case 21:
-					this.ctx.beginPath();
-					this.ctx.arc(inlayXCenter, inlayY(i), inlayRadius, 0, endAngle);
-					this.ctx.fill();
-					break;
+			for(let i = 3; i <= this.numFrets; i++){
+				const inlayY = (i: number) => this.map.fretboard.coords.y + (i * this.FRET_SPACE_H * this.scale) + ((this.FRET_SPACE_H * this.scale) / 2);
+
+				switch(i){
+					case 12: case 24:
+						this.ctx.beginPath();
+						this.ctx.arc(inlayXLeft, inlayY(i), inlayRadius, 0, endAngle);
+						this.ctx.fill();
+						this.ctx.closePath();
+						this.ctx.beginPath();
+						this.ctx.arc(inlayXRight, inlayY(i), inlayRadius, 0, endAngle);
+						this.ctx.fill();
+						this.ctx.closePath();
+						break;
+					case 3: case 5: case 7: case 9: case 15: case 17: case 19: case 21:
+						this.ctx.beginPath();
+						this.ctx.arc(inlayXCenter, inlayY(i), inlayRadius, 0, endAngle);
+						this.ctx.fill();
+						this.ctx.closePath();
+						break;
+				}
 			}
-			this.ctx.closePath();
+		}
+		else{
+			const fretLength: number = this.map.fretboard.dimensions.length * this.scale;
+			const inlayYTop = this.map.fretboard.coords.y + Math.floor(fretLength * 0.25)
+			const inlayYCenter = this.map.fretboard.coords.y + Math.floor(fretLength / 2);
+			const inlayYBottom = this.map.fretboard.coords.y + Math.floor(fretLength * 0.75);
+
+			for(let i = 3; i <= this.numFrets; i++){
+				const inlayX = (i: number) => this.map.fretboard.coords.x + (i * this.FRET_SPACE_H * this.scale) + ((this.FRET_SPACE_H * this.scale) / 2);
+
+				switch(i){
+					case 12: case 24:
+						this.ctx.beginPath();
+						this.ctx.arc(inlayX(i), inlayYTop, inlayRadius, 0, endAngle);
+						this.ctx.fill();
+						this.ctx.closePath();
+						this.ctx.beginPath();
+						this.ctx.arc(inlayX(i), inlayYBottom, inlayRadius, 0, endAngle);
+						this.ctx.fill();
+						this.ctx.closePath();
+						break;
+					case 3: case 5: case 7: case 9: case 15: case 17: case 19: case 21:
+						this.ctx.beginPath();
+						this.ctx.arc(inlayX(i), inlayYCenter, inlayRadius, 0, endAngle);
+						this.ctx.fill();
+						this.ctx.closePath();
+						break;
+				}
+			}
 		}
 	}
 
 	private drawFrets(): void {
-		const fretWidth: number = this.map.fretboard.dimensions.width * this.scale;
-		const fretHeight: number = this.FRET_H * this.scale;
-
 		this.ctx.fillStyle = this.FRET_COLOR;
 
-		for(let i = 2; i <= this.numFrets + 1; i++){
-			this.ctx.fillRect(
-				this.map.fretboard.coords.x,
-				this.map.fretboard.coords.y + (i * this.FRET_SPACE_H * this.scale) - (this.FRET_H * this.scale),
-				fretWidth,
-				fretHeight
-			);
+		if(this.orientation === 'vertical'){
+			const fretWidth: number = this.map.fretboard.dimensions.width * this.scale;
+			const fretLength: number = this.FRET_H * this.scale;
+			for(let i = 2; i <= this.numFrets + 1; i++){
+				this.ctx.fillRect(
+					this.map.fretboard.coords.x,
+					this.map.fretboard.coords.y + (i * this.FRET_SPACE_H * this.scale) - (this.FRET_H * this.scale),
+					fretWidth,
+					fretLength
+				);
+			}
+		}
+		else{
+			for(let i = 2; i <= this.numFrets + 1; i++){
+				const fretWidth: number = this.FRET_SPACE_H * this.scale;
+				const fretLength: number = this.map.fretboard.dimensions.length * this.scale;
+				this.ctx.fillRect(
+					this.map.fretboard.coords.x + (i * this.FRET_SPACE_H * this.scale) - (this.FRET_H * this.scale),
+					this.map.fretboard.coords.y,
+					fretWidth,
+					fretLength
+				);
+			}
 		}
 	}
 
