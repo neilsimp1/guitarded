@@ -61,7 +61,7 @@ export default class GuitarRenderer extends Renderer {
 			this.drawNut();
 			this.drawInlays();
 			this.drawFrets();
-			// this.drawStrings();
+			this.drawStrings();
 			// this.drawNotes();
 		};
 
@@ -255,14 +255,27 @@ export default class GuitarRenderer extends Renderer {
 	private drawStrings(): void {
 		this.ctx.fillStyle = this.STRING_COLOR;
 
-		for(let i = 0; i < this.numStrings; i++){
-			const stringX: number = this.map.fretboard.coords.x + (i * this.STRING_SPACE_W * this.scale) + (this.STRING_OUTER_W * this.scale);
-			this.ctx.fillRect(
-				stringX,
-				this.map.fretboard.coords.y,
-				this.STRING_W,
-				this.map.fretboard.dimensions.length * this.scale
-			);
+		if(this.orientation === 'vertical'){
+			for(let i = 0; i < this.numStrings; i++){
+				const stringX: number = this.map.fretboard.coords.x + (i * this.STRING_SPACE_W * this.scale) + (this.STRING_OUTER_W * this.scale);
+				this.ctx.fillRect(
+					stringX,
+					this.map.fretboard.coords.y,
+					this.STRING_W,
+					this.map.fretboard.dimensions.length * this.scale
+				);
+			}
+		}
+		else{
+			for(let i = 0; i < this.numStrings; i++){
+				const stringY: number = this.map.fretboard.coords.y + (i * this.STRING_SPACE_W * this.scale) + (this.STRING_OUTER_W * this.scale);
+				this.ctx.fillRect(
+					this.map.fretboard.coords.x,
+					stringY,
+					this.map.fretboard.dimensions.width * this.scale,
+					this.STRING_W
+				);
+			}
 		}
 	}
 
