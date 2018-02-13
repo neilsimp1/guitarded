@@ -62,7 +62,7 @@ export default class GuitarRenderer extends Renderer {
 			this.drawInlays();
 			this.drawFrets();
 			this.drawStrings();
-			// this.drawNotes();
+			this.drawNotes();
 		};
 
 		if(this.isLoaded){
@@ -284,16 +284,32 @@ export default class GuitarRenderer extends Renderer {
 
 		this.ctx.fillStyle = this.NOTE_COLOR;
 
-		for(let i = 0; i < this.fretboard.length; i++){
-			const noteX: number = this.map.fretboard.coords.x + (i * this.STRING_SPACE_W * this.scale) + (this.STRING_OUTER_W * this.scale);
-			for(let j = 0; j <= this.numFrets; j++){
-				if(!this.fretboard[i].frets[j]) continue;
-				const noteY = (i: number) => this.map.fretboard.coords.y + (i * this.FRET_SPACE_H * this.scale) + ((this.FRET_SPACE_H * this.scale) / 2);
+		if(this.orientation === 'vertical'){
+			for(let i = 0; i < this.fretboard.length; i++){
+				const noteX: number = this.map.fretboard.coords.x + (i * this.STRING_SPACE_W * this.scale) + (this.STRING_OUTER_W * this.scale);
+				for(let j = 0; j <= this.numFrets; j++){
+					if(!this.fretboard[i].frets[j]) continue;
+					const noteY = (i: number) => this.map.fretboard.coords.y + (i * this.FRET_SPACE_H * this.scale) + ((this.FRET_SPACE_H * this.scale) / 2);
 
-				this.ctx.beginPath();
-				this.ctx.arc(noteX, noteY(j), this.NOTE_RADIUS * this.scale, 0, endAngle);
-				this.ctx.fill();
-				this.ctx.closePath();
+					this.ctx.beginPath();
+					this.ctx.arc(noteX, noteY(j), this.NOTE_RADIUS * this.scale, 0, endAngle);
+					this.ctx.fill();
+					this.ctx.closePath();
+				}
+			}
+		}
+		else{
+			for(let i = 0; i < this.fretboard.length; i++){
+				const noteY: number = this.map.fretboard.coords.y + ((this.numStrings - 1 - i) * this.STRING_SPACE_W * this.scale) + (this.STRING_OUTER_W * this.scale);
+				for(let j = 0; j <= this.numFrets; j++){
+					if(!this.fretboard[i].frets[j]) continue;
+					const noteX = (i: number) => this.map.fretboard.coords.x + (i * this.FRET_SPACE_H * this.scale) + ((this.FRET_SPACE_H * this.scale) / 2);
+
+					this.ctx.beginPath();
+					this.ctx.arc(noteX(j), noteY, this.NOTE_RADIUS * this.scale, 0, endAngle);
+					this.ctx.fill();
+					this.ctx.closePath();
+				}
 			}
 		}
 	}
