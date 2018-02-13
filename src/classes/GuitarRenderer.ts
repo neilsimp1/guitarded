@@ -240,7 +240,7 @@ export default class GuitarRenderer extends Renderer {
 		}
 		else{
 			for(let i = 2; i <= this.numFrets + 1; i++){
-				const fretWidth: number = this.FRET_SPACE_H * this.scale;
+				const fretWidth: number = this.FRET_H * this.scale;
 				const fretLength: number = this.map.fretboard.dimensions.length * this.scale;
 				this.ctx.fillRect(
 					this.map.fretboard.coords.x + (i * this.FRET_SPACE_H * this.scale) - (this.FRET_H * this.scale),
@@ -270,13 +270,13 @@ export default class GuitarRenderer extends Renderer {
 		const endAngle: number = 2 * Math.PI;
 
 		this.ctx.fillStyle = this.NOTE_COLOR;
-		
+
 		for(let i = 0; i < this.fretboard.length; i++){
 			const noteX: number = this.map.fretboard.coords.x + (i * this.STRING_SPACE_W * this.scale) + (this.STRING_OUTER_W * this.scale);
 			for(let j = 0; j <= this.numFrets; j++){
 				if(!this.fretboard[i].frets[j]) continue;
 				const noteY = (i: number) => this.map.fretboard.coords.y + (i * this.FRET_SPACE_H * this.scale) + ((this.FRET_SPACE_H * this.scale) / 2);
-				
+
 				this.ctx.beginPath();
 				this.ctx.arc(noteX, noteY(j), this.NOTE_RADIUS * this.scale, 0, endAngle);
 				this.ctx.fill();
