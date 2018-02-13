@@ -38,9 +38,6 @@ export default class GuitarRenderer extends Renderer {
 		this.numFrets = numFrets;
 		this.numStrings = numStrings;
 		this.orientation = orientation;
-		this.scale = this.getScale(numStrings);
-		this.map.fretboard = this.getFretboardPoints();
-		this.canvas.height = (this.map.fretboard.dimensions.length * this.scale) + (this.PADDING * 2);
 	}
 
 	private async loadAssets(): Promise<boolean> {
@@ -57,12 +54,15 @@ export default class GuitarRenderer extends Renderer {
 
 	public render(): void {
 		const doRender = () => {
+			this.scale = this.getScale(this.numStrings);
+			this.map.fretboard = this.getFretboardPoints();
+			this.canvas.height = (this.map.fretboard.dimensions.length * this.scale) + (this.PADDING * 2);
 			this.drawFretboard();
 			this.drawNut();
-			this.drawInlays();
-			this.drawFrets();
-			this.drawStrings();
-			this.drawNotes();
+			// this.drawInlays();
+			// this.drawFrets();
+			// this.drawStrings();
+			// this.drawNotes();
 		};
 
 		if(this.isLoaded){
@@ -83,17 +83,13 @@ export default class GuitarRenderer extends Renderer {
 		this.numFrets = numFrets;
 		this.numStrings = numStrings;
 		this.orientation = orientation;
-		this.scale = this.getScale(numStrings);
-		this.map.fretboard = this.getFretboardPoints();
-		this.canvas.height = (this.map.fretboard.dimensions.length * this.scale) + (this.PADDING * 2);
-		
 		this.render();
 	}
 
 	private getScale(numStrings: number): number {
 		const containerWL: number = this.orientation === 'vertical'
 			? this.canvas.parentElement!.clientWidth
-			: this.canvas.parentElement!.clientHeight;
+			: this.canvas.height;
 
 		let scale: number;
 		if(containerWL < this.BP_SM) scale = 2;
@@ -123,8 +119,8 @@ export default class GuitarRenderer extends Renderer {
 				length: ((this.numStrings - 1) * this.STRING_SPACE_W) + (this.STRING_OUTER_W * 2)
 			};
 			coords = {
-				x: this.PADDING,
-				y: Math.floor((this.canvas.parentElement!.clientHeight / 2) - ((dimensions.width * this.scale) / 2))
+				x: Math.floor((this.canvas.width / 2) - ((dimensions.width * this.scale) / 2)),
+				y: this.PADDING
 			};
 		}
 
@@ -156,7 +152,7 @@ export default class GuitarRenderer extends Renderer {
 				this.map.fretboard.coords.x + (this.FRET_SPACE_H * this.scale),
 				this.map.fretboard.coords.y,
 				this.NUT_H * this.scale,
-				this.map.fretboard.dimensions.width * this.scale
+				this.map.fretboard.dimensions.length * this.scale
 			);
 		}
 	}
