@@ -1,23 +1,75 @@
 
-.scale-controls, .chord-controls {
+// .scale-controls, .chord-controls {
+// 	display: grid;
+// 	grid-template-columns: 100%;
+// 	grid-gap: 1em;
+
+// 	padding: 1em;
+// }
+
+// @media (min-width: $bp-md) {
+// 	.scale-controls, .chord-controls {
+// 		grid-template-columns: 2fr 3fr;
+// 	}
+// }
+
+// @media (min-width: $bp-xl) {
+// 	.scale-controls, .chord-controls {
+// 		grid-template-columns: repeat(2, 1fr);
+// 	}
+// }
+
+@import '../util/variables';
+
+.scalebook, .chordbook {
 	display: grid;
 	grid-template-columns: 100%;
-	grid-gap: 1em;
+}
 
+.scale-controls, .chord-controls {
 	padding: 1em;
 }
 
 @media (min-width: $bp-md) {
-	.scale-controls, .chord-controls {
-		grid-template-columns: 2fr 3fr;
+	.scalebook, .chordbook {
+		grid-template-columns: repeat(5, 1fr);
+		grid-template-rows: repeat(2, 1fr);
+	}
+	.scalebook-horizontal {
+		.scale-controls{
+			grid-column: 1 / 2;
+			grid-row: 1;
+		}
+		.chord-controls {
+			grid-column: 3 / 3;
+			grid-row: 1;
+		}
+		.guitar {
+			grid-column: 1 / 5;
+			grid-row: 2;
+		}
+	}
+	.scalebook-vertical {
+		.scale-controls{
+			grid-column: 1 / 2;
+			grid-row: 1;
+		}
+		.chord-controls {
+			grid-column: 1 / 2;
+			grid-row: 2;
+		}
+		.guitar {
+			grid-column: 2 / 3;
+			grid-row: 1 / 2;
+		}
 	}
 }
 
-@media (min-width: $bp-xl) {
-	.scale-controls, .chord-controls {
-		grid-template-columns: repeat(2, 1fr);
-	}
-}
+// @media (min-width: $bp-xl) {
+// 	.scale-controls, .chord-controls {
+// 		grid-template-columns: repeat(2, 1fr);
+// 	}
+// }
 
 
 
