@@ -5,9 +5,7 @@
 
 		<div class="panel-row">
 			<label for="numstrings"># Strings</label>
-			<select id="numstrings"
-				 :value="numStrings"
-				 v-on:change="updateNumStrings">
+			<select id="numstrings" :value="numStrings" v-on:change="updateNumStrings">
 				<option value="3">3</option>
 				<option value="4">4</option>
 				<option value="5">5</option>
@@ -21,9 +19,7 @@
 			</select>
 
 			<label for="numfrets"># Frets</label>
-			<select id="numfrets"
-				 :value="numFrets"
-				 v-on:change="updateNumFrets">
+			<select id="numfrets" :value="numFrets" v-on:change="updateNumFrets">
 				<option value="19">19</option>
 				<option value="20">20</option>
 				<option value="21">21</option>
@@ -47,7 +43,7 @@
 
 		<GuitarTuner />
 
-		<div class="panel-row">
+		<div class="panel-row" v-show="!forceVertical">
 			<div class="handedness-buttons button-grp-toggle">
 				<button type="button"
 					 v-on:click="updateOrientation('horizontal')"
@@ -75,6 +71,8 @@ import GuitarTuner from './GuitarTuner.vue';
 })
 export default class GuitarControls extends Vue {
 
+	private forceVertical: boolean = false;
+
 	public get handedness(): string { return this.$store.getters.handedness }
 	public get numStrings(): number { return this.$store.getters.numStrings }
 	public get numFrets(): number { return this.$store.getters.numFrets }
@@ -84,6 +82,12 @@ export default class GuitarControls extends Vue {
 	@Watch('numStrings')
 	public onPropertyChanged(numStrings: number) {
 		this.$store.commit('updateTuning', this.tunings[numStrings]);
+	}
+
+	public created(): void {
+		this.$root.$on('forceVerticalChanged', (forceVertical: boolean) => {
+			this.forceVertical = forceVertical;
+		});
 	}
 
 	public updateHandedness(handedness: string): void {
