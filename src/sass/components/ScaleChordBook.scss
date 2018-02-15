@@ -1,33 +1,15 @@
-
-// .scale-controls, .chord-controls {
-// 	display: grid;
-// 	grid-template-columns: 100%;
-// 	grid-gap: 1em;
-
-// 	padding: 1em;
-// }
-
-// @media (min-width: $bp-md) {
-// 	.scale-controls, .chord-controls {
-// 		grid-template-columns: 2fr 3fr;
-// 	}
-// }
-
-// @media (min-width: $bp-xl) {
-// 	.scale-controls, .chord-controls {
-// 		grid-template-columns: repeat(2, 1fr);
-// 	}
-// }
-
 @import '../util/variables';
 
 .scalebook, .chordbook {
 	display: grid;
 	grid-template-columns: 100%;
+	min-height: inherit;
 }
 
 .scale-controls, .chord-controls {
-	padding: 1em;
+	display: flex;
+	flex-direction: column;
+	&> div { flex: auto; }
 }
 
 @media (min-width: $bp-md) {
@@ -36,54 +18,27 @@
 		grid-template-rows: repeat(2, 1fr);
 	}
 	.scalebook-horizontal {
-		.scale-controls{
-			grid-column: 1 / 2;
+		.scale-controls, .chord-controls{
+			grid-column: span 5;
 			grid-row: 1;
-		}
-		.chord-controls {
-			grid-column: 3 / 3;
-			grid-row: 1;
+			flex-direction: row;
 		}
 		.guitar {
-			grid-column: 1 / 5;
+			grid-column: span 5;
 			grid-row: 2;
 		}
 	}
 	.scalebook-vertical {
-		.scale-controls{
-			grid-column: 1 / 2;
-			grid-row: 1;
-		}
-		.chord-controls {
-			grid-column: 1 / 2;
-			grid-row: 2;
+		.scale-controls, .chord-controls{
+			grid-column: 1 / span 3;
+			grid-row: span 2;
 		}
 		.guitar {
-			grid-column: 2 / 3;
-			grid-row: 1 / 2;
+			grid-column: 4 / span 2;
+			grid-row: span 2;
 		}
 	}
 }
-
-// @media (min-width: $bp-xl) {
-// 	.scale-controls, .chord-controls {
-// 		grid-template-columns: repeat(2, 1fr);
-// 	}
-// }
-
-
-
-// .panel-scale-controls {
-
-// }
-
-// .panel-chord-controls {
-
-// }
-
-// .panel-guitar-controls {
-
-// }
 
 .handedness-buttons {
 	font-size: 0.8em;

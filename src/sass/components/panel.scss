@@ -3,10 +3,10 @@
 
 .panel {
 	background-color: $gray-darker;
-	border: 2px solid $primary;
-	border-radius: 4px;
-	box-shadow: 2px 2px 2px 2px $primary2;
+	border: 1px solid $primary;
+	box-shadow: 1px 1px 1px $gray-darker;
 
+	margin: 2px;
 	padding: 12px;
 
 	color: $primary;
@@ -26,7 +26,7 @@
 		border: 1px solid $primary2;
 		border-radius: 4px;
 		padding: 4px 8px;
-		
+
 		text-decoration: none;
 		user-select: none;
 
@@ -50,14 +50,14 @@
 		display: inline-block;
 		margin: 0 4px;
 		min-width: 50px;
-	
+
 		line-height: 1.5em;
 		font-size: 0.9em;
 
 		&:not(:first-child) {
 			margin: 0 4px 0 16px;
 		}
-	}	
+	}
 }
 
 .panel-display {
