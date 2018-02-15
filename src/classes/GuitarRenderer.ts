@@ -22,14 +22,14 @@ export default class GuitarRenderer extends Renderer {
 	private STRING_COLOR: string = '#666';
 
 	private INLAY_RADIUS: number = 2;
-	private FRET_SPACE_H: number = 9; // 18px in each fret, 2 of which at bottom for metal
-	private FRET_H: number = 1; // 2px for each metal fret
+	private FRET_SPACE_H: number = 9; // Fret height, including the space for the fret itself
+	private FRET_H: number = 1; // Height of metal fret bar
 	private NOTE_RADIUS: number = 1.2;
-	private NUT_H: number = 2; // 4px for height of nut at top of neck, so only 14 would show above it for headstock
+	private NUT_H: number = 2;
 	private PADDING: number = 15;
-	private STRING_SPACE_W: number = 3; // 6px for string and space around it
-	private STRING_W: number = 1; // 2px wide
-	private STRING_OUTER_W: number = 1; // 2 + 2px on each side
+	private STRING_SPACE_W: number = 3; // Space for string, including the space until the next string
+	private STRING_W: number = 1;
+	private STRING_OUTER_W: number = 1; // Space outside the outer strings before edge of fretboard
 
 	constructor(canvas: HTMLCanvasElement, numFrets: number, numStrings: number, fretboard: GuitarString[], orientation: string) {
 		super(canvas);

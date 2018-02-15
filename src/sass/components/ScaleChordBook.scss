@@ -9,7 +9,7 @@
 .scale-controls, .chord-controls {
 	display: flex;
 	flex-direction: column;
-	&> div { flex: auto; }
+	& > div { flex: auto; }
 }
 
 @media (min-width: $bp-md) {
