@@ -79,6 +79,7 @@ export default class GuitarRenderer extends Renderer {
 	}
 
 	public update(numFrets: number, numStrings: number, fretboard: GuitarString[], orientation: string): void {
+		this.scale = this.getScale(numStrings);
 		this.fretboard = fretboard;
 		this.numFrets = numFrets;
 		this.numStrings = numStrings;
@@ -87,15 +88,17 @@ export default class GuitarRenderer extends Renderer {
 	}
 
 	private getScale(numStrings: number): number {
-		const containerWL: number = this.orientation === 'vertical'
-			? this.canvas.parentElement!.clientWidth
-			: this.canvas.height;
-
-		let scale: number;
-		if(containerWL < this.BP_SM) scale = 2;
-		else if(containerWL < this.BP_LG) scale = 3;
-		else if(containerWL < this.BP_XXL) scale = 4;
-		else scale = 3;
+		let scale: number = 3;
+		if(this.orientation === 'vertical'){
+			if(this.canvas.width < this.BP_SM) scale = 2;
+			else if(this.canvas.width < this.BP_LG) scale = 3;
+			else if(this.canvas.width < this.BP_XXL) scale = 4;
+		}
+		else{
+			if(this.canvas.width < this.BP_SM) scale = 3;
+			else if(this.canvas.width < this.BP_LG) scale = 4;
+			else if(this.canvas.width < this.BP_XXL) scale = 5;
+		}
 
 		return scale;
 	}
