@@ -53,37 +53,42 @@ export default class Guitar extends Vue {
 	@Watch('handedness')
 	public onHandednessChanged() {
 		this.buildFretboard();
-		this.renderer.update(this.numFrets, this.numStrings, this.fretboard, this.orientation);
+		this.updateGuitar();
+	}
+	@Watch('numFrets')
+	public onNumFretsChanged() {
+		this.buildFretboard();
+		this.updateGuitar();
 	}
 	@Watch('noteSet')
 	public onNoteSetChanged() {
 		this.buildFretboard();
-		this.renderer.update(this.numFrets, this.numStrings, this.fretboard, this.orientation);
+		this.updateGuitar();
 	}
 	@Watch('orientation')
 	public onOrientationChanged(notesPicked: INoteSet) {
 		this.buildFretboard();
-		this.renderer.update(this.numFrets, this.numStrings, this.fretboard, this.orientation);
+		this.updateGuitar();
 	}
 	@Watch('notesPicked')
 	public onNotesPickedChanged(notesPicked: INoteSet) {
 		this.buildFretboard();
-		this.renderer.update(this.numFrets, this.numStrings, this.fretboard, this.orientation);
+		this.updateGuitar();
 	}
 	@Watch('scale')
 	public onScaleChanged(scale: INoteSet) {
 		this.buildFretboard();
-		this.renderer.update(this.numFrets, this.numStrings, this.fretboard, this.orientation);
+		this.updateGuitar();
 	}
 	@Watch('tuning')
 	public onTuningChanged() {
 		this.buildFretboard();
-		this.renderer.update(this.numFrets, this.numStrings, this.fretboard, this.orientation);
+		this.updateGuitar();
 	}
 	@Watch('windowDimensions')
 	public onResize() {
 		this.setForceVertical();
-		this.renderer.update(this.numFrets, this.numStrings, this.fretboard, this.orientation);
+		this.updateGuitar();
 	}
 
 	public created(): void {
@@ -121,6 +126,10 @@ export default class Guitar extends Vue {
 		if(this.handedness === 'left') tuning.notes.reverse();
 
 		this.fretboard = tuning.notes.map((note: Note) => new GuitarString(note.name, this.noteSet));
+	}
+
+	private updateGuitar(): void {
+		this.renderer.update(this.numFrets, this.numStrings, this.fretboard, this.orientation);
 	}
 
 	private setForceVertical(): void {
