@@ -43,52 +43,56 @@ export default class Guitar extends Vue {
 	public get notesPicked(): INoteSet { return this.$store.getters.notesPicked }
 	public get numFrets(): number { return this.$store.getters.numFrets }
 	public get numStrings(): number { return this.$store.getters.numStrings }
-	public get orientation(): string { return this.$store.getters.orientation }
-	public get orientationComp(): string { return this.forceVertical ? 'vertical' : this.$store.getters.orientation }
+	public get orientation(): string { return this.forceVertical ? 'vertical' : this.$store.getters.orientation }
 	public get scale(): INoteSet { return this.$store.getters.scale }
 
 	@Watch('forceVertical')
 	public onForceVerticalChanged(forceVertical: boolean) {
 		this.$root.$emit('forceVerticalChanged', forceVertical);
-		this.renderer.update(this.numFrets, this.numStrings, this.fretboard, this.orientationComp);
 	}
 	@Watch('handedness')
 	public onHandednessChanged() {
 		this.buildFretboard();
-		this.renderer.update(this.numFrets, this.numStrings, this.fretboard, this.orientationComp);
+		this.renderer.update(this.numFrets, this.numStrings, this.fretboard, this.orientation);
 	}
 	@Watch('noteSet')
 	public onNoteSetChanged() {
 		this.buildFretboard();
-		this.renderer.update(this.numFrets, this.numStrings, this.fretboard, this.orientationComp);
+		this.renderer.update(this.numFrets, this.numStrings, this.fretboard, this.orientation);
 	}
 	@Watch('orientation')
 	public onOrientationChanged(notesPicked: INoteSet) {
 		this.buildFretboard();
-		this.renderer.update(this.numFrets, this.numStrings, this.fretboard, this.orientationComp);
+		this.renderer.update(this.numFrets, this.numStrings, this.fretboard, this.orientation);
 	}
 	@Watch('notesPicked')
 	public onNotesPickedChanged(notesPicked: INoteSet) {
 		this.buildFretboard();
-		this.renderer.update(this.numFrets, this.numStrings, this.fretboard, this.orientationComp);
+		this.renderer.update(this.numFrets, this.numStrings, this.fretboard, this.orientation);
 	}
 	@Watch('scale')
 	public onScaleChanged(scale: INoteSet) {
 		this.buildFretboard();
-		this.renderer.update(this.numFrets, this.numStrings, this.fretboard, this.orientationComp);
+		this.renderer.update(this.numFrets, this.numStrings, this.fretboard, this.orientation);
 	}
 	@Watch('tuning')
 	public onTuningChanged() {
 		this.buildFretboard();
-		this.renderer.update(this.numFrets, this.numStrings, this.fretboard, this.orientationComp);
+		this.renderer.update(this.numFrets, this.numStrings, this.fretboard, this.orientation);
 	}
 	@Watch('windowDimensions')
 	public onResize() {
 		this.setForceVertical();
+		this.renderer.update(this.numFrets, this.numStrings, this.fretboard, this.orientation);
 	}
 
 	public created(): void {
-		window.addEventListener('resize', this.setWindowDimensions);
+		let handle: number;
+		window.addEventListener('resize', () => {
+			clearTimeout(handle);
+			handle = setTimeout(this.setWindowDimensions, 200);
+		});
+
 		this.setWindowDimensions();
 		this.setForceVertical();
 	}
@@ -100,11 +104,15 @@ export default class Guitar extends Vue {
 			this.numFrets,
 			this.numStrings,
 			this.fretboard,
-			this.orientationComp
+			this.orientation
 		);
 
 		this.renderer.render();
 	}
+
+	// public destroyed(): void {
+	// 	window.removeEventListener('resize');
+	// }
 
 	private buildFretboard(): void {
 		if(!this.noteSet) return;

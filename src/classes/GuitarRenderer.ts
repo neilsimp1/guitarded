@@ -79,7 +79,6 @@ export default class GuitarRenderer extends Renderer {
 	}
 
 	public update(numFrets: number, numStrings: number, fretboard: GuitarString[], orientation: string): void {
-		this.scale = this.getScale(numStrings);
 		this.fretboard = fretboard;
 		this.numFrets = numFrets;
 		this.numStrings = numStrings;
