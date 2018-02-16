@@ -87,16 +87,17 @@ export default class GuitarRenderer extends Renderer {
 	}
 
 	private getScale(numStrings: number): number {
-		let scale: number = 3;
-		if(this.orientation === 'vertical'){
-			if(this.canvas.width < this.BP_SM) scale = 2;
-			else if(this.canvas.width < this.BP_LG) scale = 3;
-			else if(this.canvas.width < this.BP_XXL) scale = 4;
-		}
-		else{
-			if(this.canvas.width < this.BP_SM) scale = 3;
-			else if(this.canvas.width < this.BP_LG) scale = 4;
-			else if(this.canvas.width < this.BP_XXL) scale = 5;
+		let scale: number = 0;
+
+		const maxSize: number = this.orientation === 'vertical' ? window.innerHeight : window.innerWidth;
+		let _scale: number = 1;
+		while(true){
+			const fretboardSize = ((this.numFrets + 1) * this.FRET_SPACE_H * _scale) + (this.PADDING * 2);
+			if(fretboardSize <= maxSize) _scale++;
+			else{
+				scale = _scale - 1;
+				break;
+			}
 		}
 
 		return scale;
