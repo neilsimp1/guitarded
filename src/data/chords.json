@@ -1,0 +1,82 @@
+[
+	{
+		"name": "Major",
+		"intervals": [4, 3],
+		"group": "1"
+	},
+	{
+		"name": "Dominant 7th",
+		"intervals": [4, 3, 3],
+		"group": "1"
+	},
+	{
+		"name": "Major 7th",
+		"intervals": [4, 3, 4],
+		"group": "1"
+	},
+	{
+		"name": "Minor",
+		"intervals": [3, 4],
+		"group": "1"
+	},
+	{
+		"name": "Minor 7th",
+		"intervals": [3, 4, 3],
+		"group": "1"
+	},
+	{
+		"name": "Minor Major 7th",
+		"intervals": [3, 4, 4],
+		"group": "1"
+	},
+
+
+	{
+		"name": "Diminished",
+		"intervals": [3, 3],
+		"group": "2"
+	},
+	{
+		"name": "Diminished 7th",
+		"intervals": [3, 3, 3],
+		"group": "2"
+	},
+	{
+		"name": "Half Diminished",
+		"intervals": [3, 3, 4],
+		"group": "2"
+	},
+	{
+		"name": "Augmented",
+		"intervals": [4, 4],
+		"group": "2"
+	},
+	{
+		"name": "Augmented 7th",
+		"intervals": [4, 4, 2],
+		"group": "2"
+	},
+
+
+	{
+		"name": "Major 6th",
+		"intervals": [4, 3, 2],
+		"group": "3"
+	},
+	{
+		"name": "Minor 6th",
+		"intervals": [3, 4, 2],
+		"group": "3"
+	},
+	{
+		"name": "Suspended 2nd",
+		"intervals": [2, 5],
+		"group": "3"
+	},
+	{
+		"name": "Suspended 4th",
+		"intervals": [5, 2],
+		"group": "3"
+	}
+
+]
