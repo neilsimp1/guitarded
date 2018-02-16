@@ -1,46 +1,65 @@
 <template>
-	<div>
-		<label># Strings</label>
-		<select>
-			<option value="3">3</option>
-			<option value="4">4</option>
-			<option value="5">5</option>
-			<option value="6">6</option>
-			<option value="7">7</option>
-			<option value="8">8</option>
-			<option value="9">9</option>
-			<option value="10">10</option>
-			<option value="11">11</option>
-			<option value="12">12</option>
-		</select>
+	<div class="panel panel-chord-controls">
 
-		<label># Frets</label>
-		<select>
-			<option value="19">19</option>
-			<option value="20">20</option>
-			<option value="21">21</option>
-			<option value="22">22</option>
-			<option value="23">23</option>
-			<option value="24">24</option>
-			<option value="25">25</option>
-		</select>
+		<h1>Chords</h1>
+
+		<div class="panel-row panel-viewtoggle">
+			<a href="#browser"
+				 v-on:click="updateMode('browser')"
+				 :class="[mode === 'browser' ? 'active' : '']">
+				Browse Chords
+			</a>
+			<a href="#builder"
+				 v-on:click="updateMode('builder')"
+				 :class="[mode === 'builder' ? 'active' : '']">
+				Build Chord
+			</a>
+		</div>
+
+		<div class="panel-row">
+			<label for="key">Key</label>
+			<select id="key" v-on:change="updateKey">
+				<option v-for="note in allNotes"
+					 :value="note.name"
+					 :key="note.name"
+					 :selected="key === note.name">
+					{{ note.displayName }}
+				</option>
+			</select>
+		</div>
+
+		<template v-if="mode === 'browser'">
+			<div class="panel-row">
+				<label for="chord">Chord</label>
+				<select id="chord" v-on:change="updateChord">
+					<option v-if="chords"
+						 v-for="_chord in chords"
+						 :key="_chord.name"
+						 :value="_chord.name"
+						 :selected="_chord.name === chord.name">
+						{{ _chord.name }}
+					</option>
+				</select>
+			</div>
+		</template>
+
+		<template v-else-if="mode === 'builder'">
+			<NotePicker />
+		</template>
+
 	</div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import ChordTuner from './ChordTuner.vue';
+import NotePicker from '../Common/NotePicker.vue';
 
 @Component({
 	name: 'chordcontrols',
-	components: { ChordTuner }
+	components: { NotePicker }
 })
 export default class ChordControls extends Vue {
-
-	public mounted(): void {
-
-	}
 
 	public get numStrings(): number {
 		return this.$store.getters.numStrings;
