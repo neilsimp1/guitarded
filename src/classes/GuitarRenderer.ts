@@ -79,6 +79,7 @@ export default class GuitarRenderer extends Renderer {
 	}
 
 	public update(numFrets: number, numStrings: number, fretboard: GuitarString[], orientation: string): void {
+		this.canvas.width = this.canvas.parentElement!.clientWidth;
 		this.fretboard = fretboard;
 		this.numFrets = numFrets;
 		this.numStrings = numStrings;
@@ -112,7 +113,7 @@ export default class GuitarRenderer extends Renderer {
 				length: (this.numFrets + 1) * this.FRET_SPACE_H
 			};
 			coords = {
-				x: Math.floor((this.canvas.parentElement!.clientWidth / 2) - ((dimensions.width * this.scale) / 2)),
+				x: Math.floor((this.canvas.width / 2) - ((dimensions.width * this.scale) / 2)),
 				y: this.PADDING
 			};
 		}
@@ -122,7 +123,7 @@ export default class GuitarRenderer extends Renderer {
 				length: ((this.numStrings - 1) * this.STRING_SPACE_W) + (this.STRING_OUTER_W * 2)
 			};
 			coords = {
-				x: Math.floor((this.canvas.width / 2) - ((dimensions.width * this.scale) / 2)),
+				x: Math.floor((window.innerWidth / 2) - ((dimensions.width * this.scale) / 2)),
 				y: this.PADDING
 			};
 		}
