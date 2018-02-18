@@ -54,6 +54,8 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import NotePicker from '../Common/NotePicker.vue';
+import Chord from '../../classes/Chord';
+import Note from '../../classes/Note';
 
 @Component({
 	name: 'chordcontrols',
@@ -61,12 +63,35 @@ import NotePicker from '../Common/NotePicker.vue';
 })
 export default class ChordControls extends Vue {
 
-	public get numStrings(): number {
-		return this.$store.getters.numStrings;
+	public get mode(): any { return this.$store.getters['ChordBookModule/mode'] }
+	public get chords(): any { return this.$store.getters['ChordBookModule/chords'] }
+	public get chord(): Chord { return this.$store.getters['ChordBookModule/chord'] }
+	public get key(): string { return this.$store.getters['ChordBookModule/key'] }
+	public get allNotes(): Note[] { return Note.getAllNotes() }
+
+	public beforeCreate(): void {
+		if(!this.$store.getters.chords){
+			const chords: any = Chord.getChords();
+			this.$store.commit('ChordBookModule/updateChords', chords);
+			const chord: Chord = new Chord(chords[0].name, chords[0].intervals, this.$store.getters.key);
+			this.$store.commit('ChordBookModule/updateChord', chord);
+		}
 	}
 
-	public get numFrets(): number {
-		return this.$store.getters.numFrets;
+	public updateKey(event: Event): void {
+		this.$store.commit('ChordBookModule/updateKey', (event.target as HTMLSelectElement).value);
+		const newChord = new Chord(this.chord.name, this.chord.intervals, (event.target as HTMLSelectElement).value);
+		this.$store.commit('ChordBookModule/updateChord', newChord);
 	}
+
+	public updateChord(event: Event): void {
+		const newChord: Chord = Chord.getChord((event.target as HTMLSelectElement).value, this.key);
+		this.$store.commit('ChordBookModule/updateChord', newChord);
+	}
+
+	private updateMode(mode: string): void {
+		this.$store.commit('ChordBookModule/updateMode', mode);
+	}
+
 }
 </script>

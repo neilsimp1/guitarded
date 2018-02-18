@@ -1,29 +1,29 @@
 import Vuex from 'vuex';
 import INoteSet from '../../classes/INoteSet';
-import Scale from '../../classes/Scale';
+import Chord from '../../classes/Chord';
 
 const state = {
 	key: <string> 'C',
 	mode: <string> 'browser',
 	notesPicked: <INoteSet | null> null,
-	scale: <Scale | null> null,
-	scales: <Map<string, Scale> | null> null
+	chord: <Chord | null> null,
+	chords: <Map<string, Chord> | null> null
 };
 
 const getters = {
 	key: (state: any) => state.key,
 	mode: (state: any) => state.mode,
 	notesPicked: (state: any) => state.notesPicked,
-	scale: (state: any) => state.scale,
-	scales: (state: any) => state.scales
+	chord: (state: any) => state.chord,
+	chords: (state: any) => state.chords
 };
 
 const mutations = {
 	updateKey: (state: any, key: string) => state.key = key,
 	updateMode: (state: any, mode: string) => state.mode = mode,
 	updateNotesPicked: (state: any, notesPicked: INoteSet) => state.notesPicked = notesPicked,
-	updateScale: (state: any, scale: Scale) => state.scale = scale,
-	updateScales: (state: any, scales: Map<string, Scale>) => state.scales = scales
+	updateChord: (state: any, chord: Chord) => state.chord = chord,
+	updateChords: (state: any, chords: Map<string, Chord>) => state.chords = chords,
 };
 
 const actions = {

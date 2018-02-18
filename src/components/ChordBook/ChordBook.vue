@@ -25,10 +25,10 @@ import INoteSet from '../Common/INoteSet.vue';
 })
 export default class ChordBook extends Vue {
 
-	public get mode(): any { return this.$store.getters.mode }
+	public get mode(): any { return this.$store.getters['ChordBookModule/mode'] }
 	public get orientation(): any { return this.$store.getters.orientation }
-	public get notesPicked(): INoteSet { return this.$store.getters.notesPicked }
-	public get chord(): INoteSet { return this.$store.getters.chord }
+	public get notesPicked(): INoteSet { return this.$store.getters['ChordBookModule/notesPicked'] }
+	public get chord(): INoteSet { return this.$store.getters['ChordBookModule/chord'] }
 
 }
 </script>

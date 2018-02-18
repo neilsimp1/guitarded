@@ -49,18 +49,9 @@ export default class GuitarTuner extends Vue {
 
 	private tuningsForNumStrings: Tuning[];
 
-	public get key(): Tuning {
-		return this.$store.getters.key;
-	}
-	public get tuning(): Tuning {
-		return this.$store.getters.tuning;
-	}
-	public get numStrings(): number {
-		return this.$store.getters.numStrings;
-	}
-	public get allNotes(): Note[] {
-		return Note.getAllNotes();
-	}
+	public get tuning(): Tuning { return this.$store.getters['GuitarModule/tuning'] }
+	public get numStrings(): number { return this.$store.getters['GuitarModule/numStrings'] }
+	public get allNotes(): Note[] { return Note.getAllNotes() }
 
 	@Watch('numStrings')
 	public onNumStringsChanged(numStrings: number): void {
@@ -71,14 +62,14 @@ export default class GuitarTuner extends Vue {
 		const newNote: Note = Note.lookupNote((event.target as HTMLSelectElement).value, 'name');
 		const newNotes: Note[] = this.tuning.notes.map((n: Note, i: number) => i === stringNum - 1? newNote : n);
 		const newTuning: Tuning = new Tuning(Tuning.lookupTuningName(this.numStrings, newNotes), newNotes);
-		this.$store.commit('updateTuning', newTuning);
+		this.$store.commit('GuitarModule/updateTuning', newTuning);
 	}
 
 	public beforeCreate(): void {
 		const numStrings: number = this.$store.getters.numStrings;
 		if(!this.$store.getters.tuning){
-			this.$store.commit('updateTunings', Tuning.getDefaultTunings());
-			this.$store.commit('updateTuning', Tuning.getDefaultTuning(numStrings));
+			this.$store.commit('GuitarModule/updateTunings', Tuning.getDefaultTunings());
+			this.$store.commit('GuitarModule/updateTuning', Tuning.getDefaultTuning(numStrings));
 		}
 		if(!this.tuningsForNumStrings){
 			this.tuningsForNumStrings = Tuning.getTuningsForNumStrings(numStrings);
@@ -87,7 +78,7 @@ export default class GuitarTuner extends Vue {
 
 	public gotoTuning(event: Event): void {
 		const select: HTMLSelectElement = event.target as HTMLSelectElement;
-		this.$store.commit('updateTuning', Tuning.lookupTuning(this.numStrings, select.value));
+		this.$store.commit('GuitarModule/updateTuning', Tuning.lookupTuning(this.numStrings, select.value));
 		select.selectedIndex = 0;
 	}
 

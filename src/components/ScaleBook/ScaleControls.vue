@@ -63,44 +63,34 @@ import Scale from '../../classes/Scale';
 })
 export default class ScaleControls extends Vue {
 
-	public get mode(): any {
-		return this.$store.getters.mode;
-	}
-	public get scales(): any {
-		return this.$store.getters.scales;
-	}
-	public get scale(): Scale {
-		return this.$store.getters.scale;
-	}
-	public get key(): string {
-		return this.$store.getters.key;
-	}
-	public get allNotes(): Note[] {
-		return Note.getAllNotes();
-	}
+	public get mode(): any { return this.$store.getters['ScaleBookModule/mode'] }
+	public get scales(): any { return this.$store.getters['ScaleBookModule/scales'] }
+	public get scale(): Scale { return this.$store.getters['ScaleBookModule/scale'] }
+	public get key(): string { return this.$store.getters['ScaleBookModule/key'] }
+	public get allNotes(): Note[] { return Note.getAllNotes() }
 
 	public beforeCreate(): void {
 		if(!this.$store.getters.scales){
 			const scales: any = Scale.getScales();
-			this.$store.commit('updateScales', scales);
-			const scale = new Scale(scales[0].name, scales[0].intervals, this.$store.getters.key);
-			this.$store.commit('updateScale', scale);
+			this.$store.commit('ScaleBookModule/updateScales', scales);
+			const scale: Scale = new Scale(scales[0].name, scales[0].intervals, this.$store.getters.key);
+			this.$store.commit('ScaleBookModule/updateScale', scale);
 		}
 	}
 
 	public updateKey(event: Event): void {
-		this.$store.commit('updateKey', (event.target as HTMLSelectElement).value);
+		this.$store.commit('ScaleBookModule/updateKey', (event.target as HTMLSelectElement).value);
 		const newScale = new Scale(this.scale.name, this.scale.intervals, (event.target as HTMLSelectElement).value);
-		this.$store.commit('updateScale', newScale);
+		this.$store.commit('ScaleBookModule/updateScale', newScale);
 	}
 
 	public updateScale(event: Event): void {
 		const newScale: Scale = Scale.getScale((event.target as HTMLSelectElement).value, this.key);
-		this.$store.commit('updateScale', newScale);
+		this.$store.commit('ScaleBookModule/updateScale', newScale);
 	}
 
 	private updateMode(mode: string): void {
-		this.$store.commit('updateMode', mode);
+		this.$store.commit('ScaleBookModule/updateMode', mode);
 	}
 
 }

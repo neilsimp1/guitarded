@@ -73,15 +73,15 @@ export default class GuitarControls extends Vue {
 
 	private forceVertical: boolean = false;
 
-	public get handedness(): string { return this.$store.getters.handedness }
-	public get numStrings(): number { return this.$store.getters.numStrings }
-	public get numFrets(): number { return this.$store.getters.numFrets }
-	public get orientation(): number { return this.$store.getters.orientation }
-	public get tunings(): any { return this.$store.getters.tunings }
+	public get handedness(): string { return this.$store.getters['GuitarModule/handedness'] }
+	public get numFrets(): number { return this.$store.getters['GuitarModule/numFrets'] }
+	public get numStrings(): number { return this.$store.getters['GuitarModule/numStrings'] }
+	public get orientation(): number { return this.$store.getters['GuitarModule/orientation'] }
+	public get tunings(): any { return this.$store.getters['GuitarModule/tunings'] }
 
 	@Watch('numStrings')
 	public onPropertyChanged(numStrings: number) {
-		this.$store.commit('updateTuning', this.tunings[numStrings]);
+		this.$store.commit('GuitarModule/updateTuning', this.tunings[numStrings]);
 	}
 
 	public created(): void {
@@ -91,19 +91,19 @@ export default class GuitarControls extends Vue {
 	}
 
 	public updateHandedness(handedness: string): void {
-		this.$store.commit('updateHandedness', handedness);
+		this.$store.commit('GuitarModule/updateHandedness', handedness);
 	}
 
 	public updateOrientation(orientation: string): void {
-		this.$store.commit('updateOrientation', orientation);
+		this.$store.commit('GuitarModule/updateOrientation', orientation);
 	}
 
 	public updateNumStrings(event: Event): void {
-		this.$store.commit('updateNumStrings', parseInt((event.target as HTMLInputElement).value));
+		this.$store.commit('GuitarModule/updateNumStrings', parseInt((event.target as HTMLInputElement).value));
 	}
 
 	public updateNumFrets(event: Event): void {
-		this.$store.commit('updateNumFrets', parseInt((event.target as HTMLInputElement).value));
+		this.$store.commit('GuitarModule/updateNumFrets', parseInt((event.target as HTMLInputElement).value));
 	}
 }
 </script>
