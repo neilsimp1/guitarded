@@ -76,7 +76,7 @@ export default class NotePicker extends Vue {
 		let newScaleChordName = 'Custom';
 		if(newNotes.length > 2){
 			if(this.$route.path.includes('scale')){
-				newScaleChordName = Scale.lookupScaleName(this.key, newNotes);
+				newScaleChordName = Scale.lookupName(this.key, newNotes);
 			}
 			else if(this.$route.path.includes('chord')){
 				//newScaleChordName = '';
