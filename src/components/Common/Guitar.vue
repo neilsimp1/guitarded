@@ -35,16 +35,19 @@ export default class Guitar extends Vue {
 	private windowDimensions: IDimensions = { width: 0, length: 0 };
 
 	@Prop()
+	module: string;
+	@Prop()
 	noteSet: INoteSet;
 
+	//public get chord(): INoteSet { return this.$store.getters['ChordBookModule/chord'] }
 	public get handedness(): string { return this.$store.getters['GuitarModule/handedness'] }
-	public get key(): string { return this.$store.getters['ScaleBookModule/key'] }
+	public get key(): string { return this.$store.getters[this.module + 'key'] }
 	public get tuning(): Tuning { return this.$store.getters['GuitarModule/tuning'] }
-	public get notesPicked(): INoteSet { return this.$store.getters['ScaleBookModule/notesPicked'] }
+	public get notesPicked(): INoteSet { return this.$store.getters[this.module + 'notesPicked'] }
 	public get numFrets(): number { return this.$store.getters['GuitarModule/numFrets'] }
 	public get numStrings(): number { return this.$store.getters['GuitarModule/numStrings'] }
-	public get orientation(): string { return this.forceVertical ? 'vertical' : this.$store.getters.orientation }
-	public get scale(): INoteSet { return this.$store.getters['ScaleBookModule/scale'] }
+	public get orientation(): string { return this.forceVertical ? 'vertical' : this.$store.getters['GuitarModule/orientation'] }
+	//public get scale(): INoteSet { return this.$store.getters['ScaleBookModule/scale'] }
 
 	@Watch('forceVertical')
 	public onForceVerticalChanged(forceVertical: boolean) {

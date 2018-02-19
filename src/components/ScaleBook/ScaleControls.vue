@@ -44,7 +44,7 @@
 		</template>
 
 		<template v-else-if="mode === 'builder'">
-			<NotePicker />
+			<NotePicker :module="'ScaleBookModule/'" />
 		</template>
 
 	</div>
@@ -70,10 +70,10 @@ export default class ScaleControls extends Vue {
 	public get allNotes(): Note[] { return Note.getAllNotes() }
 
 	public beforeCreate(): void {
-		if(!this.$store.getters.scales){
+		if(!this.$store.getters['ScaleBookModule/scales']){
 			const scales: any = Scale.getScales();
 			this.$store.commit('ScaleBookModule/updateScales', scales);
-			const scale: Scale = new Scale(scales[0].name, scales[0].intervals, this.$store.getters.key);
+			const scale: Scale = new Scale(scales[0].name, scales[0].intervals, this.$store.getters['ScaleBookModule/key']);
 			this.$store.commit('ScaleBookModule/updateScale', scale);
 		}
 	}

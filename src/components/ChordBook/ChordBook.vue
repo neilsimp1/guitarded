@@ -6,7 +6,8 @@
 			<GuitarControls />
 		</div>
 
-		<Guitar :noteSet="mode === 'browser' ? chord : notesPicked" />
+		<Guitar :noteSet="mode === 'browser' ? chord : notesPicked"
+			 :module="'ChordBookModule/'" />
 
 	</div>
 </template>
@@ -26,7 +27,7 @@ import INoteSet from '../Common/INoteSet.vue';
 export default class ChordBook extends Vue {
 
 	public get mode(): any { return this.$store.getters['ChordBookModule/mode'] }
-	public get orientation(): any { return this.$store.getters.orientation }
+	public get orientation(): any { return this.$store.getters['GuitarModule/orientation'] }
 	public get notesPicked(): INoteSet { return this.$store.getters['ChordBookModule/notesPicked'] }
 	public get chord(): INoteSet { return this.$store.getters['ChordBookModule/chord'] }
 

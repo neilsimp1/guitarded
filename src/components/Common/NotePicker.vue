@@ -24,7 +24,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { Watch } from 'vue-property-decorator';
+import { Prop, Watch } from 'vue-property-decorator';
 import Note from '../../classes/Note';
 import INoteSet from '../../classes/INoteSet';
 import Scale from '../../classes/Scale';
@@ -36,14 +36,17 @@ export default class NotePicker extends Vue {
 
 	private lookupNote = Note.lookupNote;
 
+	@Prop()
+	module: string;
+
 	public get key(): string {
-		return this.$store.getters.key;
+		return this.$store.getters[this.module + 'key'];
 	}
 	public get allNotes(): Note[] {
 		return Note.getAllNotes();
 	}
 	public get notesPicked(): INoteSet {
-		return this.$store.getters.notesPicked;
+		return this.$store.getters[this.module + 'notesPicked'];
 	}
 
 	@Watch('key')
@@ -52,13 +55,13 @@ export default class NotePicker extends Vue {
 	}
 	
 	public beforeCreate(): void {
-		if(!this.$store.getters.notesPicked){
+		if(!this.$store.getters[this.module + 'notesPicked']){
 			const notesPicked: INoteSet = {
 				name: 'Custom',
-				notes: [Note.lookupNote(this.$store.getters.key)],
-				root: this.$store.getters.key
+				notes: [Note.lookupNote(this.$store.getters[this.module + 'key'])],
+				root: this.$store.getters[this.module + 'key']
 			};
-			this.$store.commit('updateNotesPicked', notesPicked);
+			this.$store.commit(this.module + 'updateNotesPicked', notesPicked);
 		}
 	}
 
@@ -89,7 +92,7 @@ export default class NotePicker extends Vue {
 			root: this.key
 		};
 
-		this.$store.commit('updateNotesPicked', newNotesPicked);
+		this.$store.commit(this.module + 'updateNotesPicked', newNotesPicked);
 	}
 
 }

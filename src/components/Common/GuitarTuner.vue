@@ -66,8 +66,8 @@ export default class GuitarTuner extends Vue {
 	}
 
 	public beforeCreate(): void {
-		const numStrings: number = this.$store.getters.numStrings;
-		if(!this.$store.getters.tuning){
+		const numStrings: number = this.$store.getters['GuitarModule/numStrings'];
+		if(!this.$store.getters['GuitarModule/tuning']){
 			this.$store.commit('GuitarModule/updateTunings', Tuning.getDefaultTunings());
 			this.$store.commit('GuitarModule/updateTuning', Tuning.getDefaultTuning(numStrings));
 		}

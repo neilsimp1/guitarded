@@ -44,7 +44,7 @@
 		</template>
 
 		<template v-else-if="mode === 'builder'">
-			<NotePicker />
+			<NotePicker :module="'ChordBookModule/'" />
 		</template>
 
 	</div>
@@ -70,10 +70,10 @@ export default class ChordControls extends Vue {
 	public get allNotes(): Note[] { return Note.getAllNotes() }
 
 	public beforeCreate(): void {
-		if(!this.$store.getters.chords){
+		if(!this.$store.getters['ChordBookModule/chords']){
 			const chords: any = Chord.getChords();
 			this.$store.commit('ChordBookModule/updateChords', chords);
-			const chord: Chord = new Chord(chords[0].name, chords[0].intervals, this.$store.getters.key);
+			const chord: Chord = new Chord(chords[0].name, chords[0].intervals, this.$store.getters['ChordBookModule/key']);
 			this.$store.commit('ChordBookModule/updateChord', chord);
 		}
 	}
