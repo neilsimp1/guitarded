@@ -106,6 +106,7 @@ export default class Guitar extends Vue {
 		this.buildFretboard();
 		this.renderer = new GuitarRenderer(
 			this.$refs.canvas as HTMLCanvasElement,
+			this.key,
 			this.numFrets,
 			this.numStrings,
 			this.fretboard,
@@ -129,7 +130,7 @@ export default class Guitar extends Vue {
 	}
 
 	private updateGuitar(): void {
-		this.renderer.update(this.numFrets, this.numStrings, this.fretboard, this.orientation);
+		this.renderer.update(this.key, this.numFrets, this.numStrings, this.fretboard, this.orientation);
 	}
 
 	private setForceVertical(): void {

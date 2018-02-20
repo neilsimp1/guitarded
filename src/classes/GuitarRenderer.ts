@@ -7,7 +7,7 @@ export default class GuitarRenderer extends Renderer {
 
 	private fretboard: GuitarString[];
 	public isLoaded: boolean = false;
-	//private neckDimensions: any;
+	private key: string;
 	private numFrets: number;
 	private numStrings: number;
 	private orientation: string;
@@ -31,10 +31,11 @@ export default class GuitarRenderer extends Renderer {
 	private STRING_W: number = 1;
 	private STRING_OUTER_W: number = 1; // Space outside the outer strings before edge of fretboard
 
-	constructor(canvas: HTMLCanvasElement, numFrets: number, numStrings: number, fretboard: GuitarString[], orientation: string) {
+	constructor(canvas: HTMLCanvasElement, key: string, numFrets: number, numStrings: number, fretboard: GuitarString[], orientation: string) {
 		super(canvas);
 		this.loadAssets().then((isSuccess: boolean) => this.isLoaded = isSuccess);
 		this.fretboard = fretboard;
+		this.key = key;
 		this.numFrets = numFrets;
 		this.numStrings = numStrings;
 		this.orientation = orientation;
@@ -78,9 +79,10 @@ export default class GuitarRenderer extends Renderer {
 		}
 	}
 
-	public update(numFrets: number, numStrings: number, fretboard: GuitarString[], orientation: string): void {
+	public update(key: string, numFrets: number, numStrings: number, fretboard: GuitarString[], orientation: string): void {
 		this.canvas.width = this.canvas.parentElement!.clientWidth;
 		this.fretboard = fretboard;
+		this.key = key;
 		this.numFrets = numFrets;
 		this.numStrings = numStrings;
 		this.orientation = orientation;
@@ -285,15 +287,16 @@ export default class GuitarRenderer extends Renderer {
 
 	private drawNotes(): void {
 		const endAngle: number = 2 * Math.PI;
-
-		this.ctx.fillStyle = this.NOTE_COLOR;
+		const getFillStyle = (gs: GuitarString, fretNum: number) => this.key === gs.frets[fretNum].note.name ? this.NOTE_ROOT_COLOR : this.NOTE_COLOR;
 
 		if(this.orientation === 'vertical'){
 			for(let i = 0; i < this.fretboard.length; i++){
 				const noteX: number = this.map.fretboard.coords.x + (i * this.STRING_SPACE_W * this.scale) + (this.STRING_OUTER_W * this.scale);
 				for(let j = 0; j <= this.numFrets; j++){
-					if(!this.fretboard[i].frets[j]) continue;
+					if(!this.fretboard[i].frets[j].on) continue;
 					const noteY = (i: number) => this.map.fretboard.coords.y + (i * this.FRET_SPACE_H * this.scale) + ((this.FRET_SPACE_H * this.scale) / 2);
+
+					this.ctx.fillStyle = getFillStyle(this.fretboard[i], j);
 
 					this.ctx.beginPath();
 					this.ctx.arc(noteX, noteY(j), this.NOTE_RADIUS * this.scale, 0, endAngle);
@@ -306,8 +309,10 @@ export default class GuitarRenderer extends Renderer {
 			for(let i = 0; i < this.fretboard.length; i++){
 				const noteY: number = this.map.fretboard.coords.y + ((this.numStrings - 1 - i) * this.STRING_SPACE_W * this.scale) + (this.STRING_OUTER_W * this.scale);
 				for(let j = 0; j <= this.numFrets; j++){
-					if(!this.fretboard[i].frets[j]) continue;
+					if(!this.fretboard[i].frets[j].on) continue;
 					const noteX = (i: number) => this.map.fretboard.coords.x + (i * this.FRET_SPACE_H * this.scale) + ((this.FRET_SPACE_H * this.scale) / 2);
+
+					this.ctx.fillStyle = getFillStyle(this.fretboard[i], j);
 
 					this.ctx.beginPath();
 					this.ctx.arc(noteX(j), noteY, this.NOTE_RADIUS * this.scale, 0, endAngle);
