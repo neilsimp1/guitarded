@@ -39,7 +39,6 @@ export default class Guitar extends Vue {
 	@Prop()
 	noteSet: INoteSet;
 
-	//public get chord(): INoteSet { return this.$store.getters['ChordBookModule/chord'] }
 	public get handedness(): string { return this.$store.getters['GuitarModule/handedness'] }
 	public get key(): string { return this.$store.getters[this.module + 'key'] }
 	public get tuning(): Tuning { return this.$store.getters['GuitarModule/tuning'] }
@@ -47,7 +46,6 @@ export default class Guitar extends Vue {
 	public get numFrets(): number { return this.$store.getters['GuitarModule/numFrets'] }
 	public get numStrings(): number { return this.$store.getters['GuitarModule/numStrings'] }
 	public get orientation(): string { return this.forceVertical ? 'vertical' : this.$store.getters['GuitarModule/orientation'] }
-	//public get scale(): INoteSet { return this.$store.getters['ScaleBookModule/scale'] }
 
 	@Watch('forceVertical')
 	public onForceVerticalChanged(forceVertical: boolean) {
@@ -102,7 +100,6 @@ export default class Guitar extends Vue {
 		});
 
 		this.setWindowDimensions();
-		this.setForceVertical();
 	}
 
 	public mounted(): void {
