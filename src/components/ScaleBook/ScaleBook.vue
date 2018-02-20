@@ -7,7 +7,7 @@
 		</div>
 
 		<Guitar :noteSet="mode === 'browser' ? scale : notesPicked"
-			  :module="'ScaleBookModule/'" />
+			 :module="'ScaleBookModule/'" />
 
 	</div>
 </template>
@@ -19,8 +19,6 @@ import Guitar from '../Common/Guitar.vue';
 import GuitarControls from '../Common/GuitarControls.vue';
 import INoteSet from '../Common/INoteSet.vue';
 import ScaleControls from './ScaleControls.vue';
-import Note from '../../classes/Note';
-import Scale from '../../classes/Scale';
 
 @Component({
 	name: 'scalebook',
