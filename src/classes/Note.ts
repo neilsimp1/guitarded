@@ -2,6 +2,7 @@ export default class Note {
 
 	public name: string;
 	public displayName: string;
+	public degree: string;
 	private static notes: Note[];
 	private static loopedNotes: any[];
 

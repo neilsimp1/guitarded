@@ -41,10 +41,35 @@ export default class NoteSet implements INoteSet {
 	}
 
 	protected build(): void {
+		const getIntervalName = (semitonesFromRoot: number) => {
+			switch(semitonesFromRoot){
+				case 0: return 'P1';
+				case 1: return 'm2';
+				case 2: return 'M2';
+				case 3: return 'm3';
+				case 4: return 'M3';
+				case 5: return 'P4';
+				case 6: return 'A4/d5';
+				case 7: return 'P5';
+				case 8: return 'm6';
+				case 9: return 'M6';
+				case 10: return 'm7';
+				case 11: return 'M7';
+				case 12: return 'P8';
+			}
+			return '';
+		};
+
 		const rootNote: Note = Note.lookupNote(this.root);
+		rootNote.degree = 'P1';
 		this.notes = [rootNote];
-		for(const interval of this.intervals){
-			this.notes.push(this.notes[this.notes.length - 1].getNextNote(interval));
+
+		let semitonesFromRoot: number = 0;
+		for(let i = 0; i < this.intervals.length; i++){
+			semitonesFromRoot += this.intervals[i];
+			const note = this.notes[this.notes.length - 1].getNextNote(this.intervals[i]);
+			note.degree = getIntervalName(semitonesFromRoot);
+			this.notes.push(note);
 		}
 	}
 

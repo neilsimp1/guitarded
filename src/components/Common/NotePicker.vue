@@ -6,15 +6,15 @@
 
 		<div class="note-picker">
 			<div v-for="(note, i) in allNotes"
-				:key="note.name"
-				:class="[root === note.name ? 'root' : '']">
+				 :key="note.name"
+				 :class="[root === note.name ? 'root' : '']">
 
 				<input type="checkbox"
-					:id="'note-pick-' + i"
-					v-on:click="updateNotesPicked(lookupNote($event.target.value))"
-					:value="note.name"
-					:checked="notesPicked.notes.find(n => n.name === note.name)"
-					:disabled="root === note.name" />
+					 :id="'note-pick-' + i"
+					 v-on:click="updateNotesPicked(lookupNote($event.target.value))"
+					 :value="note.name"
+					 :checked="notesPicked.notes.find(n => n.name === note.name)"
+					 :disabled="root === note.name" />
 				<label :for="'note-pick-' + i">{{ note.displayName }}</label>
 			</div>
 		</div>

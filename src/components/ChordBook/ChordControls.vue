@@ -41,7 +41,7 @@
 					</option>
 				</select>
 			</div>
-			<!-- <NoteShower :module="'ChordBookModule/'" /> -->
+			<NoteShower :noteSet="chord" />
 		</template>
 
 		<template v-else-if="mode === 'builder'">
@@ -55,12 +55,13 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import NotePicker from '../Common/NotePicker.vue';
+import NoteShower from '../Common/NoteShower.vue';
 import Chord from '../../classes/Chord';
 import Note from '../../classes/Note';
 
 @Component({
 	name: 'chordcontrols',
-	components: { NotePicker }
+	components: { NotePicker, NoteShower }
 })
 export default class ChordControls extends Vue {
 

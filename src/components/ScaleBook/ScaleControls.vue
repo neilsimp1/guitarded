@@ -41,6 +41,7 @@
 					</option>
 				</select>
 			</div>
+			<NoteShower :noteSet="scale" />
 		</template>
 
 		<template v-else-if="mode === 'builder'">
@@ -54,12 +55,13 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import NotePicker from '../Common/NotePicker.vue';
+import NoteShower from '../Common/NoteShower.vue';
 import Note from '../../classes/Note';
 import Scale from '../../classes/Scale';
 
 @Component({
 	name: 'scalecontrols',
-	components: { NotePicker }
+	components: { NotePicker, NoteShower }
 })
 export default class ScaleControls extends Vue {
 
