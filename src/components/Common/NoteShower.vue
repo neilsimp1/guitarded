@@ -1,0 +1,89 @@
+<template>
+	<div>
+		<div class="note-shower">
+			<!-- <div v-for="(note, i) in allNotes"
+				:key="note.name"
+				:class="[key === note.name ? 'root' : '']">
+
+				<input type="checkbox"
+					:id="'note-pick-' + i"
+					v-on:click="updateNotesPicked(lookupNote($event.target.value))"
+					:value="note.name"
+					:checked="notesPicked.notes.find(n => n.name === note.name)"
+					:disabled="key === note.name" />
+				<label :for="'note-pick-' + i">{{ note.displayName }}</label>
+			</div> -->
+		</div>
+	</div>
+</template>
+
+<script lang="ts">
+import Vue from 'vue';
+import Component from 'vue-class-component';
+import { Prop, Watch } from 'vue-property-decorator';
+import INoteSet from '../../classes/INoteSet';
+import Note from '../../classes/Note';
+import Scale from '../../classes/Scale';
+
+@Component({
+	name: 'notepicker'
+})
+export default class NoteShower extends Vue {
+
+	//private lookupNote = Note.lookupNote;
+
+	@Prop()
+	module: string;
+
+	public get allNotes(): Note[] { return Note.getAllNotes() }
+	public get key(): string { return this.$store.getters[this.module + 'key'] }
+	public get notesPicked(): INoteSet { return this.$store.getters[this.module + 'notesPicked'] }
+
+	@Watch('key')
+	public onKeyChanged(key: string): void {
+		this.updateNotesPicked(Note.lookupNote(key), true);
+	}
+
+	// public beforeCreate(): void {
+	// 	if(!this.$store.getters[this.module + 'notesPicked']){
+	// 		const notesPicked: INoteSet = {
+	// 			name: 'Custom',
+	// 			notes: [Note.lookupNote(this.$store.getters[this.module + 'key'])],
+	// 			root: this.$store.getters[this.module + 'key']
+	// 		};
+	// 		this.$store.commit(this.module + 'updateNotesPicked', notesPicked);
+	// 	}
+	// }
+
+	private updateNotesPicked(note: Note, forceKeep: boolean = false): void {
+		// const contains: boolean = !!this.notesPicked.notes.find((n: Note) => n.name === note.name);
+
+		// let newNotes: Note[] = [];
+		// if(contains){
+		// 	newNotes = forceKeep ? this.notesPicked.notes
+		// 		: this.notesPicked.notes.filter((n: Note) => n.name !== note.name);
+		// }
+		// else newNotes = this.notesPicked.notes.concat([note]);
+		// newNotes = Scale.sort(this.key, newNotes);
+
+		// let newScaleChordName = 'Custom';
+		// if(newNotes.length > 2){
+		// 	if(this.$route.path.includes('scale')){
+		// 		newScaleChordName = Scale.lookupName(this.key, newNotes);
+		// 	}
+		// 	else if(this.$route.path.includes('chord')){
+		// 		//newScaleChordName = '';
+		// 	}
+		// }
+
+		// const newNotesPicked: INoteSet = {
+		// 	name: newScaleChordName,
+		// 	notes: newNotes,
+		// 	root: this.key
+		// };
+
+		// this.$store.commit(this.module + 'updateNotesPicked', newNotesPicked);
+	}
+
+}
+</script>

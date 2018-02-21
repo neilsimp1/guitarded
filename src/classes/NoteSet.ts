@@ -16,31 +16,6 @@ export default class NoteSet implements INoteSet {
 		if(root) this.build();
 	}
 
-	// public static lookupScaleName(root: string, notes: Note[]): string {
-	// 	const intervals: number[] = Chord.computeIntervals(root, notes);
-	// 	const intervalsEqual = (a: number[], b: number[]): boolean => {
-	// 		if(a.length !== b.length) return false;
-	// 		for(let i = 0; i < a.length; i++){
-	// 			if(a[i] !== b[i]) return false;
-	// 		}
-	// 		return true;
-	// 	};
-
-	// 	const scale: any = scalesJson.find((s: any) => intervalsEqual(s.intervals, intervals));
-
-	// 	return scale ? scale.name : 'Custom';
-	// }
-
-	// public static getScales(): Scale[] {
-	// 	return scalesJson.map((s: any) => new Scale(s.name, s.intervals));
-	// }
-
-	// public static getScale(name: string, root: string | null = null): Scale {
-	// 	let scale: Scale = Scale.getScales().find(s => s.name === name)!;
-	// 	if(!root) return scale;
-	// 	return new Scale(scale.name, scale.intervals, root);
-	// }
-
 	public static sort(root: string, notes: Note[]): Note[] {
 		let alphaSorted: Note[] = notes.sort((n1: Note, n2: Note) => {
 			if(n1.name < n2.name) return -1;

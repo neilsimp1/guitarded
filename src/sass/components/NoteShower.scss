@@ -1,0 +1,43 @@
+@import '../util/colors';
+
+.note-shower {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+
+	margin: 1em 0 0;
+
+	div {
+		display: inline-block;
+
+		text-align: center;
+		line-height: 1.5em;
+		font-size: 0.9em;
+
+		user-select: none;
+		span { display: block; }
+		&.root { border-color: $gray-darker; }
+	}
+
+	span:first-child {
+
+	}
+	span:last-child {
+		width: 1.5em;
+		height: 1.5em;
+		border: 1px solid $primary2;
+	}
+
+
+	// input:not([disabled]) + label {
+	// 	cursor: pointer;
+	// }
+	// input:checked + label {
+	// 	color: $gray;
+	// 	background-color: $gray-darkest;
+	// }
+	// input {
+	// 	position: absolute;
+   	// 	left: -1000px;
+	// }
+}
