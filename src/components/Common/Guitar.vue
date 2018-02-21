@@ -32,7 +32,10 @@ export default class Guitar extends Vue {
 	private forceVertical: boolean = false;
 	private fretboard: GuitarString[];
 	private renderer: GuitarRenderer;
-	private windowDimensions: IDimensions = { width: 0, length: 0 };
+	private windowDimensions: IDimensions = {
+		width: document.body.clientWidth,
+		length: document.body.clientHeight
+	};
 
 	@Prop()
 	module: string;
@@ -40,7 +43,6 @@ export default class Guitar extends Vue {
 	noteSet: INoteSet;
 
 	public get handedness(): string { return this.$store.getters['GuitarModule/handedness'] }
-	public get key(): string { return this.$store.getters[this.module + 'key'] }
 	public get tuning(): Tuning { return this.$store.getters['GuitarModule/tuning'] }
 	public get notesPicked(): INoteSet { return this.$store.getters[this.module + 'notesPicked'] }
 	public get numFrets(): number { return this.$store.getters['GuitarModule/numFrets'] }
@@ -54,42 +56,42 @@ export default class Guitar extends Vue {
 	@Watch('handedness')
 	public onHandednessChanged() {
 		this.buildFretboard();
-		this.updateGuitar();
+		this.renderGuitar();
 	}
 	@Watch('numFrets')
 	public onNumFretsChanged() {
 		this.buildFretboard();
-		this.updateGuitar();
+		this.renderGuitar();
 	}
 	@Watch('noteSet')
 	public onNoteSetChanged() {
 		this.buildFretboard();
-		this.updateGuitar();
+		this.renderGuitar();
 	}
 	@Watch('orientation')
 	public onOrientationChanged(notesPicked: INoteSet) {
 		this.buildFretboard();
-		this.updateGuitar();
+		this.renderGuitar();
 	}
 	@Watch('notesPicked')
 	public onNotesPickedChanged(notesPicked: INoteSet) {
 		this.buildFretboard();
-		this.updateGuitar();
+		this.renderGuitar();
 	}
 	@Watch('scale')
 	public onScaleChanged(scale: INoteSet) {
 		this.buildFretboard();
-		this.updateGuitar();
+		this.renderGuitar();
 	}
 	@Watch('tuning')
 	public onTuningChanged() {
 		this.buildFretboard();
-		this.updateGuitar();
+		this.renderGuitar();
 	}
 	@Watch('windowDimensions')
 	public onResize() {
 		this.setForceVertical();
-		this.updateGuitar();
+		this.renderGuitar();
 	}
 
 	public created(): void {
@@ -98,22 +100,12 @@ export default class Guitar extends Vue {
 			clearTimeout(handle);
 			handle = setTimeout(this.setWindowDimensions, 200);
 		});
-
-		this.setWindowDimensions();
 	}
 
 	public mounted(): void {
 		this.buildFretboard();
-		this.renderer = new GuitarRenderer(
-			this.$refs.canvas as HTMLCanvasElement,
-			this.key,
-			this.numFrets,
-			this.numStrings,
-			this.fretboard,
-			this.orientation
-		);
-
-		this.renderer.render();
+		this.renderer = new GuitarRenderer(this.$refs.canvas as HTMLCanvasElement);
+		if(this.noteSet && this.fretboard) this.renderGuitar();
 	}
 
 	// public destroyed(): void {
@@ -129,8 +121,8 @@ export default class Guitar extends Vue {
 		this.fretboard = tuning.notes.map((note: Note) => new GuitarString(note.name, this.noteSet));
 	}
 
-	private updateGuitar(): void {
-		this.renderer.update(this.key, this.numFrets, this.numStrings, this.fretboard, this.orientation);
+	private renderGuitar(): void {
+		this.renderer.render(this.noteSet.root, this.numFrets, this.numStrings, this.fretboard, this.orientation);
 	}
 
 	private setForceVertical(): void {

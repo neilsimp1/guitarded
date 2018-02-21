@@ -7,7 +7,7 @@ export default class GuitarRenderer extends Renderer {
 
 	private fretboard: GuitarString[];
 	public isLoaded: boolean = false;
-	private key: string;
+	private root: string;
 	private numFrets: number;
 	private numStrings: number;
 	private orientation: string;
@@ -31,14 +31,9 @@ export default class GuitarRenderer extends Renderer {
 	private STRING_W: number = 1;
 	private STRING_OUTER_W: number = 1; // Space outside the outer strings before edge of fretboard
 
-	constructor(canvas: HTMLCanvasElement, key: string, numFrets: number, numStrings: number, fretboard: GuitarString[], orientation: string) {
+	constructor(canvas: HTMLCanvasElement) {
 		super(canvas);
 		this.loadAssets().then((isSuccess: boolean) => this.isLoaded = isSuccess);
-		this.fretboard = fretboard;
-		this.key = key;
-		this.numFrets = numFrets;
-		this.numStrings = numStrings;
-		this.orientation = orientation;
 	}
 
 	private async loadAssets(): Promise<boolean> {
@@ -53,7 +48,14 @@ export default class GuitarRenderer extends Renderer {
 		return true;
 	}
 
-	public render(): void {
+	public render(root: string, numFrets: number, numStrings: number, fretboard: GuitarString[], orientation: string): void {
+		this.canvas.width = this.canvas.parentElement!.clientWidth;
+		this.fretboard = fretboard;
+		this.root = root;
+		this.numFrets = numFrets;
+		this.numStrings = numStrings;
+		this.orientation = orientation;
+
 		const doRender = () => {
 			this.scale = this.getScale(this.numStrings);
 			this.map.fretboard = this.getFretboardPoints();
@@ -77,16 +79,6 @@ export default class GuitarRenderer extends Renderer {
 				}
 			}, 25);
 		}
-	}
-
-	public update(key: string, numFrets: number, numStrings: number, fretboard: GuitarString[], orientation: string): void {
-		this.canvas.width = this.canvas.parentElement!.clientWidth;
-		this.fretboard = fretboard;
-		this.key = key;
-		this.numFrets = numFrets;
-		this.numStrings = numStrings;
-		this.orientation = orientation;
-		this.render();
 	}
 
 	private getScale(numStrings: number): number {
@@ -287,7 +279,7 @@ export default class GuitarRenderer extends Renderer {
 
 	private drawNotes(): void {
 		const endAngle: number = 2 * Math.PI;
-		const getFillStyle = (gs: GuitarString, fretNum: number) => this.key === gs.frets[fretNum].note.name ? this.NOTE_ROOT_COLOR : this.NOTE_COLOR;
+		const getFillStyle = (gs: GuitarString, fretNum: number) => this.root === gs.frets[fretNum].note.name ? this.NOTE_ROOT_COLOR : this.NOTE_COLOR;
 
 		if(this.orientation === 'vertical'){
 			for(let i = 0; i < this.fretboard.length; i++){

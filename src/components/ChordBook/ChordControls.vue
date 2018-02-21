@@ -17,12 +17,12 @@
 		</div>
 
 		<div class="panel-row">
-			<label for="key">Key</label>
-			<select id="key" v-on:change="updateKey">
+			<label for="root">Root</label>
+			<select id="root" v-on:change="updateRoot">
 				<option v-for="note in allNotes"
 					 :value="note.name"
 					 :key="note.name"
-					 :selected="key === note.name">
+					 :selected="root === note.name">
 					{{ note.displayName }}
 				</option>
 			</select>
@@ -63,29 +63,29 @@ import Note from '../../classes/Note';
 })
 export default class ChordControls extends Vue {
 
-	public get mode(): any { return this.$store.getters['ChordBookModule/mode'] }
-	public get chords(): any { return this.$store.getters['ChordBookModule/chords'] }
-	public get chord(): Chord { return this.$store.getters['ChordBookModule/chord'] }
-	public get key(): string { return this.$store.getters['ChordBookModule/key'] }
 	public get allNotes(): Note[] { return Note.getAllNotes() }
+	public get chord(): Chord { return this.$store.getters['ChordBookModule/chord'] }
+	public get chords(): any { return this.$store.getters['ChordBookModule/chords'] }
+	public get mode(): any { return this.$store.getters['ChordBookModule/mode'] }
+	public get root(): string { return this.$store.getters['ChordBookModule/root'] }
 
 	public beforeCreate(): void {
 		if(!this.$store.getters['ChordBookModule/chords']){
 			const chords: any = Chord.getChords();
 			this.$store.commit('ChordBookModule/updateChords', chords);
-			const chord: Chord = new Chord(chords[0].name, chords[0].intervals, this.$store.getters['ChordBookModule/key']);
+			const chord: Chord = new Chord(chords[0].name, chords[0].intervals, this.$store.getters['ChordBookModule/root']);
 			this.$store.commit('ChordBookModule/updateChord', chord);
 		}
 	}
 
-	public updateKey(event: Event): void {
-		this.$store.commit('ChordBookModule/updateKey', (event.target as HTMLSelectElement).value);
+	public updateRoot(event: Event): void {
+		this.$store.commit('ChordBookModule/updateRoot', (event.target as HTMLSelectElement).value);
 		const newChord = new Chord(this.chord.name, this.chord.intervals, (event.target as HTMLSelectElement).value);
 		this.$store.commit('ChordBookModule/updateChord', newChord);
 	}
 
 	public updateChord(event: Event): void {
-		const newChord: Chord = Chord.getChord((event.target as HTMLSelectElement).value, this.key);
+		const newChord: Chord = Chord.getChord((event.target as HTMLSelectElement).value, this.root);
 		this.$store.commit('ChordBookModule/updateChord', newChord);
 	}
 
