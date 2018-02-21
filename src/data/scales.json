@@ -61,7 +61,7 @@
 	},
 	{
 		"name": "Diminished",
-		"intervals": [2, 1, 2, 1, 2, 1, 2, 1]
+		"intervals": [2, 1, 2, 1, 2, 1, 2]
 	},
 	{
 		"name": "Augmented",
