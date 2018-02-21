@@ -7,14 +7,14 @@
 		<div class="note-picker">
 			<div v-for="(note, i) in allNotes"
 				:key="note.name"
-				:class="[key === note.name ? 'root' : '']">
+				:class="[root === note.name ? 'root' : '']">
 
 				<input type="checkbox"
 					:id="'note-pick-' + i"
 					v-on:click="updateNotesPicked(lookupNote($event.target.value))"
 					:value="note.name"
 					:checked="notesPicked.notes.find(n => n.name === note.name)"
-					:disabled="key === note.name" />
+					:disabled="root === note.name" />
 				<label :for="'note-pick-' + i">{{ note.displayName }}</label>
 			</div>
 		</div>
@@ -42,20 +42,20 @@ export default class NotePicker extends Vue {
 	module: string;
 
 	public get allNotes(): Note[] { return Note.getAllNotes() }
-	public get key(): string { return this.module === 'ScaleBookModule/' ? this.$store.getters['ScaleBookModule/key'] : this.$store.getters['ChordBookModule/root']}
+	public get root(): string { return this.module === 'ScaleBookModule/' ? this.$store.getters['ScaleBookModule/key'] : this.$store.getters['ChordBookModule/root']}
 	public get notesPicked(): INoteSet { return this.$store.getters[this.module + 'notesPicked'] }
 
-	@Watch('key')
-	public onKeyChanged(key: string): void {
-		this.updateNotesPicked(Note.lookupNote(key), true);
+	@Watch('root')
+	public onRootChanged(root: string): void {
+		this.updateNotesPicked(Note.lookupNote(root), true);
 	}
 
-	public beforeCreate(): void {
+	public created(): void {
 		if(!this.$store.getters[this.module + 'notesPicked']){
 			const notesPicked: INoteSet = {
 				name: 'Custom',
-				notes: [Note.lookupNote(this.$store.getters[this.module + 'key'])],
-				root: this.$store.getters[this.module + 'key']
+				notes: [Note.lookupNote(this.root)],
+				root: this.root
 			};
 			this.$store.commit(this.module + 'updateNotesPicked', notesPicked);
 		}
@@ -70,22 +70,22 @@ export default class NotePicker extends Vue {
 				: this.notesPicked.notes.filter((n: Note) => n.name !== note.name);
 		}
 		else newNotes = this.notesPicked.notes.concat([note]);
-		newNotes = NoteSet.sort(this.key, newNotes);
+		newNotes = NoteSet.sort(this.root, newNotes);
 
 		let newScaleChordName = 'Custom';
 		if(newNotes.length > 2){
 			if(this.$route.path.includes('scale')){
-				newScaleChordName = Scale.lookupName(this.key, newNotes);
+				newScaleChordName = Scale.lookupName(this.root, newNotes);
 			}
 			else if(this.$route.path.includes('chord')){
-				newScaleChordName = Chord.lookupName(this.key, newNotes);
+				newScaleChordName = Chord.lookupName(this.root, newNotes);
 			}
 		}
 
 		const newNotesPicked: INoteSet = {
 			name: newScaleChordName,
 			notes: newNotes,
-			root: this.key
+			root: this.root
 		};
 
 		this.$store.commit(this.module + 'updateNotesPicked', newNotesPicked);

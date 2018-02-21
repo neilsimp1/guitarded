@@ -41,7 +41,7 @@
 					</option>
 				</select>
 			</div>
-			<NoteShower :module="'ChordBookModule/'" />
+			<!-- <NoteShower :module="'ChordBookModule/'" /> -->
 		</template>
 
 		<template v-else-if="mode === 'builder'">
