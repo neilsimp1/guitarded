@@ -32,6 +32,7 @@ export default class Guitar extends Vue {
 	private forceVertical: boolean = false;
 	private fretboard: GuitarString[];
 	private renderer: GuitarRenderer;
+	private resizeHandle: number;
 	private windowDimensions: IDimensions = {
 		width: document.body.clientWidth,
 		length: document.body.clientHeight
@@ -95,11 +96,7 @@ export default class Guitar extends Vue {
 	}
 
 	public created(): void {
-		let handle: number;
-		window.addEventListener('resize', () => {
-			clearTimeout(handle);
-			handle = setTimeout(this.setWindowDimensions, 200);
-		});
+		window.addEventListener('resize', this.waitForResizeEnd);
 	}
 
 	public mounted(): void {
@@ -108,9 +105,14 @@ export default class Guitar extends Vue {
 		if(this.noteSet && this.fretboard) this.renderGuitar();
 	}
 
-	// public destroyed(): void {
-	// 	window.removeEventListener('resize');
-	// }
+	public destroyed(): void {
+		window.removeEventListener('resize', this.waitForResizeEnd);
+	}
+
+	private waitForResizeEnd(): void {
+		clearTimeout(this.resizeHandle);
+		this.resizeHandle = setTimeout(this.setWindowDimensions, 200);
+	}
 
 	private buildFretboard(): void {
 		if(!this.noteSet) return;
