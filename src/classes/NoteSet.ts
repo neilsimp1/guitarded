@@ -81,4 +81,14 @@ export default class NoteSet implements INoteSet {
 		return true;
 	}
 
+	protected static intervalsEqualFuzzy (a: number[], b: number[]): boolean {
+		let matchCount: number = 0;
+		for(let i = 0; i < a.length; i++){
+			if(a[i] === b[i]) matchCount++;
+			else break;
+		}
+
+		return matchCount > b.length / 2;
+	}
+
 }

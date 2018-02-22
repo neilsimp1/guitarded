@@ -5,11 +5,6 @@ import chordsJson from '../data/chords.json';
 
 export default class Chord extends NoteSet implements INoteSet {
 
-	public name: string;
-	public intervals: number[];
-	public root: string;
-	public notes: Note[];
-
 	private static chords: Chord[];
 
 	constructor(name: string, intervals: number[], root: string = '') {
@@ -20,6 +15,12 @@ export default class Chord extends NoteSet implements INoteSet {
 		const intervals: number[] = this.computeIntervals(root, notes);
 		const chord: any = chordsJson.find((s: any) => this.intervalsEqual(s.intervals, intervals));
 		return chord ? chord.name : 'Custom';
+	}
+
+	public static lookupNamesFuzzy(noteSet: INoteSet): INoteSet[] {
+		const intervals: number[] = this.computeIntervals(noteSet.root, noteSet.notes);
+		const chords: Chord[] = chordsJson.filter((c: any) => this.intervalsEqualFuzzy(c.intervals, intervals)).map((c: any) => new Chord(c.name, c.intervals));
+		return chords.filter((c: Chord) => c.name !== noteSet.name);
 	}
 
 	public static getChords(): Chord[] {

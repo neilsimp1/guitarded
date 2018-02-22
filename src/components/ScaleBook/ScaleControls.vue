@@ -65,11 +65,11 @@ import Scale from '../../classes/Scale';
 })
 export default class ScaleControls extends Vue {
 
-	public get mode(): any { return this.$store.getters['ScaleBookModule/mode'] }
-	public get scales(): any { return this.$store.getters['ScaleBookModule/scales'] }
-	public get scale(): Scale { return this.$store.getters['ScaleBookModule/scale'] }
-	public get key(): string { return this.$store.getters['ScaleBookModule/key'] }
 	public get allNotes(): Note[] { return Note.getAllNotes() }
+	public get key(): string { return this.$store.getters['ScaleBookModule/key'] }
+	public get mode(): any { return this.$store.getters['ScaleBookModule/mode'] }
+	public get scale(): Scale { return this.$store.getters['ScaleBookModule/scale'] }
+	public get scales(): any { return this.$store.getters['ScaleBookModule/scales'] }
 
 	public beforeCreate(): void {
 		if(!this.$store.getters['ScaleBookModule/scales']){

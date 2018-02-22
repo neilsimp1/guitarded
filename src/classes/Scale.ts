@@ -5,11 +5,6 @@ import scalesJson from '../data/scales.json';
 
 export default class Scale extends NoteSet implements INoteSet {
 
-	public name: string;
-	public intervals: number[];
-	public root: string;
-	public notes: Note[];
-
 	private static scales: Scale[];
 
 	constructor(name: string, intervals: number[], root: string = '') {
@@ -20,6 +15,12 @@ export default class Scale extends NoteSet implements INoteSet {
 		const intervals: number[] = this.computeIntervals(root, notes);
 		const scale: any = scalesJson.find((s: any) => this.intervalsEqual(s.intervals, intervals));
 		return scale ? scale.name : 'Custom';
+	}
+
+	public static lookupNamesFuzzy(noteSet: INoteSet): INoteSet[] {
+		const intervals: number[] = this.computeIntervals(noteSet.root, noteSet.notes);
+		const scales: Scale[] = scalesJson.filter((s: any) => this.intervalsEqualFuzzy(s.intervals, intervals)).map((s: any) => new Scale(s.name, s.intervals));
+		return scales.filter((s: Scale) => s.name !== noteSet.name);
 	}
 
 	public static getScales(): Scale[] {

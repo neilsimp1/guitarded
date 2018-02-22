@@ -1,5 +1,6 @@
 <template>
 	<div>
+
 		<div class="panel-row">
 			<span class="panel-display">{{ notesPicked.name }}</span>
 		</div>
@@ -18,6 +19,16 @@
 				<label :for="'note-pick-' + i">{{ note.displayName }}</label>
 			</div>
 		</div>
+
+		<div v-if="fuzzyMatches.length" class="note-picker-similar">
+			<label>Similar {{ module === 'ScaleBoolModule/' ? 'Scales' : 'Chords' }}</label>
+			<ul>
+				<li v-for="fuzzyMatch in fuzzyMatches" :key="fuzzyMatch.name">
+					<a href="#" v-on:click="gotoFuzzyMatch(fuzzyMatch)">{{ fuzzyMatch.name }}</a>
+				</li>
+			</ul>
+		</div>
+
 	</div>
 </template>
 
@@ -36,7 +47,8 @@ import Scale from '../../classes/Scale';
 })
 export default class NotePicker extends Vue {
 
-	private lookupNote = Note.lookupNote;
+	private lookupNote: Function = Note.lookupNote;
+	private fuzzyMatches: INoteSet[] = [];
 
 	@Prop()
 	module: string;
@@ -49,6 +61,12 @@ export default class NotePicker extends Vue {
 	public onRootChanged(root: string): void {
 		this.updateNotesPicked(Note.lookupNote(root), true);
 	}
+	@Watch('notesPicked')
+	public onNotesPickedChanged(notesPicked: INoteSet): void {
+		if(notesPicked.notes.length > 2){
+			this.getFuzzyMatches();
+		}
+	}
 
 	public created(): void {
 		if(!this.$store.getters[this.module + 'notesPicked']){
@@ -59,6 +77,8 @@ export default class NotePicker extends Vue {
 			};
 			this.$store.commit(this.module + 'updateNotesPicked', notesPicked);
 		}
+
+		if(!this.fuzzyMatches.length) this.getFuzzyMatches();
 	}
 
 	private updateNotesPicked(note: Note, forceKeep: boolean = false): void {
@@ -66,7 +86,8 @@ export default class NotePicker extends Vue {
 
 		let newNotes: Note[] = [];
 		if(contains){
-			newNotes = forceKeep ? this.notesPicked.notes
+			newNotes = forceKeep
+				? this.notesPicked.notes
 				: this.notesPicked.notes.filter((n: Note) => n.name !== note.name);
 		}
 		else newNotes = this.notesPicked.notes.concat([note]);
@@ -74,10 +95,10 @@ export default class NotePicker extends Vue {
 
 		let newScaleChordName = 'Custom';
 		if(newNotes.length > 2){
-			if(this.$route.path.includes('scale')){
+			if(this.module === 'ScaleBookModule/'){
 				newScaleChordName = Scale.lookupName(this.root, newNotes);
 			}
-			else if(this.$route.path.includes('chord')){
+			else if(this.module === 'ChordBookModule/'){
 				newScaleChordName = Chord.lookupName(this.root, newNotes);
 			}
 		}
@@ -89,6 +110,24 @@ export default class NotePicker extends Vue {
 		};
 
 		this.$store.commit(this.module + 'updateNotesPicked', newNotesPicked);
+	}
+
+	private getFuzzyMatches(): void {
+		Vue.nextTick().then(() => {
+			if(this.module === 'ScaleBookModule/') this.fuzzyMatches = Scale.lookupNamesFuzzy(this.notesPicked);
+			else if(this.module === 'ChordBookModule/') this.fuzzyMatches = Chord.lookupNamesFuzzy(this.notesPicked);
+		});
+	}
+
+	private gotoFuzzyMatch(fuzzyMatch: INoteSet): void {
+		if(this.module === 'ScaleBookModule/'){
+			this.$store.commit('ScaleBookModule/updateScale', new Scale(fuzzyMatch.name, (fuzzyMatch as any).intervals, this.root));
+		}
+		else if(this.module === 'ChordBookModule/'){
+			this.$store.commit('ChordBookModule/updateChord', new Chord(fuzzyMatch.name, (fuzzyMatch as any).intervals, this.root));
+		}
+
+		this.$store.commit(this.module + 'updateMode', 'browser');
 	}
 
 }
