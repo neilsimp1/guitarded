@@ -119,12 +119,12 @@ export default class NotePicker extends Vue {
 		});
 	}
 
-	private gotoFuzzyMatch(fuzzyMatch: INoteSet): void {
+	private gotoFuzzyMatch(fuzzyMatch: NoteSet): void {
 		if(this.module === 'ScaleBookModule/'){
-			this.$store.commit('ScaleBookModule/updateScale', new Scale(fuzzyMatch.name, (fuzzyMatch as any).intervals, this.root));
+			this.$store.commit('ScaleBookModule/updateScale', new Scale(fuzzyMatch.name, fuzzyMatch.intervals, this.root));
 		}
 		else if(this.module === 'ChordBookModule/'){
-			this.$store.commit('ChordBookModule/updateChord', new Chord(fuzzyMatch.name, (fuzzyMatch as any).intervals, this.root));
+			this.$store.commit('ChordBookModule/updateChord', new Chord(fuzzyMatch.name, fuzzyMatch.intervals, this.root));
 		}
 
 		this.$store.commit(this.module + 'updateMode', 'browser');
