@@ -1,6 +1,8 @@
+import AudioPlayer from './AudioPlayer';
 import INoteSet from './INoteSet';
 import Note from './Note';
 import NoteSet from './NoteSet';
+import Pitch from './Pitch';
 import scalesJson from '../data/scales.json';
 
 export default class Scale extends NoteSet implements INoteSet {
@@ -31,6 +33,11 @@ export default class Scale extends NoteSet implements INoteSet {
 		let scale: Scale = Scale.getScales().find(s => s.name === name)!;
 		if(!root) return scale;
 		return new Scale(scale.name, scale.intervals, root);
+	}
+
+	public play(): void {
+		const player: AudioPlayer = new AudioPlayer();
+		player.playPitches(this.notesToPitches());
 	}
 
 }

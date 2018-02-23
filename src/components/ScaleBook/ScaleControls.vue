@@ -48,6 +48,10 @@
 			<NotePicker :module="'ScaleBookModule/'" />
 		</template>
 
+		<div class="panel-row">
+			<button type="button" v-on:click="playScale">Play</button>
+		</div>
+
 	</div>
 </template>
 
@@ -93,6 +97,11 @@ export default class ScaleControls extends Vue {
 
 	private updateMode(mode: string): void {
 		this.$store.commit('ScaleBookModule/updateMode', mode);
+	}
+
+	private playScale(): void {
+		const scale = new Scale(this.scale.name, this.scale.intervals, this.scale.root);
+		scale.play();
 	}
 
 }

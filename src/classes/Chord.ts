@@ -1,6 +1,8 @@
+import AudioPlayer from './AudioPlayer';
 import INoteSet from './INoteSet';
 import Note from './Note';
 import NoteSet from './NoteSet';
+import Pitch from './Pitch';
 import chordsJson from '../data/chords.json';
 
 export default class Chord extends NoteSet implements INoteSet {
@@ -31,6 +33,11 @@ export default class Chord extends NoteSet implements INoteSet {
 		let chord: Chord = Chord.getChords().find(c => c.name === name)!;
 		if(!root) return chord;
 		return new Chord(chord.name, chord.intervals, root);
+	}
+
+	public play(): void {
+		const player: AudioPlayer = new AudioPlayer();
+		player.playPitches(this.notesToPitches());
 	}
 
 }

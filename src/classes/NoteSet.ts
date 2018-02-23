@@ -1,5 +1,6 @@
 import INoteSet from './INoteSet';
 import Note from './Note';
+import Pitch from './Pitch';
 
 export default class NoteSet implements INoteSet {
 
@@ -89,6 +90,10 @@ export default class NoteSet implements INoteSet {
 		}
 
 		return matchCount > b.length / 2;
+	}
+
+	protected notesToPitches(octave: number = 4): Pitch[] {
+		return Pitch.getPitchesFromNotes(this.notes, octave);
 	}
 
 }
