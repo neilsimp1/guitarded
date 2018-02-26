@@ -35,9 +35,17 @@ export default class Chord extends NoteSet implements INoteSet {
 		return new Chord(chord.name, chord.intervals, root);
 	}
 
-	public play(): void {
+	public async play(): Promise<void> {
 		const player: AudioPlayer = new AudioPlayer();
-		player.playSequence(this.notesToPitches());
+
+		return new Promise<void>((resolve: Function) => {
+			const pitches: Pitch[] = this.notesToPitches();
+			player.playSequence(pitches).then(() => {
+				player.playTogether((pitches)).then(() => {
+					resolve();
+				});
+			});
+		});
 	}
 
 }

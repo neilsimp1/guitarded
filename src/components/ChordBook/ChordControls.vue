@@ -48,6 +48,15 @@
 			<NotePicker :module="'ChordBookModule/'" />
 		</template>
 
+		<div class="panel-row">
+			<div class="button-grp-toggle">
+				<button type="button"
+					 v-on:click="playChord"
+					 :disabled="isPlaying"
+					 :class="[isPlaying ? 'active' : '', 'btn-toggle']">Play</button>
+			</div>
+		</div>
+
 	</div>
 </template>
 
@@ -64,6 +73,8 @@ import Note from '../../classes/Note';
 	components: { NotePicker, NoteShower }
 })
 export default class ChordControls extends Vue {
+
+	public isPlaying: boolean = false;
 
 	public get allNotes(): Note[] { return Note.getAllNotes() }
 	public get chord(): Chord { return this.$store.getters['ChordBookModule/chord'] }
@@ -93,6 +104,14 @@ export default class ChordControls extends Vue {
 
 	private updateMode(mode: string): void {
 		this.$store.commit('ChordBookModule/updateMode', mode);
+	}
+
+	private async playChord(): Promise<void> {
+		const chord = new Chord(this.chord.name, this.chord.intervals, this.chord.root);
+
+		this.isPlaying = true;
+		await chord.play();
+		this.isPlaying = false;
 	}
 
 }

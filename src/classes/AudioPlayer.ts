@@ -47,4 +47,31 @@ export default class AudioPlayer {
 		return new Promise<void>((resolve: Function) => { loop(0).then(() => resolve()) });
 	}
 
+	public playTogether(pitches: Pitch[], duration: number = 750): Promise<void> {
+		const gainNode: GainNode = this.ctx.createGain();
+		gainNode.gain.value = 0.25;
+		gainNode.connect(this.ctx.destination);
+
+		let oscNodes: OscillatorNode[] = [];
+		for(const pitch of pitches){
+			const oscNode = this.ctx.createOscillator();
+			oscNode.connect(gainNode);
+			oscNode.type = 'sine';
+			oscNode.connect(this.ctx.destination);
+			oscNode.frequency.value = pitch.frequency;
+			oscNodes.push(oscNode);
+			oscNode.start();
+		}
+
+		return new Promise<void>((resolve: Function) => {
+			setTimeout(() => {
+				for(const oscNode of oscNodes){
+					oscNode.stop();
+					oscNode.disconnect(this.ctx.destination);
+				}
+				resolve();
+			}, duration);
+		});
+	}
+
 }
