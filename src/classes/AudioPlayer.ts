@@ -12,18 +12,20 @@ export default class AudioPlayer {
 		this.ctx = AudioPlayer.ctx;
 	}
 
-	public playPitch(pitch: Pitch, duration: number = 0.75): void {
-
-	}
-
-	public playPitches(pitches: Pitch[], duration: number = 750): void {
-		const loop = (i: number) => {
-			start(pitches[i]);
-			setTimeout(() => {
-				stop();
-				i++;
-				if(i < pitches.length) loop(i);
-			}, duration);
+	public playSequence(pitches: Pitch[], duration: number = 750): Promise<void> {
+		const loop = (i: number): Promise<void> => {
+			return new Promise<void>((resolve: Function) => {
+				start(pitches[i]);
+				(function _loop(i) {
+					if(i === pitches.length) return resolve();
+					setTimeout(() => {
+						stop();
+						i++;
+						if(i < pitches.length) start(pitches[i]);
+						_loop(i);
+					}, duration);
+				})(0);
+			});
 		};
 		const start = (pitch: Pitch) => {
 			gainNode.connect(this.ctx.destination);
@@ -42,7 +44,7 @@ export default class AudioPlayer {
 		let oscNode: OscillatorNode;
 		const gainNode: GainNode = this.ctx.createGain();
 
-		loop(0);
+		return new Promise<void>((resolve: Function) => { loop(0).then(() => resolve()) });
 	}
 
 }

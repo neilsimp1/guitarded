@@ -37,7 +37,9 @@ export default class Scale extends NoteSet implements INoteSet {
 
 	public play(): void {
 		const player: AudioPlayer = new AudioPlayer();
-		player.playPitches(this.notesToPitches(true));
+		player.playSequence(this.notesToPitches(true)).then(() => {
+			console.log('done');
+		});
 	}
 
 }
