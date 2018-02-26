@@ -13,13 +13,22 @@ export default class AudioPlayer {
 	}
 
 	public playPitch(pitch: Pitch, duration: number = 0.75): void {
-		
+
 	}
 
-	public playPitches(pitches: Pitch[], duration: number = 0.75): void {
+	public playPitches(pitches: Pitch[], duration: number = 750): void {
+		const loop = (i: number) => {
+			start(pitches[i]);
+			setTimeout(() => {
+				stop();
+				i++;
+				if(i < pitches.length) loop(i);
+			}, duration);
+		};
 		const start = (pitch: Pitch) => {
-			//oscNode.connect(gainNode);
-			//gainNode.connect(this.ctx.destination);
+			gainNode.connect(this.ctx.destination);
+			oscNode = this.ctx.createOscillator();
+			oscNode.connect(gainNode);
 			oscNode.type = 'sine';
 			oscNode.connect(this.ctx.destination);
 			oscNode.frequency.value = pitch.frequency;
@@ -30,17 +39,10 @@ export default class AudioPlayer {
 			oscNode.disconnect(this.ctx.destination);
 		};
 
-		const oscNode: OscillatorNode = this.ctx.createOscillator();
-		//const gainNode: GainNode = this.ctx.createGain();
+		let oscNode: OscillatorNode;
+		const gainNode: GainNode = this.ctx.createGain();
 
-		let i: number = 0;
-
-		start(pitches[i]);
-		setTimeout(() => {
-			stop();
-			i++;
-			if(i < pitches.length) start(pitches[i]);
-		}, duration);
+		loop(0);
 	}
 
 }
