@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="note-shower">
+		<div class="panel-row note-shower">
 			<div v-for="note in noteSet.notes" :key="note.name">
 				<span>{{ note.degree }}</span>
 				<span>{{ note.displayName }}</span>

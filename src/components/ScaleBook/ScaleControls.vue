@@ -49,7 +49,12 @@
 		</template>
 
 		<div class="panel-row">
-			<button type="button" v-on:click="playScale">Play</button>
+			<div class="button-grp-toggle">
+				<button type="button"
+					 v-on:click="playScale"
+					 :disabled="isPlaying"
+					 :class="[isPlaying ? 'active' : '', 'btn-toggle']">Play</button>
+			</div>
 		</div>
 
 	</div>
@@ -68,6 +73,8 @@ import Scale from '../../classes/Scale';
 	components: { NotePicker, NoteShower }
 })
 export default class ScaleControls extends Vue {
+
+	public isPlaying: boolean = false;
 
 	public get allNotes(): Note[] { return Note.getAllNotes() }
 	public get key(): string { return this.$store.getters['ScaleBookModule/key'] }
@@ -99,9 +106,12 @@ export default class ScaleControls extends Vue {
 		this.$store.commit('ScaleBookModule/updateMode', mode);
 	}
 
-	private playScale(): void {
+	private async playScale(): Promise<void> {
 		const scale = new Scale(this.scale.name, this.scale.intervals, this.scale.root);
-		scale.play();
+
+		this.isPlaying = true;
+		await scale.play();
+		this.isPlaying = false;
 	}
 
 }
