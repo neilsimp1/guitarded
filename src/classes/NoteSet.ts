@@ -92,8 +92,8 @@ export default class NoteSet implements INoteSet {
 		return matchCount > b.length / 2;
 	}
 
-	protected notesToPitches(octave: number = 4): Pitch[] {
-		return Pitch.getPitchesFromNotes(this.notes, octave);
+	protected notesToPitches(getNextOctave: boolean = false, octave: number = 4): Pitch[] {
+		return Pitch.getPitchesFromNotes(this.notes, octave, getNextOctave);
 	}
 
 }
