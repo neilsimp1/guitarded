@@ -8,10 +8,6 @@ interface IAmp {
 
 export default class AudioPlayer {
 
-	// constructor() {
-
-	// }
-
 	private createAmp(): IAmp {
 		const ctx: AudioContext = new AudioContext();
 		const oscNode: OscillatorNode = ctx.createOscillator();
@@ -55,7 +51,12 @@ export default class AudioPlayer {
 
 		const amp: IAmp = this.createAmp();
 
-		return new Promise<void>((resolve: Function) => { loop(0).then(() => resolve()) });
+		return new Promise<void>((resolve: Function) => {
+			loop(0).then(() => {
+				amp.ctx.close();
+				resolve();
+			});
+		});
 	}
 
 	public playTogether(pitches: Pitch[], duration: number = 750): Promise<void> {
@@ -73,6 +74,7 @@ export default class AudioPlayer {
 				for(const amp of amps){
 					amp.oscNode.stop();
 					amp.oscNode.disconnect(amp.ctx.destination);
+					amp.ctx.close();
 				}
 				resolve();
 			}, duration);
