@@ -1,16 +1,16 @@
 import Pitch from './Pitch';
 
+interface IAmp {
+	ctx: AudioContext;
+	oscNode: OscillatorNode | undefined;
+	gainNode: GainNode;
+}
+
 export default class AudioPlayer {
 
-	private static ctx: AudioContext;
-	private ctx: AudioContext;
+	// constructor() {
 
-	constructor() {
-		if(!AudioPlayer.ctx){
-			AudioPlayer.ctx = new AudioContext();
-		}
-		this.ctx = AudioPlayer.ctx;
-	}
+	// }
 
 	public playSequence(pitches: Pitch[], duration: number = 750): Promise<void> {
 		const loop = (i: number): Promise<void> => {
@@ -28,46 +28,53 @@ export default class AudioPlayer {
 			});
 		};
 		const start = (pitch: Pitch) => {
-			gainNode.connect(this.ctx.destination);
-			oscNode = this.ctx.createOscillator();
-			oscNode.connect(gainNode);
-			oscNode.type = 'sine';
-			oscNode.connect(this.ctx.destination);
-			oscNode.frequency.value = pitch.frequency;
-			oscNode.start();
+			amp.gainNode.connect(amp.ctx.destination);
+			amp.oscNode = amp.ctx.createOscillator();
+			amp.oscNode.connect(amp.gainNode);
+			amp.oscNode.type = 'sine';
+			amp.oscNode.connect(amp.ctx.destination);
+			amp.oscNode.frequency.value = pitch.frequency;
+			amp.oscNode.start();
 		};
 		const stop = () => {
-			oscNode.stop();
-			oscNode.disconnect(this.ctx.destination);
+			amp.oscNode!.stop();
+			amp.oscNode!.disconnect(amp.ctx.destination);
 		};
 
-		let oscNode: OscillatorNode;
-		const gainNode: GainNode = this.ctx.createGain();
+		const ctx: AudioContext =  new AudioContext();
+		let oscNode;
+		const gainNode: GainNode = ctx.createGain();
+
+		const amp: IAmp = { ctx, oscNode, gainNode };
 
 		return new Promise<void>((resolve: Function) => { loop(0).then(() => resolve()) });
 	}
 
 	public playTogether(pitches: Pitch[], duration: number = 750): Promise<void> {
-		const gainNode: GainNode = this.ctx.createGain();
-		gainNode.gain.value = 0.25;
-		gainNode.connect(this.ctx.destination);
-
-		let oscNodes: OscillatorNode[] = [];
+		let amps: IAmp[] = [];
 		for(const pitch of pitches){
-			const oscNode = this.ctx.createOscillator();
-			oscNode.connect(gainNode);
-			oscNode.type = 'sine';
-			oscNode.connect(this.ctx.destination);
-			oscNode.frequency.value = pitch.frequency;
-			oscNodes.push(oscNode);
-			oscNode.start();
+			const ctx = new AudioContext();
+			const oscNode = ctx.createOscillator();
+			const gainNode: GainNode = ctx.createGain();
+			const amp: IAmp = { ctx, oscNode, gainNode };
+
+			//amp.gainNode.gain.value = 0.25;
+			amp.gainNode.connect(ctx.destination);
+			amp.oscNode!.connect(gainNode);
+			amp.oscNode!.type = 'sine';
+			amp.oscNode!.connect(amp.ctx.destination);
+			amp.oscNode!.frequency.value = pitch.frequency;
+
+			amps.push(amp);
+
+			amp.oscNode!.start();
 		}
 
 		return new Promise<void>((resolve: Function) => {
 			setTimeout(() => {
-				for(const oscNode of oscNodes){
-					oscNode.stop();
-					oscNode.disconnect(this.ctx.destination);
+				for(const amp of amps){
+					amp.oscNode!.stop();
+					amp.oscNode!.disconnect(amp.ctx.destination);
 				}
 				resolve();
 			}, duration);
