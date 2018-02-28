@@ -66,6 +66,7 @@ import Component from 'vue-class-component';
 import NotePicker from '../Common/NotePicker.vue';
 import NoteShower from '../Common/NoteShower.vue';
 import Chord from '../../classes/Chord';
+import INoteSet from '../../classes/INoteSet';
 import Note from '../../classes/Note';
 
 @Component({
@@ -80,6 +81,7 @@ export default class ChordControls extends Vue {
 	public get chord(): Chord { return this.$store.getters['ChordBookModule/chord'] }
 	public get chords(): any { return this.$store.getters['ChordBookModule/chords'] }
 	public get mode(): any { return this.$store.getters['ChordBookModule/mode'] }
+	public get notesPicked(): INoteSet { return this.$store.getters['ChordBookModule/notesPicked'] }
 	public get root(): string { return this.$store.getters['ChordBookModule/root'] }
 
 	public beforeCreate(): void {
@@ -107,7 +109,9 @@ export default class ChordControls extends Vue {
 	}
 
 	private async playChord(): Promise<void> {
-		const chord = new Chord(this.chord.name, this.chord.intervals, this.chord.root);
+		const chord: Chord = this.mode === 'browser'
+			? new Chord(this.chord.name, this.chord.intervals, this.root)
+			: new Chord(this.notesPicked.name, Chord.computeIntervals(this.root, this.notesPicked.notes), this.root);
 
 		this.isPlaying = true;
 		await chord.playSequence();

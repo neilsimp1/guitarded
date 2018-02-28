@@ -65,6 +65,7 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import NotePicker from '../Common/NotePicker.vue';
 import NoteShower from '../Common/NoteShower.vue';
+import INoteSet from '../../classes/INoteSet';
 import Note from '../../classes/Note';
 import Scale from '../../classes/Scale';
 
@@ -79,6 +80,7 @@ export default class ScaleControls extends Vue {
 	public get allNotes(): Note[] { return Note.getAllNotes() }
 	public get key(): string { return this.$store.getters['ScaleBookModule/key'] }
 	public get mode(): any { return this.$store.getters['ScaleBookModule/mode'] }
+	public get notesPicked(): INoteSet { return this.$store.getters['ScaleBookModule/notesPicked'] }
 	public get scale(): Scale { return this.$store.getters['ScaleBookModule/scale'] }
 	public get scales(): any { return this.$store.getters['ScaleBookModule/scales'] }
 
@@ -107,7 +109,9 @@ export default class ScaleControls extends Vue {
 	}
 
 	private async playScale(): Promise<void> {
-		const scale = new Scale(this.scale.name, this.scale.intervals, this.scale.root);
+		const scale: Scale = this.mode === 'browser'
+			? new Scale(this.scale.name, this.scale.intervals, this.key)
+			: new Scale(this.notesPicked.name, Scale.computeIntervals(this.key, this.notesPicked.notes), this.key);
 
 		this.isPlaying = true;
 		await scale.playSequence(true);

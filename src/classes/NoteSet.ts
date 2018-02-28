@@ -18,15 +18,6 @@ export default class NoteSet implements INoteSet {
 		if(root) this.build();
 	}
 
-	protected static computeIntervals(root: string, notes: Note[]): number[] {
-		let intervals: number[] = [];
-		for(let i = 1; i < notes.length; i++){
-			intervals[i - 1] = Note.getInterval(notes[i - 1], notes[i]);
-		}
-
-		return intervals!;
-	}
-
 	protected static intervalsEqual (a: number[], b: number[]): boolean {
 		if(a.length !== b.length) return false;
 		for(let i = 0; i < a.length; i++){
@@ -43,6 +34,15 @@ export default class NoteSet implements INoteSet {
 		}
 
 		return matchCount > b.length / 2;
+	}
+
+	public static computeIntervals(root: string, notes: Note[]): number[] {
+		let intervals: number[] = [];
+		for(let i = 1; i < notes.length; i++){
+			intervals[i - 1] = Note.getInterval(notes[i - 1], notes[i]);
+		}
+
+		return intervals!;
 	}
 
 	public static sort(root: string, notes: Note[]): Note[] {
