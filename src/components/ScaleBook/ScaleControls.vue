@@ -110,7 +110,7 @@ export default class ScaleControls extends Vue {
 		const scale = new Scale(this.scale.name, this.scale.intervals, this.scale.root);
 
 		this.isPlaying = true;
-		await scale.play();
+		await scale.playSequence(true);
 		this.isPlaying = false;
 	}
 

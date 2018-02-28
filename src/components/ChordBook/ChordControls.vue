@@ -110,7 +110,8 @@ export default class ChordControls extends Vue {
 		const chord = new Chord(this.chord.name, this.chord.intervals, this.chord.root);
 
 		this.isPlaying = true;
-		await chord.play();
+		await chord.playSequence();
+		await chord.playTogether();
 		this.isPlaying = false;
 	}
 

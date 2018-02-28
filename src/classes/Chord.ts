@@ -1,4 +1,3 @@
-import AudioPlayer from './AudioPlayer';
 import INoteSet from './INoteSet';
 import Note from './Note';
 import NoteSet from './NoteSet';
@@ -33,19 +32,6 @@ export default class Chord extends NoteSet implements INoteSet {
 		let chord: Chord = Chord.getChords().find(c => c.name === name)!;
 		if(!root) return chord;
 		return new Chord(chord.name, chord.intervals, root);
-	}
-
-	public async play(): Promise<void> {
-		const player: AudioPlayer = new AudioPlayer();
-
-		return new Promise<void>((resolve: Function) => {
-			const pitches: Pitch[] = this.notesToPitches();
-			player.playSequence(pitches).then(() => {
-				player.playTogether((pitches)).then(() => {
-					resolve();
-				});
-			});
-		});
 	}
 
 }

@@ -1,3 +1,4 @@
+import AudioPlayer from './AudioPlayer';
 import INoteSet from './INoteSet';
 import Note from './Note';
 import Pitch from './Pitch';
@@ -17,6 +18,33 @@ export default class NoteSet implements INoteSet {
 		if(root) this.build();
 	}
 
+	protected static computeIntervals(root: string, notes: Note[]): number[] {
+		let intervals: number[] = [];
+		for(let i = 1; i < notes.length; i++){
+			intervals[i - 1] = Note.getInterval(notes[i - 1], notes[i]);
+		}
+
+		return intervals!;
+	}
+
+	protected static intervalsEqual (a: number[], b: number[]): boolean {
+		if(a.length !== b.length) return false;
+		for(let i = 0; i < a.length; i++){
+			if(a[i] !== b[i]) return false;
+		}
+		return true;
+	}
+
+	protected static intervalsEqualFuzzy (a: number[], b: number[]): boolean {
+		let matchCount: number = 0;
+		for(let i = 0; i < a.length; i++){
+			if(a[i] === b[i]) matchCount++;
+			else break;
+		}
+
+		return matchCount > b.length / 2;
+	}
+
 	public static sort(root: string, notes: Note[]): Note[] {
 		let alphaSorted: Note[] = notes.sort((n1: Note, n2: Note) => {
 			if(n1.name < n2.name) return -1;
@@ -30,15 +58,6 @@ export default class NoteSet implements INoteSet {
 		const sorted: Note[] = alphaSorted.concat(alphaSorted.splice(0, removeUpTo));
 
 		return sorted;
-	}
-
-	protected static computeIntervals(root: string, notes: Note[]): number[] {
-		let intervals: number[] = [];
-		for(let i = 1; i < notes.length; i++){
-			intervals[i - 1] = Note.getInterval(notes[i - 1], notes[i]);
-		}
-
-		return intervals!;
 	}
 
 	protected build(): void {
@@ -74,26 +93,28 @@ export default class NoteSet implements INoteSet {
 		}
 	}
 
-	protected static intervalsEqual (a: number[], b: number[]): boolean {
-		if(a.length !== b.length) return false;
-		for(let i = 0; i < a.length; i++){
-			if(a[i] !== b[i]) return false;
-		}
-		return true;
-	}
-
-	protected static intervalsEqualFuzzy (a: number[], b: number[]): boolean {
-		let matchCount: number = 0;
-		for(let i = 0; i < a.length; i++){
-			if(a[i] === b[i]) matchCount++;
-			else break;
-		}
-
-		return matchCount > b.length / 2;
-	}
-
 	protected notesToPitches(getNextOctave: boolean = false, octave: number = 4): Pitch[] {
 		return Pitch.getPitchesFromNotes(this.notes, octave, getNextOctave);
+	}
+
+	public async playSequence(getNextOctave: boolean = false): Promise<void> {
+		const player: AudioPlayer = new AudioPlayer();
+
+		return new Promise<void>((resolve: Function) => {
+			player.playSequence(this.notesToPitches(getNextOctave)).then(() => {
+				resolve();
+			});
+		});
+	}
+
+	public async playTogether(): Promise<void> {
+		const player: AudioPlayer = new AudioPlayer();
+
+		return new Promise<void>((resolve: Function) => {
+			player.playTogether(this.notesToPitches()).then(() => {
+				resolve();
+			});
+		});
 	}
 
 }

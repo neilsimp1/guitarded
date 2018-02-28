@@ -1,4 +1,3 @@
-import AudioPlayer from './AudioPlayer';
 import INoteSet from './INoteSet';
 import Note from './Note';
 import NoteSet from './NoteSet';
@@ -33,16 +32,6 @@ export default class Scale extends NoteSet implements INoteSet {
 		let scale: Scale = Scale.getScales().find(s => s.name === name)!;
 		if(!root) return scale;
 		return new Scale(scale.name, scale.intervals, root);
-	}
-
-	public async play(): Promise<void> {
-		const player: AudioPlayer = new AudioPlayer();
-
-		return new Promise<void>((resolve: Function) => {
-			player.playSequence(this.notesToPitches(true)).then(() => {
-				resolve();
-			});
-		});
 	}
 
 }
