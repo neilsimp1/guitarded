@@ -11,14 +11,31 @@ export default class AudioPlayer {
 	private createAmp(): IAmp {
 		const ctx: AudioContext = new AudioContext();
 		const oscNode: OscillatorNode = ctx.createOscillator();
+		const distNode: WaveShaperNode = ctx.createWaveShaper();
 		const gainNode: GainNode = ctx.createGain();
 
-		gainNode.connect(ctx.destination);
+		gainNode.connect(distNode);
+		gainNode.gain.value = 0.5;
+		distNode.connect(ctx.destination);
+		distNode.curve = this.makeDistortionCurve(1000);
 		oscNode.connect(gainNode);
 		oscNode.type = 'sine';
 		oscNode.connect(ctx.destination);
 
 		return { ctx, oscNode, gainNode };
+	}
+
+	private makeDistortionCurve(amount: number): Float32Array {
+		const numSamples: number = 44100,
+			deg: number = Math.PI / 180;
+		let curve = new Float32Array(numSamples),
+			x: number;
+		for (let i = 0; i < numSamples; ++i ) {
+			x = i * 2 / numSamples - 1;
+			curve[i] = (3 + amount) * x * 20 * deg / (Math.PI + amount * Math.abs(x));
+		}
+
+		return curve;
 	}
 
 	public playSequence(pitches: Pitch[], duration: number = 750): Promise<void> {
