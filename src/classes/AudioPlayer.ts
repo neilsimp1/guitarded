@@ -109,27 +109,4 @@ export default class AudioPlayer {
 		});
 	}
 
-	public playTogether2(pitches: Pitch[], duration: number = 750): Promise<void> {
-		const getType = (i: number) => this.oscTypes[i % 4];
-
-		const effects: IEffectChain = this.createEffectChain();
-		effects.oscNodes = [];
-
-		for(let i = 0; i < pitches.length; i++){
-			const oscNode: OscillatorNode = this.ctx.createOscillator();
-			oscNode.frequency.value = pitches[i].frequency;
-			//oscNode.type = getType(i);
-			oscNode.connect(effects.distNode);
-			effects.oscNodes.push(oscNode);
-			oscNode.start();
-		}
-
-		return new Promise<void>((resolve: Function) => {
-			setTimeout(() => {
-				for(const oscNode of effects.oscNodes!) oscNode.stop();
-				resolve();
-			}, duration);
-		});
-	}
-
 }

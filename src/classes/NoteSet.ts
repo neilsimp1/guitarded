@@ -117,14 +117,4 @@ export default class NoteSet implements INoteSet {
 		});
 	}
 
-	public async playTogether2(): Promise<void> {
-		const player: AudioPlayer = new AudioPlayer();
-
-		return new Promise<void>((resolve: Function) => {
-			player.playTogether2(this.notesToPitches()).then(() => {
-				resolve();
-			});
-		});
-	}
-
 }
