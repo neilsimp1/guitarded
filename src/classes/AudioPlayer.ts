@@ -68,7 +68,9 @@ export default class AudioPlayer {
 					setTimeout(() => {
 						i++;
 						if(i < pitches.length){
+							effects.gainNode.gain.value = 0;
 							effects.oscNode.frequency.value = pitches[i].frequency;
+							effects.gainNode.gain.value = 1;
 						}
 						loop(i);
 					}, duration);
