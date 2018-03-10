@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="panel-row-container">
 
 		<div class="panel-row">
 			<span class="panel-display">{{ notesPicked.name }}</span>

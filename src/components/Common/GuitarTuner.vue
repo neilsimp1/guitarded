@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="panel-row-container">
 
 		<div class="guitar-tuner">
 			<label>Tuning</label>
