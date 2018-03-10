@@ -70,7 +70,7 @@ export default class AudioPlayer {
 						if(i < pitches.length){
 							effects.gainNode.gain.value = 0;
 							effects.oscNode.frequency.value = pitches[i].frequency;
-							effects.gainNode.gain.value = 1;
+							setTimeout(_ => effects.gainNode.gain.value = 1, 60);
 						}
 						loop(i);
 					}, duration);
