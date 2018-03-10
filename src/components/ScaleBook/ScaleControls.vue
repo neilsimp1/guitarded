@@ -48,12 +48,12 @@
 			<NotePicker :module="'ScaleBookModule/'" />
 		</template>
 
-		<div class="panel-row">
+		<div class="panel-row panel-row-right">
 			<div class="button-grp-toggle">
 				<button type="button"
 					 v-on:click="playScale"
 					 :disabled="isPlaying"
-					 :class="[isPlaying ? 'active' : '', 'btn-toggle']">Play</button>
+					 :class="[isPlaying ? 'active' : '', 'btn-toggle']">&#9658; Play</button>
 			</div>
 		</div>
 

@@ -53,7 +53,7 @@
 				<button type="button"
 					 v-on:click="playChord"
 					 :disabled="isPlaying"
-					 :class="[isPlaying ? 'active' : '', 'btn-toggle']">Play</button>
+					 :class="[isPlaying ? 'active' : '', 'btn-toggle']">&#9658; Play</button>
 			</div>
 		</div>
 
