@@ -83,8 +83,6 @@ export default class AudioPlayer {
 	}
 
 	public playTogether(pitches: Pitch[], duration: number = 750): Promise<void> {
-
-
 		const effects: IEffectsChain = this.createEffectChain();
 		effects.oscNodes = [];
 
