@@ -1,4 +1,5 @@
 import IEffectsChain from './IEffectsChain';
+import IPlayable from './Instruments/IPlayable';
 import Guitar from './Instruments/Guitar';
 import Pitch from './Pitch';
 
@@ -12,7 +13,7 @@ export default class AudioPlayer {
 
 	private static ctx: AudioContext;
 	private ctx: AudioContext;
-	private instrument: Guitar;
+	private instrument: IPlayable;
 	private oscTypes: OscillatorType[] = ['sine', 'square', 'sawtooth', 'triangle'];
 	private distCurve: Float32Array;
 
