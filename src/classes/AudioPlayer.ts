@@ -14,7 +14,6 @@ export default class AudioPlayer {
 	private static ctx: AudioContext;
 	private ctx: AudioContext;
 	private instrument: IPlayable;
-	private oscTypes: OscillatorType[] = ['sine', 'square', 'sawtooth', 'triangle'];
 	private distCurve: Float32Array;
 
 	constructor() {
@@ -84,7 +83,7 @@ export default class AudioPlayer {
 	}
 
 	public playTogether(pitches: Pitch[], duration: number = 750): Promise<void> {
-		const getType = (i: number) => this.oscTypes[i % 4];
+
 
 		const effects: IEffectsChain = this.createEffectChain();
 		effects.oscNodes = [];
@@ -92,7 +91,6 @@ export default class AudioPlayer {
 		for(let i = 0; i < pitches.length; i++){
 			const oscNode: OscillatorNode = this.ctx.createOscillator();
 			oscNode.frequency.setValueAtTime(pitches[i].frequency, this.ctx.currentTime);
-			oscNode.type = getType(i);
 			oscNode.connect(effects.distNode);
 			effects.oscNodes.push(oscNode);
 		}

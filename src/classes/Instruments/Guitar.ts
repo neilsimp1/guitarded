@@ -4,6 +4,7 @@ import IPlayable from './IPlayable';
 export default class Guitar implements IPlayable {
 
 	private ctx: AudioContext;
+	private oscTypes: OscillatorType[] = ['sine', 'square', 'sawtooth', 'triangle'];
 
 	constructor(ctx: AudioContext) {
 		this.ctx = ctx;
@@ -56,8 +57,13 @@ export default class Guitar implements IPlayable {
 	}
 
 	public async playMultiple(effects: IEffectsChain, duration: number): Promise<void> {
+		const getType = (i: number) => this.oscTypes[i % 4];
+
 		effects.gainNode.gain.setValueAtTime(0.6, this.ctx.currentTime);
-		effects.oscNodes!.forEach(oscNode => oscNode.start(this.ctx.currentTime));
+		effects.oscNodes!.forEach((oscNode, i) => {
+			oscNode.type = getType(i);
+			oscNode.start(this.ctx.currentTime);
+		});
 
 		return new Promise<void>((resolve: Function) => {
 			setTimeout(() => {
