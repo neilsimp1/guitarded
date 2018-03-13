@@ -34,7 +34,7 @@ export default class AudioPlayer {
 		distNode.curve = this.distCurve;
 
 		const gainNode: GainNode = this.ctx.createGain();
-		gainNode.gain.value = gain;
+		gainNode.gain.setValueAtTime(gain, this.ctx.currentTime);
 
 		oscNode.connect(distNode);
 		distNode.connect(gainNode);
@@ -59,13 +59,13 @@ export default class AudioPlayer {
 	public playSequence(pitches: Pitch[], duration: number = 750): Promise<void> {
 		const play = (): Promise<void> => {
 			return new Promise<void>((resolve: Function) => {
-				effects.gainNode.gain.value = 0;
+				effects.gainNode.gain.setValueAtTime(0, this.ctx.currentTime);
 				effects.oscNode.start();
 
 				(async function asyncLoop(i, _this) {
 					if(i === pitches.length) return resolve();
 
-					effects.oscNode.frequency.value = pitches[i].frequency;
+					effects.oscNode.frequency.setValueAtTime(pitches[i].frequency, _this.ctx.currentTime);
 					await _this.instrument.playSingle(effects, duration);
 					asyncLoop(i + 1, _this);
 				})(0, this);
@@ -90,19 +90,13 @@ export default class AudioPlayer {
 
 		for(let i = 0; i < pitches.length; i++){
 			const oscNode: OscillatorNode = this.ctx.createOscillator();
-			oscNode.frequency.value = pitches[i].frequency;
+			oscNode.frequency.setValueAtTime(pitches[i].frequency, this.ctx.currentTime);
 			oscNode.type = getType(i);
 			oscNode.connect(effects.distNode);
 			effects.oscNodes.push(oscNode);
-			oscNode.start();
 		}
 
-		return new Promise<void>((resolve: Function) => {
-			setTimeout(() => {
-				for(const oscNode of effects.oscNodes!) oscNode.stop();
-				resolve();
-			}, duration);
-		});
+		return this.instrument.playMultiple(effects, duration);
 	}
 
 }
