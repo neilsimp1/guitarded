@@ -114,10 +114,8 @@ export default class ChordControls extends Vue {
 			: new Chord(this.notesPicked.name, Chord.computeIntervals(this.root, this.notesPicked.notes), this.root);
 
 		this.isPlaying = true;
-		await Promise.all([
-			chord.playSequence(),
-			chord.playTogether()
-		]);
+		await chord.playSequence();
+		await chord.playTogether();
 		this.isPlaying = false;
 	}
 
