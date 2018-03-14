@@ -48,6 +48,15 @@
 			<NotePicker :module="'ScaleBookModule/'" />
 		</template>
 
+		<div class="panel-row">
+			<LinkList :isVisible="!!chordsInKey && !!chordsInKey.length"
+				 :label="'Chords in this key'"
+				 :items="chordsInKey"
+				 :keyProp="'name'"
+				 :displayProp="'name'"
+				 :onClick="() => {}" />
+		</div>
+
 		<div class="panel-row panel-row-right">
 			<div class="button-grp-toggle">
 				<button type="button"
@@ -63,6 +72,8 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import { Watch } from 'vue-property-decorator';
+import LinkList from '../Common/LinkList.vue';
 import NotePicker from '../Common/NotePicker.vue';
 import NoteShower from '../Common/NoteShower.vue';
 import INoteSet from '../../classes/INoteSet';
@@ -71,11 +82,12 @@ import Scale from '../../classes/Scale';
 
 @Component({
 	name: 'scalecontrols',
-	components: { NotePicker, NoteShower }
+	components: { LinkList, NotePicker, NoteShower }
 })
 export default class ScaleControls extends Vue {
 
 	public isPlaying: boolean = false;
+	private chordsInKey: INoteSet[] = [];
 
 	public get allNotes(): Note[] { return Note.getAllNotes() }
 	public get key(): string { return this.$store.getters['ScaleBookModule/key'] }
@@ -83,6 +95,15 @@ export default class ScaleControls extends Vue {
 	public get notesPicked(): INoteSet { return this.$store.getters['ScaleBookModule/notesPicked'] }
 	public get scale(): Scale { return this.$store.getters['ScaleBookModule/scale'] }
 	public get scales(): any { return this.$store.getters['ScaleBookModule/scales'] }
+
+	@Watch('notesPicked')
+	public onNotesPickedChanged(notesPicked: INoteSet): void {
+		this.findChordsInScale(notesPicked);
+	}
+	@Watch('scale')
+	public onScaleChanged(scale: INoteSet): void {
+		this.findChordsInScale(scale);
+	}
 
 	public beforeCreate(): void {
 		if(!this.$store.getters['ScaleBookModule/scales']){
@@ -106,6 +127,17 @@ export default class ScaleControls extends Vue {
 
 	private updateMode(mode: string): void {
 		this.$store.commit('ScaleBookModule/updateMode', mode);
+	}
+
+	private findChordsInScale(noteset: INoteSet): void {
+		if(noteset.name === 'Diatonic'){
+			this.chordsInKey = [];
+			return;
+		}
+
+		Vue.nextTick().then(() => {
+
+		});
 	}
 
 	private async playScale(): Promise<void> {

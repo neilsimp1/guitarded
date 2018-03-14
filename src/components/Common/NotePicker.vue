@@ -20,14 +20,6 @@
 			</div>
 		</div>
 
-		<!-- <div v-if="fuzzyMatches.length" class="note-picker-similar">
-			<label>Similar {{ module === 'ScaleBookModule/' ? 'Scales' : 'Chords' }}</label>
-			<ul>
-				<li v-for="fuzzyMatch in fuzzyMatches" :key="fuzzyMatch.name">
-					<a href="#" v-on:click="gotoFuzzyMatch(fuzzyMatch)">{{ fuzzyMatch.name }}</a>
-				</li>
-			</ul>
-		</div> -->
 		<LinkList :isVisible="!!fuzzyMatches && !!fuzzyMatches.length"
 			 :label="'Similar ' + (module === 'ScaleBookModule/' ? 'Scales' : 'Chords')"
 			 :items="fuzzyMatches"

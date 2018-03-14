@@ -1,5 +1,5 @@
 <template>
-	<div v-if="isVisible" class="note-picker-similar">
+	<div v-if="isVisible" class="link-list">
 		<label>{{ label }}</label>
 		<ul>
 			<li v-for="item in items" :key="item[keyProp]">
