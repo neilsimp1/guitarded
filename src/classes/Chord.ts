@@ -25,9 +25,10 @@ export default class Chord extends NoteSet implements INoteSet {
 	}
 
 	public static lookupChordsInKey(noteSet: INoteSet): INoteSet[] {
-		const intervals: number[] = this.computeIntervals(noteSet.root, noteSet.notes);
-		const chords: Chord[] = chordsJson.filter((c: any) => this.intervalsEqualFuzzy(c.intervals, intervals)).map((c: any) => new Chord(c.name, c.intervals));
-		return chords.filter((c: Chord) => c.name !== noteSet.name);
+		// const intervals: number[] = this.computeIntervals(noteSet.root, noteSet.notes);
+		// const chords: Chord[] = chordsJson.filter((c: any) => this.intervalsEqualFuzzy(c.intervals, intervals)).map((c: any) => new Chord(c.name, c.intervals));
+		// return chords.filter((c: Chord) => c.name !== noteSet.name);
+		return [];
 	}
 
 	public static getChords(): Chord[] {

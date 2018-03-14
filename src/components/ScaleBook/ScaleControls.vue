@@ -76,6 +76,7 @@ import { Watch } from 'vue-property-decorator';
 import LinkList from '../Common/LinkList.vue';
 import NotePicker from '../Common/NotePicker.vue';
 import NoteShower from '../Common/NoteShower.vue';
+import Chord from '../../classes/Chord';
 import INoteSet from '../../classes/INoteSet';
 import Note from '../../classes/Note';
 import Scale from '../../classes/Scale';
@@ -129,15 +130,13 @@ export default class ScaleControls extends Vue {
 		this.$store.commit('ScaleBookModule/updateMode', mode);
 	}
 
-	private findChordsInScale(noteset: INoteSet): void {
-		if(noteset.name === 'Diatonic'){
+	private findChordsInScale(noteSet: INoteSet): void {
+		if(noteSet.name === 'Diatonic'){
 			this.chordsInKey = [];
 			return;
 		}
 
-		Vue.nextTick().then(() => {
-
-		});
+		Vue.nextTick().then(_ => this.chordsInKey = Chord.lookupChordsInKey(noteSet));
 	}
 
 	private async playScale(): Promise<void> {
