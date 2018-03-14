@@ -57,17 +57,19 @@ export default class Guitar implements IPlayable {
 	}
 
 	public async playMultiple(effects: IEffectsChain, duration: number): Promise<void> {
+		//const currentTime: number = this.ctx.currentTime;
 		const getType = (i: number) => this.oscTypes[i % 4];
+		const seconds: number = duration / 1000;
 
 		effects.gainNode.gain.setValueAtTime(0.6, this.ctx.currentTime);
 		effects.oscNodes!.forEach((oscNode, i) => {
-			oscNode.type = getType(i);
-			oscNode.start(this.ctx.currentTime);
+			//oscNode.type = getType(i);
+			oscNode.start();
+			oscNode.stop(this.ctx.currentTime + seconds);
 		});
 
 		return new Promise<void>((resolve: Function) => {
 			setTimeout(() => {
-				for(const oscNode of effects.oscNodes!) oscNode.stop();
 				resolve();
 			}, duration);
 		});

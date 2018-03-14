@@ -28,19 +28,18 @@ export default class AudioPlayer {
 
 	private createEffectChain(oscType: OscillatorType = 'sine', gain: number = 1): IEffectsChain {
 		const oscNode: OscillatorNode = this.ctx.createOscillator();
-		oscNode.type = oscType;
+		//oscNode.type = oscType;
+
+		const gainNode: GainNode = this.ctx.createGain();
 
 		const distNode: WaveShaperNode = this.ctx.createWaveShaper();
 		distNode.curve = this.distCurve;
-
-		const gainNode: GainNode = this.ctx.createGain();
-		gainNode.gain.setValueAtTime(gain, this.ctx.currentTime);
 
 		oscNode.connect(distNode);
 		distNode.connect(gainNode);
 		gainNode.connect(this.ctx.destination);
 
-		return { distNode, gainNode, oscNode };
+		return { distNode, gainNode, oscNode, oscNodes: [] };
 	}
 
 	private makeDistortionCurve(amount: number): Float32Array {
@@ -48,7 +47,7 @@ export default class AudioPlayer {
 			deg: number = Math.PI / 180;
 		let curve = new Float32Array(numSamples),
 			x: number;
-		for(let i = 0; i < numSamples; ++i ){
+		for(let i = 0; i < numSamples; ++i){
 			x = i * 2 / numSamples - 1;
 			curve[i] = (3 + amount) * x * 20 * deg / (Math.PI + amount * Math.abs(x));
 		}
@@ -84,7 +83,6 @@ export default class AudioPlayer {
 
 	public playTogether(pitches: Pitch[], duration: number = 750): Promise<void> {
 		const effects: IEffectsChain = this.createEffectChain();
-		effects.oscNodes = [];
 
 		for(let i = 0; i < pitches.length; i++){
 			const oscNode: OscillatorNode = this.ctx.createOscillator();
