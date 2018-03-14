@@ -48,7 +48,7 @@
 			<NotePicker :module="'ChordBookModule/'" />
 		</template>
 
-		<div class="panel-row">
+		<div class="panel-row panel-row-right">
 			<div class="button-grp-toggle">
 				<button type="button"
 					 v-on:click="playChord"

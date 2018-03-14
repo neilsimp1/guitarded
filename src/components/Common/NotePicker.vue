@@ -20,15 +20,20 @@
 			</div>
 		</div>
 
-		<div v-if="fuzzyMatches.length" class="note-picker-similar">
-			<label>Similar {{ module === 'ScaleBoolModule/' ? 'Scales' : 'Chords' }}</label>
+		<!-- <div v-if="fuzzyMatches.length" class="note-picker-similar">
+			<label>Similar {{ module === 'ScaleBookModule/' ? 'Scales' : 'Chords' }}</label>
 			<ul>
 				<li v-for="fuzzyMatch in fuzzyMatches" :key="fuzzyMatch.name">
 					<a href="#" v-on:click="gotoFuzzyMatch(fuzzyMatch)">{{ fuzzyMatch.name }}</a>
 				</li>
 			</ul>
-		</div>
-
+		</div> -->
+		<LinkList :isVisible="!!fuzzyMatches && !!fuzzyMatches.length"
+			 :label="'Similar ' + (module === 'ScaleBookModule/' ? 'Scales' : 'Chords')"
+			 :items="fuzzyMatches"
+			 :keyProp="'name'"
+			 :displayProp="'name'"
+			 :onClick="gotoFuzzyMatch" />
 	</div>
 </template>
 
@@ -36,6 +41,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Prop, Watch } from 'vue-property-decorator';
+import LinkList from './LinkList.vue';
 import Chord from '../../classes/Chord';
 import INoteSet from '../../classes/INoteSet';
 import Note from '../../classes/Note';
@@ -43,7 +49,8 @@ import NoteSet from '../../classes/NoteSet';
 import Scale from '../../classes/Scale';
 
 @Component({
-	name: 'notepicker'
+	name: 'notepicker',
+	components: { LinkList }
 })
 export default class NotePicker extends Vue {
 
