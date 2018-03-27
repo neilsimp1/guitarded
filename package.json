@@ -5,6 +5,7 @@
   "main": "dist/index.html",
   "scripts": {
     "build": "webpack --progress --display-error-details",
+    "release": "webpack --progress --display-error-details --define process.env.NODE_ENV='\"production\"'",
     "watch": "webpack --progress --display-error-details --watch",
     "serve": "webpack-dev-server --content-base dist"
   },

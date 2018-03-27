@@ -72,7 +72,8 @@ export default class NotePicker extends Vue {
 			const notesPicked: INoteSet = {
 				name: 'Custom',
 				notes: [Note.lookupNote(this.root)],
-				root: this.root
+				root: this.root,
+				intervals: []
 			};
 			this.$store.commit(this.module + 'updateNotesPicked', notesPicked);
 		}
@@ -105,7 +106,8 @@ export default class NotePicker extends Vue {
 		const newNotesPicked: INoteSet = {
 			name: newScaleChordName,
 			notes: newNotes,
-			root: this.root
+			root: this.root,
+			intervals: []
 		};
 
 		this.$store.commit(this.module + 'updateNotesPicked', newNotesPicked);
