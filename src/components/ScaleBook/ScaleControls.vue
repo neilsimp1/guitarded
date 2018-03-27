@@ -57,7 +57,7 @@
 				 :itemsLabelProp="'root'"
 				 :keyProp="'name'"
 				 :displayProp="'name'"
-				 :onClick="() => {}" />
+				 :onClick="gotoChord" />
 		</div>
 
 		<div class="panel-row panel-row-right">
@@ -162,6 +162,13 @@ export default class ScaleControls extends Vue {
 		this.isPlaying = true;
 		await scale.playSequence(true);
 		this.isPlaying = false;
+	}
+
+	private gotoChord(chord: Chord): void {
+		this.$store.commit('ChordBookModule/updateMode', 'browser');
+		this.$store.commit('ChordBookModule/updateChord', chord);
+		this.$store.commit('ChordBookModule/updateRoot', chord.root);
+		window.location.href = '/chordbook#browser';
 	}
 
 }
