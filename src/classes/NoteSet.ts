@@ -23,6 +23,7 @@ export default class NoteSet implements INoteSet {
 		for(let i = 0; i < a.length; i++){
 			if(a[i] !== b[i]) return false;
 		}
+
 		return true;
 	}
 
@@ -42,7 +43,7 @@ export default class NoteSet implements INoteSet {
 			intervals[i - 1] = Note.getInterval(notes[i - 1], notes[i]);
 		}
 
-		return intervals!;
+		return intervals;
 	}
 
 	public static sort(root: string, notes: Note[]): Note[] {
