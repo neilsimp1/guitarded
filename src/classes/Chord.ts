@@ -1,3 +1,4 @@
+import IChordSet from './IChordSet';
 import INoteSet from './INoteSet';
 import Note from './Note';
 import NoteSet from './NoteSet';
@@ -12,35 +13,17 @@ export default class Chord extends NoteSet implements INoteSet {
 		super(name, intervals, root);
 	}
 
-	private static findChordsByRoot(noteSet: INoteSet): INoteSet[] {
-		let matched: Chord[] = [];
-		
-		// matched = matched.concat(chordsJson
-		// 	.filter((c: any) => NoteSet.intervalsEqualFuzzy(c.intervals, (noteSet as any).intervals))
-		// 	.map((c: any) => new Chord(c.name, c.intervals, noteSet.root)
-		// ));
+	private static findChordsByRoot(root: string, notes: Note[]): Chord[] {
+		let matchedChords: Chord[] = [];
 
-		const innerFunc = (intervals: number[], matched: Chord[]): Chord[] => {
-			if(intervals.length <= 2) return matched;
-			return matched.concat(chordsJson
-				.filter((c: any) => NoteSet.intervalsEqualFuzzy(c.intervals, (noteSet as any).intervals))
-				.map((c: any) => new Chord(c.name, c.intervals, noteSet.root))
-			);
-		};
-
-		const intervals: number[] = (noteSet as any).intervals;
-		for(let i = 0; i < (noteSet as any).intervals.length; i++){
-
-			//const newIntervals: number[] = [intervals[i] + intervals[i + 1]].concat(intervals.slice(i + 2));
-			const newIntervals: number[] = intervals.map((interval, intervalIndex) => {
-				if(intervalIndex === i) return interval + intervals[intervalIndex + 1];
-				return interval;
-			}).filter((interval, intervalIndex) => intervalIndex !== i + 1);
-			
-			matched = innerFunc(newIntervals, matched);
+		for(const chordJson of chordsJson){
+			const chord: Chord = new Chord(chordJson.name, chordJson.intervals, root);
+			if(chord.notes.every(chordNote => !!notes.find(noteSetNote => noteSetNote.name === chordNote.name))){
+				matchedChords.push(chord);
+			}
 		}
 
-		return [];
+		return matchedChords;
 	}
 
 	public static lookupName(root: string, notes: Note[]): string {
@@ -58,13 +41,17 @@ export default class Chord extends NoteSet implements INoteSet {
 		return chords.filter((c: Chord) => c.name !== noteSet.name);
 	}
 
-	public static lookupChordsInKey(noteSet: INoteSet): INoteSet[] {
-		// const intervals: number[] = this.computeIntervals(noteSet.root, noteSet.notes);
-		// const chords: Chord[] = chordsJson.filter((c: any) => this.intervalsEqualFuzzy(c.intervals, intervals)).map((c: any) => new Chord(c.name, c.intervals));
-		// return chords.filter((c: Chord) => c.name !== noteSet.name);
-		//return [];
+	public static lookupChordsInKey(noteSet: INoteSet): IChordSet[] {
+		let notes: Note[] = noteSet.notes;
+		let chordSets: IChordSet[] = [];
 
-		return Chord.findChordsByRoot(noteSet);
+		for(let i = 0; i < notes.length; i++){
+			let root: string = notes[i].name;
+			let matchedChords: Chord[] = Chord.findChordsByRoot(root, notes);
+			if(matchedChords.length) chordSets.push({ root, chords: matchedChords });
+		}
+
+		return chordSets;
 	}
 
 	public static getChords(): Chord[] {

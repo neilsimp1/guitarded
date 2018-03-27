@@ -48,10 +48,13 @@
 			<NotePicker :module="'ScaleBookModule/'" />
 		</template>
 
-		<div class="panel-row">
+		<div class="panel-row panel-row-left">
 			<LinkList :isVisible="!!chordsInKey && !!chordsInKey.length"
+				 :isNested="true"
 				 :label="'Chords in this key'"
 				 :items="chordsInKey"
+				 :itemsProp="'chords'"
+				 :itemsLabelProp="'root'"
 				 :keyProp="'name'"
 				 :displayProp="'name'"
 				 :onClick="() => {}" />
@@ -76,6 +79,7 @@ import { Watch } from 'vue-property-decorator';
 import LinkList from '../Common/LinkList.vue';
 import NotePicker from '../Common/NotePicker.vue';
 import NoteShower from '../Common/NoteShower.vue';
+import IChordSet from '../../classes/IChordSet';
 import Chord from '../../classes/Chord';
 import INoteSet from '../../classes/INoteSet';
 import Note from '../../classes/Note';
@@ -88,7 +92,7 @@ import Scale from '../../classes/Scale';
 export default class ScaleControls extends Vue {
 
 	public isPlaying: boolean = false;
-	private chordsInKey: INoteSet[] = [];
+	private chordsInKey: IChordSet[] = [];
 
 	public get allNotes(): Note[] { return Note.getAllNotes() }
 	public get key(): string { return this.$store.getters['ScaleBookModule/key'] }
@@ -115,6 +119,12 @@ export default class ScaleControls extends Vue {
 		}
 	}
 
+	public created(): void {
+		if(!this.chordsInKey.length){
+			this.findChordsInScale(this.getNoteSet());
+		}
+	}
+
 	public updateKey(event: Event): void {
 		this.$store.commit('ScaleBookModule/updateKey', (event.target as HTMLSelectElement).value);
 		const newScale = new Scale(this.scale.name, this.scale.intervals, (event.target as HTMLSelectElement).value);
@@ -128,6 +138,7 @@ export default class ScaleControls extends Vue {
 
 	private updateMode(mode: string): void {
 		this.$store.commit('ScaleBookModule/updateMode', mode);
+		this.findChordsInScale(this.getNoteSet());
 	}
 
 	private findChordsInScale(noteSet: INoteSet): void {
@@ -139,10 +150,14 @@ export default class ScaleControls extends Vue {
 		Vue.nextTick().then(_ => this.chordsInKey = Chord.lookupChordsInKey(noteSet));
 	}
 
-	private async playScale(): Promise<void> {
-		const scale: Scale = this.mode === 'browser'
+	private getNoteSet(): INoteSet {
+		return this.mode === 'browser'
 			? new Scale(this.scale.name, this.scale.intervals, this.key)
 			: new Scale(this.notesPicked.name, Scale.computeIntervals(this.key, this.notesPicked.notes), this.key);
+	}
+
+	private async playScale(): Promise<void> {
+		const scale: Scale = this.getNoteSet() as Scale;
 
 		this.isPlaying = true;
 		await scale.playSequence(true);

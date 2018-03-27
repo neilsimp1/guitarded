@@ -37,6 +37,7 @@ export default class Note {
 	}
 
 	public static getLoopedNotes(): any[] {
+		Note.getAllNotes();
 		if(!Note.loopedNotes){
 			Note.loopedNotes = Note.notes.map((n: Note, i: number) => {
 				return {
