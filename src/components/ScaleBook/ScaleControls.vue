@@ -168,7 +168,7 @@ export default class ScaleControls extends Vue {
 		this.$store.commit('ChordBookModule/updateMode', 'browser');
 		this.$store.commit('ChordBookModule/updateChord', chord);
 		this.$store.commit('ChordBookModule/updateRoot', chord.root);
-		window.location.href = '/chordbook#browser';
+		this.$router.push('/chordbook#browser');
 	}
 
 }
